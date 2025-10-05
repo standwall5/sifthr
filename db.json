@@ -1,0 +1,720 @@
+{
+  "answers": [
+    {
+      "_id": "682cbbc68f0aaadaa3bf234c",
+      "answerId": 1,
+      "questionId": 1,
+      "answerText": "Too-good-to-be-true offers",
+      "isCorrect": true
+    },
+    {
+      "_id": "682cbbc68f0aaadaa3bf234d",
+      "answerId": 2,
+      "questionId": 1,
+      "answerText": "Secure payment methods",
+      "isCorrect": false
+    }
+  ],
+  "latestNews": [
+    {
+      "_id": "682cbbd48f0aaadaa3bf2351",
+      "newsId": 1,
+      "headline": "New Scam Wave Targets Elderly",
+      "content": "Authorities warn of a new wave of online scams...",
+      "dateOfNews": "2025-05-20T00:00:00.000Z"
+    }
+  ],
+  "modules": [
+    {
+      "_id": "682cbbab8f0aaadaa3bf2348",
+      "moduleId": 1,
+      "title": "Understanding Fake Ads",
+      "description": "Learn how to spot and report fake advertisements online."
+    }
+  ],
+  "moduleSections": [
+    {
+      "_id": "682cbbb48f0aaadaa3bf2349",
+      "sectionId": 1,
+      "moduleId": 1,
+      "title": "Introduction to Fake Ads",
+      "content": "Fake ads often appear too good to be true, promising unbelievable deals and irresistible offers that seem almost impossible to pass up. These advertisements are designed to lure you in with flashy graphics, urgent calls to action, and persuasive language that plays on your emotions and desires. However, beneath the surface, many of these ads are deceptive and aim to trick you into providing personal information, making purchases for products that don’t exist, or downloading malicious software. It’s important to be cautious and critically evaluate the legitimacy of any online advertisement. Look for signs such as unrealistic prices, poorly written text, suspicious URLs, and a lack of credible contact information. Always verify the source before engaging with an ad, and when in doubt, avoid clicking on suspicious links altogether. Staying informed and vigilant is your best defense against falling victim to fake ads and online scams.",
+      "mediaUrl": "",
+      "position": 1
+    },
+    {
+      "_id": "6831aa34f17f11bdefc17731",
+      "sectionId": 2,
+      "moduleId": 1,
+      "title": "Recognizing Fake Ads",
+      "content": "Learn how to spot common signs of fake advertisements by paying close attention to red flags such as unrealistic promises that sound too good to be true, offers that create a sense of urgency without clear details, and suspicious URLs that don’t match the official website or use unusual domain names. Other signs include poor grammar or spelling mistakes, missing or fake contact information, and requests for personal or payment information upfront. Understanding these warning signals can help you avoid falling victim to scams and protect your personal information while browsing online.",
+      "mediaUrl": "res/images/fakeAdsExample.webp",
+      "position": 2
+    }
+  ],
+  "module_complete": [],
+  "questions": [
+    {
+      "_id": "682cbbc48f0aaadaa3bf234b",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "questionText": "Which of these is a sign of a fake ad?",
+      "questionType": "multipleChoice",
+      "position": 1,
+      "choices": [
+        {
+          "text": "Incorrect grammar",
+          "isCorrect": true
+        },
+        {
+          "text": "Authentic shop link",
+          "isCorrect": false
+        },
+        {
+          "text": "Verified poster",
+          "isCorrect": false
+        },
+        {
+          "text": "Natural comment section",
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "_id": "6835647699bcc9f058e62c34",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "questionText": "What is the most common type of scam?",
+      "questionType": "input",
+      "position": 2,
+      "correctAnswer": "Phishing"
+    },
+    {
+      "_id": "68485f756c7a7b1415b254f2",
+      "quizId": "684856b16c7a7b1415b254e0",
+      "correctAnswer": "Incorrect links",
+      "position": 1,
+      "questionText": "What is most commonly found in fake advertisements?",
+      "questionType": "input"
+    }
+  ],
+  "quizzes": [
+    {
+      "_id": "682cbbbd8f0aaadaa3bf234a",
+      "moduleId": 1,
+      "title": "Fake Ads Quiz",
+      "description": "Test your knowledge on spotting fake advertisements."
+    },
+    {
+      "_id": "684856b16c7a7b1415b254e0",
+      "title": "False product advertisements",
+      "description": "This quiz tests your knowledge in identifying fraudulent advertisements seen on social media"
+    }
+  ],
+  "quizSubmissions": [
+    {
+      "_id": "6848938d394fd25c82031762",
+      "quizId": "684856b16c7a7b1415b254e0",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "68485f756c7a7b1415b254f2",
+          "position": 1,
+          "answer": "a",
+          "isCorrect": false
+        }
+      ],
+      "score": 0,
+      "attempt": 1,
+      "submittedAt": "2025-06-10T20:20:29.933Z"
+    },
+    {
+      "_id": "684893b7394fd25c82031763",
+      "quizId": "684856b16c7a7b1415b254e0",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "68485f756c7a7b1415b254f2",
+          "position": 1,
+          "answer": "a",
+          "isCorrect": false
+        }
+      ],
+      "score": 0,
+      "attempt": 2,
+      "submittedAt": "2025-06-10T20:21:11.893Z"
+    },
+    {
+      "_id": "684893d1394fd25c82031764",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "682cbbc48f0aaadaa3bf234b",
+          "position": 1,
+          "answer": "Incorrect grammar",
+          "isCorrect": false
+        },
+        {
+          "questionId": "6835647699bcc9f058e62c34",
+          "position": 2,
+          "answer": "Phishing",
+          "isCorrect": true
+        }
+      ],
+      "score": 1,
+      "attempt": 1,
+      "submittedAt": "2025-06-10T20:21:37.065Z"
+    },
+    {
+      "_id": "68489552394fd25c82031765",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "6835647699bcc9f058e62c34",
+          "position": 2,
+          "answer": "Phishing",
+          "isCorrect": true
+        }
+      ],
+      "score": 1,
+      "attempt": 2,
+      "submittedAt": "2025-06-10T20:28:02.250Z"
+    }
+  ],
+  "resources": [
+    {
+      "_id": "682cbbd18f0aaadaa3bf2350",
+      "resourceId": 1,
+      "moduleId": 1,
+      "title": "Anti-Scam PDF",
+      "linkUrl": "https://example.com/scam-guide.pdf",
+      "type": "pdf"
+    }
+  ],
+  "userAnswers": [
+    {
+      "_id": "682cbbcd8f0aaadaa3bf234f",
+      "userAnswerId": 1,
+      "userQuizAttemptId": 1,
+      "questionId": 1,
+      "userInput": null
+    }
+  ],
+  "userQuizAttempts": [
+    {
+      "_id": "682cbbca8f0aaadaa3bf234e",
+      "userId": 1,
+      "quizId": 1,
+      "score": 90,
+      "takenAt": "2025-05-20T17:28:42.666Z"
+    },
+    {
+      "_id": "684895f4394fd25c82031766",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "682cbbc48f0aaadaa3bf234b",
+          "position": 1,
+          "answer": "Incorrect grammar",
+          "isCorrect": false
+        },
+        {
+          "questionId": "6835647699bcc9f058e62c34",
+          "position": 2,
+          "answer": "Phishing",
+          "isCorrect": true
+        }
+      ],
+      "score": 1,
+      "attempt": 1,
+      "submittedAt": "2025-06-10T20:30:44.365Z"
+    },
+    {
+      "_id": "68489601394fd25c82031767",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "682cbbc48f0aaadaa3bf234b",
+          "position": 1,
+          "answer": "Natural comment section",
+          "isCorrect": false
+        },
+        {
+          "questionId": "6835647699bcc9f058e62c34",
+          "position": 2,
+          "answer": "a",
+          "isCorrect": false
+        }
+      ],
+      "score": 0,
+      "attempt": 2,
+      "submittedAt": "2025-06-10T20:30:57.833Z"
+    },
+    {
+      "_id": "68489611394fd25c82031768",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "682cbbc48f0aaadaa3bf234b",
+          "position": 1,
+          "answer": "Verified poster",
+          "isCorrect": false
+        },
+        {
+          "questionId": "6835647699bcc9f058e62c34",
+          "position": 2,
+          "answer": "Phishing",
+          "isCorrect": true
+        }
+      ],
+      "score": 1,
+      "attempt": 3,
+      "submittedAt": "2025-06-10T20:31:13.019Z"
+    },
+    {
+      "_id": "68489749394fd25c82031769",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "682cbbc48f0aaadaa3bf234b",
+          "position": 1,
+          "answer": "Incorrect grammar",
+          "isCorrect": false
+        },
+        {
+          "questionId": "6835647699bcc9f058e62c34",
+          "position": 2,
+          "answer": "a",
+          "isCorrect": false
+        }
+      ],
+      "score": 0,
+      "attempt": 4,
+      "submittedAt": "2025-06-10T20:36:25.442Z"
+    },
+    {
+      "_id": "68489834394fd25c8203176a",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "682cbbc48f0aaadaa3bf234b",
+          "position": 1,
+          "answer": "Incorrect grammar",
+          "isCorrect": false
+        },
+        {
+          "questionId": "6835647699bcc9f058e62c34",
+          "position": 2,
+          "answer": "a",
+          "isCorrect": false
+        }
+      ],
+      "score": 0,
+      "attempt": 5,
+      "submittedAt": "2025-06-10T20:40:20.068Z"
+    },
+    {
+      "_id": "68489913394fd25c8203176b",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "682cbbc48f0aaadaa3bf234b",
+          "position": 1,
+          "answer": "Incorrect grammar",
+          "isCorrect": false
+        },
+        {
+          "questionId": "6835647699bcc9f058e62c34",
+          "position": 2,
+          "answer": "asd",
+          "isCorrect": false
+        }
+      ],
+      "score": 0,
+      "attempt": 6,
+      "submittedAt": "2025-06-10T20:44:03.399Z"
+    },
+    {
+      "_id": "68489943394fd25c8203176c",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "682cbbc48f0aaadaa3bf234b",
+          "position": 1,
+          "answer": "Incorrect grammar",
+          "isCorrect": false
+        },
+        {
+          "questionId": "6835647699bcc9f058e62c34",
+          "position": 2,
+          "answer": "Ohishing",
+          "isCorrect": false
+        }
+      ],
+      "score": 0,
+      "attempt": 7,
+      "submittedAt": "2025-06-10T20:44:51.918Z"
+    },
+    {
+      "_id": "6848995f394fd25c8203176d",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "682cbbc48f0aaadaa3bf234b",
+          "position": 1,
+          "answer": "Incorrect grammar",
+          "isCorrect": false
+        },
+        {
+          "questionId": "6835647699bcc9f058e62c34",
+          "position": 2,
+          "answer": "Phishing",
+          "isCorrect": true
+        }
+      ],
+      "score": 1,
+      "attempt": 8,
+      "submittedAt": "2025-06-10T20:45:19.406Z"
+    },
+    {
+      "_id": "6848eb6ad1121376ca0d4342",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "682cbbc48f0aaadaa3bf234b",
+          "position": 1,
+          "answer": "Incorrect grammar",
+          "isCorrect": true
+        },
+        {
+          "questionId": "6835647699bcc9f058e62c34",
+          "position": 2,
+          "answer": "Phishing",
+          "isCorrect": true
+        }
+      ],
+      "score": 2,
+      "attempt": 9,
+      "submittedAt": "2025-06-11T02:35:22.085Z"
+    },
+    {
+      "_id": "6848eba1d1121376ca0d4343",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "682cbbc48f0aaadaa3bf234b",
+          "position": 1,
+          "answer": "Incorrect grammar",
+          "isCorrect": true
+        },
+        {
+          "questionId": "6835647699bcc9f058e62c34",
+          "position": 2,
+          "answer": "",
+          "isCorrect": false
+        }
+      ],
+      "score": 1,
+      "attempt": 10,
+      "submittedAt": "2025-06-11T02:36:17.860Z"
+    },
+    {
+      "_id": "6848ebc7d1121376ca0d4344",
+      "quizId": "684856b16c7a7b1415b254e0",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "68485f756c7a7b1415b254f2",
+          "position": 1,
+          "answer": "Phishing",
+          "isCorrect": false
+        }
+      ],
+      "score": 0,
+      "attempt": 1,
+      "submittedAt": "2025-06-11T02:36:55.901Z"
+    },
+    {
+      "_id": "6848edcad1121376ca0d4345",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "682cbbc48f0aaadaa3bf234b",
+          "position": 1,
+          "answer": "Incorrect grammar",
+          "isCorrect": true
+        },
+        {
+          "questionId": "6835647699bcc9f058e62c34",
+          "position": 2,
+          "answer": "Phishing",
+          "isCorrect": true
+        }
+      ],
+      "score": 2,
+      "attempt": 11,
+      "submittedAt": "2025-06-11T02:45:30.922Z"
+    },
+    {
+      "_id": "6848edead1121376ca0d4346",
+      "quizId": "684856b16c7a7b1415b254e0",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "68485f756c7a7b1415b254f2",
+          "position": 1,
+          "answer": "Incorrect grammar",
+          "isCorrect": false
+        }
+      ],
+      "score": 0,
+      "attempt": 2,
+      "submittedAt": "2025-06-11T02:46:02.295Z"
+    },
+    {
+      "_id": "6848f035d1121376ca0d4347",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "682cbbc48f0aaadaa3bf234b",
+          "position": 1,
+          "answer": "Incorrect grammar",
+          "isCorrect": true
+        },
+        {
+          "questionId": "6835647699bcc9f058e62c34",
+          "position": 2,
+          "answer": "Phishing",
+          "isCorrect": true
+        }
+      ],
+      "score": 2,
+      "attempt": 12,
+      "submittedAt": "2025-06-11T02:55:48.998Z"
+    },
+    {
+      "_id": "6848f05ad1121376ca0d4348",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "682cbbc48f0aaadaa3bf234b",
+          "position": 1,
+          "answer": "Natural comment section",
+          "isCorrect": false
+        },
+        {
+          "questionId": "6835647699bcc9f058e62c34",
+          "position": 2,
+          "answer": "s",
+          "isCorrect": false
+        }
+      ],
+      "score": 0,
+      "attempt": 13,
+      "submittedAt": "2025-06-11T02:56:26.069Z"
+    },
+    {
+      "_id": "6848f069d1121376ca0d4349",
+      "quizId": "684856b16c7a7b1415b254e0",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "68485f756c7a7b1415b254f2",
+          "position": 1,
+          "answer": "Incorrect grammar",
+          "isCorrect": false
+        }
+      ],
+      "score": 0,
+      "attempt": 3,
+      "submittedAt": "2025-06-11T02:56:41.406Z"
+    },
+    {
+      "_id": "684903b5d1121376ca0d434c",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "682cbbc48f0aaadaa3bf234b",
+          "position": 1,
+          "answer": "Incorrect grammar",
+          "isCorrect": true
+        },
+        {
+          "questionId": "6835647699bcc9f058e62c34",
+          "position": 2,
+          "answer": "Phishing",
+          "isCorrect": true
+        }
+      ],
+      "score": 2,
+      "attempt": 14,
+      "submittedAt": "2025-06-11T04:19:01.135Z"
+    },
+    {
+      "_id": "684903cdd1121376ca0d434d",
+      "quizId": "684856b16c7a7b1415b254e0",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "68485f756c7a7b1415b254f2",
+          "position": 1,
+          "answer": "Fake sizies",
+          "isCorrect": false
+        }
+      ],
+      "score": 0,
+      "attempt": 4,
+      "submittedAt": "2025-06-11T04:19:25.047Z"
+    },
+    {
+      "_id": "684903e4d1121376ca0d434e",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "user_id": "67fd4729c7160469080e2a42",
+      "answers": [
+        {
+          "questionId": "682cbbc48f0aaadaa3bf234b",
+          "position": 1,
+          "answer": "Incorrect grammar",
+          "isCorrect": true
+        },
+        {
+          "questionId": "6835647699bcc9f058e62c34",
+          "position": 2,
+          "answer": "Phishing",
+          "isCorrect": true
+        }
+      ],
+      "score": 2,
+      "attempt": 15,
+      "submittedAt": "2025-06-11T04:19:48.991Z"
+    },
+    {
+      "_id": "68494469f1270d899b03c303",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "user_id": "68494369f1270d899b03c302",
+      "answers": [
+        {
+          "questionId": "682cbbc48f0aaadaa3bf234b",
+          "position": 1,
+          "answer": "Incorrect grammar",
+          "isCorrect": true
+        },
+        {
+          "questionId": "6835647699bcc9f058e62c34",
+          "position": 2,
+          "answer": "Phishing",
+          "isCorrect": true
+        }
+      ],
+      "score": 2,
+      "attempt": 1,
+      "submittedAt": "2025-06-11T08:55:05.358Z"
+    },
+    {
+      "_id": "6849803ef1270d899b03c304",
+      "quizId": "682cbbbd8f0aaadaa3bf234a",
+      "user_id": "68494369f1270d899b03c302",
+      "answers": [
+        {
+          "questionId": "682cbbc48f0aaadaa3bf234b",
+          "position": 1,
+          "answer": "Incorrect grammar",
+          "isCorrect": true
+        },
+        {
+          "questionId": "6835647699bcc9f058e62c34",
+          "position": 2,
+          "answer": "Phishing",
+          "isCorrect": true
+        }
+      ],
+      "score": 2,
+      "attempt": 2,
+      "submittedAt": "2025-06-11T13:10:22.084Z"
+    },
+    {
+      "_id": "685557f60580fa7b8f0aaf23",
+      "quizId": "684856b16c7a7b1415b254e0",
+      "user_id": "68554c200580fa7b8f0aaf22",
+      "answers": [
+        {
+          "questionId": "68485f756c7a7b1415b254f2",
+          "position": 1,
+          "answer": "",
+          "isCorrect": false
+        }
+      ],
+      "score": 0,
+      "attempt": 1,
+      "submittedAt": "2025-06-20T12:45:42.869Z"
+    }
+  ],
+  "users": [
+    {
+      "_id": "67f1657c85e285d9eab71236",
+      "name": "Spongebob",
+      "age": 30,
+      "email": "spongebob@gmail.com",
+      "password": "123"
+    },
+    {
+      "_id": "67fd4729c7160469080e2a42",
+      "name": "John Patrick B. Salen",
+      "age": "21",
+      "email": "johnpatricksalen@gmail.com",
+      "password": "$2y$10$ehIfaJeBrnqY2I/KEaBfTOfwD0elb4DpKnt1SsaIS9roXBojsii52",
+      "created_at": "2025-04-14T17:34:32.962Z",
+      "isAdmin": true
+    },
+    {
+      "_id": "68494369f1270d899b03c302",
+      "name": "George",
+      "age": "21",
+      "email": "mail@gmail.com",
+      "password": "$2y$10$QYkpnt9aChvmfo/VQv1SRud66rCrXoyVx0V2aFtgKzPuh7U59xDOC",
+      "created_at": "2025-06-11T08:50:48.758Z",
+      "isAdmin": false
+    },
+    {
+      "_id": "684fbba48885872f230b99e2",
+      "name": "addd",
+      "age": "21",
+      "email": "add@gmail.com",
+      "password": "$2y$10$3IP/VKMoDFDTwHQIRaXmtuWom4IxpOv.eLQocAFS8i3Y312dUVk4G",
+      "created_at": "2025-06-16T06:37:23.937Z",
+      "isAdmin": false
+    },
+    {
+      "_id": "684fbc1c8885872f230b99e3",
+      "name": "asdd",
+      "age": "42",
+      "email": "bsa@gmail.com",
+      "password": "$2y$10$3NjgyTQvEUkbDXtAJXWu7O2p2xLsqBs4VvV.c6.MGBLpUgzf8eTOe",
+      "created_at": "2025-06-16T06:39:24.470Z",
+      "isAdmin": false
+    },
+    {
+      "_id": "68554c200580fa7b8f0aaf22",
+      "name": "what",
+      "age": "21",
+      "email": "what4141@gmail.com",
+      "password": "$2y$10$rvNEeYGhMtnQG1FMtCxY/unE0.oSmXpbEXW4Fp/377ByBTTyKWB7.",
+      "created_at": "2025-06-20T11:55:12.584Z",
+      "isAdmin": false
+    }
+  ]
+}

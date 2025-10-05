@@ -1,103 +1,257 @@
+"use client";
+import React, { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
+import "./index.css";
+import Modal from "./components/Modal";
+import { signUp, signIn } from "@/app/lib/actions/auth-actions";
+
+// TODO: receive error
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const router = useRouter();
+  const [repeatPassword, setRepeatPassword] = useState("");
+  const [password, setPassword] = useState("");
+  const [match, setMatch] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+  React.useEffect(() => {
+    setMatch(password === repeatPassword);
+  }, [password, repeatPassword]);
+
+  async function handleLogin(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    try {
+      const result = await signIn(email, password);
+      if (result?.user) {
+        console.log("Login successful!");
+        router.push("/home");
+      } else {
+        setErrorMsg("Login failed. Please try again.");
+      }
+      // User is now registered and logged in automatically
+    } catch (error) {
+      setErrorMsg("Error occurred. Please try again.");
+    }
+
+    // const response = await fetch("/api/auth/login", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ email, password }),
+    // });
+
+    // if (response.ok) {
+    //   router.push("/home");
+    // } else {
+    //   const data = await response.json();
+    //   setErrorMsg(data.error || "Login failed");
+    // }
+  }
+
+  async function handleRegister(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const name = formData.get("name") as string;
+    const ageStr = formData.get("age") as string;
+    const age = Number(ageStr);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const repeatPassword = formData.get("repeatPassword") as string;
+
+    try {
+      const result = await signUp(name, email, password, Number(age));
+      if (result?.user) {
+        console.log("Registration successful!");
+        router.push("/home");
+      } else {
+        setErrorMsg("Registration failed. Please try again.");
+      }
+      // User is now registered and logged in automatically
+    } catch (error) {
+      setErrorMsg("Error occurred. Please try again.");
+    }
+
+    // const response = await fetch("/api/auth/register", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ name, age, email, password, repeatPassword }),
+    // });
+
+    // if (response.ok) {
+    //   router.push("/home");
+    // } else {
+    //   const data = await response.json();
+    //   setErrorMsg(data.error || "Login failed");
+    // }
+  }
+  const [modalOpen, setModalOpen] = useState(false);
+  const [formType, setFormType] = useState<"login" | "signup" | null>(null);
+  const [showPwdLogin, setShowPwdLogin] = useState(false);
+  const [showPwdSignup, setShowPwdSignup] = useState(false);
+
+  const openLogin = () => {
+    setFormType("login");
+    setModalOpen(true);
+    setShowPwdLogin(false);
+  };
+
+  const openSignup = () => {
+    setFormType("signup");
+    setModalOpen(true);
+    setShowPwdSignup(false);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setFormType(null);
+    setShowPwdLogin(false);
+    setShowPwdSignup(false);
+    setErrorMsg(null);
+  };
+
+  return (
+    <div className="content">
+      <div className="box">
+        <div className="cardContainer">
+          <h1>Identifying scams in social media - one at a time.</h1>
+
+          <div className="card">
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+              src="/assets/images/indexPhoto.webp"
+              alt="Be prepared"
+              width={500}
+              height={500}
+              id="imageLogin"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <div className="cardContent">
+              <h2>Be prepared - be ready</h2>
+              <p>
+                In this website, awareness about social media scams is spread.
+                We educate users on recognizing fraud and empowering them to
+                avoid scams, creating a safer space for everyone, especially the
+                elderly.
+              </p>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        <div className="login-box">
+          <button onClick={openLogin}>Login</button>
+          <button onClick={openSignup}>Sign-up</button>
+          <button>Browse as Guest</button>
+        </div>
+
+        <Modal open={modalOpen} onClose={closeModal}>
+          {formType === "login" && (
+            <form id="loginForm" onSubmit={handleLogin}>
+              <h1>Login</h1>
+              <p id="closeLogin" onClick={closeModal}>
+                X
+              </p>
+              <label htmlFor="email">
+                E-mail
+                <input type="email" name="email" id="email" required />
+              </label>
+              <label htmlFor="passwordInput" id="password">
+                Password
+                <input
+                  type={showPwdLogin ? "text" : "password"}
+                  className="passwordInput"
+                  name="password"
+                  id="passwordInput"
+                  required
+                />
+                <img
+                  className="showPassword"
+                  src="../assets/images/eye.png"
+                  alt="Show password"
+                  onClick={() => setShowPwdLogin((prev) => !prev)}
+                  style={{ cursor: "pointer" }}
+                />
+              </label>
+              {errorMsg && (
+                <div className="error" style={{ color: "red" }}>
+                  {errorMsg}
+                </div>
+              )}
+              <button type="submit" className="custom-button">
+                Login
+              </button>
+            </form>
+          )}
+          {formType === "signup" && (
+            <form id="signupForm" onSubmit={handleRegister}>
+              <h1>Sign-up</h1>
+              <p id="closeSignup" onClick={closeModal}>
+                X
+              </p>
+              <label htmlFor="name">
+                Full Name (i.e. Juan E. Dela Cruz)
+                <input type="text" name="name" required />
+              </label>
+              <label htmlFor="age">
+                Age
+                <input type="text" name="age" required />
+              </label>
+              <label htmlFor="email">
+                E-mail
+                <input type="email" name="email" required />
+              </label>
+              <label htmlFor="password" id="password">
+                Password
+                <input
+                  type={showPwdSignup ? "text" : "password"}
+                  className="passwordInput"
+                  name="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <img
+                  className="showPassword"
+                  src="../assets/images/eye.png"
+                  alt="Show Password"
+                  onClick={() => setShowPwdSignup((prev) => !prev)}
+                  style={{ cursor: "pointer" }}
+                />
+              </label>
+              <label htmlFor="repeatPassword" id="password">
+                Password
+                <input
+                  type={showPwdSignup ? "text" : "password"}
+                  className="passwordInput"
+                  name="repeatPassword"
+                  onChange={(e) => setRepeatPassword(e.target.value)}
+                  required
+                />
+                <img
+                  className="showPassword"
+                  src="../assets/images/eye.png"
+                  alt="Show Password"
+                  onClick={() => setShowPwdSignup((prev) => !prev)}
+                  style={{ cursor: "pointer" }}
+                />
+              </label>
+              {!match && (
+                <div style={{ color: "red" }}>Passwords do not match</div>
+              )}
+              {errorMsg && (
+                <div className="error" style={{ color: "red" }}>
+                  {errorMsg}
+                </div>
+              )}
+              <button type="submit" className="custom-button" disabled={!match}>
+                Sign-up
+              </button>
+            </form>
+          )}
+        </Modal>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,102 @@
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  width: auto;
+  gap: 4rem;
+  z-index: 1;
+}
+
+.box {
+  width: 45rem;
+  height: 35rem;
+  transition: 0.3s;
+  position: relative;
+  padding: 3rem 3rem 2rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 3rem;
+  border-radius: 2rem;
+  color: var(--text);
+
+  /* border: 10px solid rgba(255, 255, 255, 0.5);
+  border-radius: 1rem; */
+}
+
+.box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 2rem;
+  /* filter: url(#noiseFilter); */
+  opacity: 0.7; /* Only the background becomes transparent */
+  z-index: -1;
+}
+
+.box p {
+  font-size: 1.5rem;
+}
+
+.box:nth-child(1):before {
+  background-color: var(--lime);
+}
+
+.box:nth-child(2):before {
+  background-color: var(--blue);
+}
+
+.box:nth-child(3):before {
+  background-color: var(--purple);
+}
+
+.box:nth-child(4):before {
+  background-color: gray;
+}
+
+.box:hover {
+  transform: scale(1.05);
+  filter: drop-shadow();
+  box-shadow: 0px 0px 15px white;
+  cursor: pointer;
+}
+
+/* Items in boxes */
+
+.items ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.box:nth-child(1) .items li {
+  height: 10rem;
+  width: 8rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: var(--lime);
+  filter: brightness(0.95);
+  filter: saturate(0.6);
+}
+
+.box:nth-child(2) .items li {
+  height: 10rem;
+  width: 8rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: var(--blue);
+  filter: brightness(0.95);
+  filter: saturate(0.6);
+}
+
+#filterSvg {
+  display: none;
+}
+
+@media only screen and (max-width: 600px) {
+  .box {
+  }
+}

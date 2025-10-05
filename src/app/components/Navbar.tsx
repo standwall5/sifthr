@@ -1,57 +1,99 @@
-import React from "react";
+"use client";
 
-const Navbar = () => {
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { auth } from "../lib/auth";
+import { signOut } from "@/app/lib/actions/auth-actions";
+import { useRouter } from "next/navigation";
+
+type Session = typeof auth.$Infer.Session;
+
+const Navbar = ({ session }: { session: Session | null }) => {
+  const isAdmin = session?.user?.isAdmin || false;
+
+  const router = useRouter();
+
+  async function handleSignOut() {
+    await signOut();
+    router.push("/");
+  }
+
   return (
     <nav>
       <ul>
         <li className="brand-icon">
-          <a href="/pages/homepage.php">
-            <img src="/assets/images/logoModuleFinal.png" alt="" />
+          <Link href="/">
+            {/* // Remove the import line for SifthrLogo */}
+            <Image
+              src="/assets/images/logoModuleFinal.png"
+              alt="Sifthr Logo"
+              width={100}
+              height={40}
+            />
             <h1>
               Sif<span>thr</span>
             </h1>
-          </a>
+          </Link>
         </li>
+        {isAdmin && (
+          <li>
+            <Link className="nav-link" id="adminButton" href="/admin">
+              Add Content
+            </Link>
+          </li>
+        )}
         <li>
-          <a className="nav-link" id="adminButton" href="admin.php">
-            Add Content
-          </a>
-        </li>
-        <li>
-          <a
+          <Link
             className="nav-link"
             href="/features/learning-module/pages/modules.php"
           >
             Modules
-          </a>
+          </Link>
         </li>
         <li>
-          <a className="nav-link" href="/features/quizzes/pages/quizzes.php">
+          <Link className="nav-link" href="/features/quizzes/pages/quizzes.php">
             Quizzes
-          </a>
+          </Link>
         </li>
         <li>
-          <a className="nav-link" href="quizzes.php">
+          <Link className="nav-link" href="quizzes.php">
             Latest News
-          </a>
+          </Link>
         </li>
         <li>
-          <a className="nav-link" href="quizzes.php">
+          <Link className="nav-link" href="quizzes.php">
             Support
-          </a>
+          </Link>
         </li>
         {/* <!-- <li>
       <a href="#" id="dark-mode" className="nav-link">Dark Mode</a>
     </li> --> */}
 
-        <li id="user-icon">
-          <a
-            className="nav-link"
-            href="/features/user-profile/pages/profile.php"
-          >
-            <img src="/assets/images/userIcon.png" alt="" />
-          </a>
-        </li>
+        {session && (
+          <li id="user-icon">
+                <Image
+                  src="/assets/images/userIcon.png"
+                  alt=""
+                  width={70}
+                  height={70}
+                  className="dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                />
+                <div className="dropdown-menu">
+                  <div className="dropdown-item"></div>
+                  <Link href="/profile">
+                    Profile
+                  </Link>
+                  <Link
+                    onClick={handleSignOut}
+                    href="#"
+                  >
+                    Sign Out
+                  </Link>
+            </div>
+          </li>
+        )}
       </ul>
       <div className="backdrop"></div>
     </nav>
