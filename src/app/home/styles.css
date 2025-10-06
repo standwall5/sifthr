@@ -36,6 +36,11 @@
   z-index: -1;
 }
 
+.box h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
 .box p {
   font-size: 1.5rem;
 }
@@ -94,9 +99,4 @@
 
 #filterSvg {
   display: none;
-}
-
-@media only screen and (max-width: 600px) {
-  .box {
-  }
 }

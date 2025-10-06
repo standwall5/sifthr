@@ -1,12 +1,13 @@
 "use client";
-import React, { useState, FormEvent } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, FormEvent, useEffect } from "react";
+import { redirect, useRouter } from "next/navigation";
 import Image from "next/image";
 import "./index.css";
 import Modal from "./components/Modal";
 import { signUp, signIn } from "@/app/lib/actions/auth-actions";
+import { authClient } from "./lib/authClient";
 
-// TODO: receive error
+type Session = any;
 
 export default function Home() {
   const router = useRouter();
@@ -14,6 +15,15 @@ export default function Home() {
   const [password, setPassword] = useState("");
   const [match, setMatch] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+
+  useEffect(() => {
+    authClient.getSession().then(setSession);
+  }, []);
+
+  if (session && session.data) {
+    redirect("/home");
+  }
 
   React.useEffect(() => {
     setMatch(password === repeatPassword);
@@ -29,7 +39,7 @@ export default function Home() {
     try {
       const result = await signIn(email, password);
       if (result?.user) {
-        console.log("Login successful!");
+        window.dispatchEvent(new Event("auth:changed")); // <--- This triggers the navbar to re-fetch session
         router.push("/home");
       } else {
         setErrorMsg("Login failed. Please try again.");
@@ -68,6 +78,7 @@ export default function Home() {
       const result = await signUp(name, email, password, Number(age));
       if (result?.user) {
         console.log("Registration successful!");
+        window.dispatchEvent(new Event("auth:changed"));
         router.push("/home");
       } else {
         setErrorMsg("Registration failed. Please try again.");

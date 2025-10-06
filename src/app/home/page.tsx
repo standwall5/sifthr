@@ -1,12 +1,13 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import React from "react";
 import Link from "next/link";
 import "./styles.css";
 
 const page = () => {
   const router = useRouter();
+
   return (
     <>
       {/* <!-- Menu -->
@@ -104,7 +105,3 @@ const page = () => {
 };
 
 export default page;
-
-<li>
-  <img src="" alt="" />
-</li>;

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+/* Remove class-based dark variant; we rely on prefers-color-scheme instead */
 
 * {
   padding: 0;
@@ -10,7 +10,8 @@
 }
 
 :root {
-
+  /* Let the browser style form controls and scrollbars based on OS theme */
+  color-scheme: light dark;
   --lime: rgb(200, 229, 36); /* #c8e524 */
   --blue: rgb(131, 165, 240); /* #83a5f0 */
   --purple: rgb(153, 85, 235); /* #9955eb */
@@ -27,8 +28,6 @@
   --green: rgb(111, 177, 138); /* #6fb18a */
 }
 
-
-
 @media (prefers-color-scheme: dark) {
   :root {
     --box: #352a3d;
@@ -37,7 +36,10 @@
     --blue: rgb(131, 165, 240); /* #83a5f0 */
     --purple: rgb(153, 85, 235); /* #9955eb */
     --bg: #16101b;
-    --text: #dbdbdb;
+    --box-bg: #160a20;
+    --card-bg: #25192e;
+    --card-bg-highlight: #402641;
+    --text: #ffffff;
     --nav: rgba(66, 61, 112, 0.322);
 
     --yellow: rgb(237, 183, 77); /* #edb74d */
@@ -63,9 +65,7 @@ body {
   color: var(--text);
 }
 
-body.dark {
-  background-color: var(--bgdark);
-}
+/* Remove class-based dark mode; prefers-color-scheme handles theme */
 
 body::before,
 body::after {
@@ -259,9 +259,7 @@ nav {
   visibility: visible;
 }
 
-.backdrop.dark {
-  background-color: var(--nav-dark);
-}
+/* Remove class-based dark backdrop; use variables via prefers-color-scheme */
 
 nav ul {
   z-index: 10;
@@ -280,10 +278,7 @@ nav a {
   text-decoration: none;
   color: var(--text);
 }
-
-.nav-link.dark {
-  color: var(--text-dark);
-}
+/* Remove class-based dark link; text color is set via variables */
 
 /* nav ul li:not(:first-child, :nth-child(5)) {
   font-size: 1.2rem;
@@ -318,6 +313,7 @@ nav ul li:first-child {
 .brand-icon h1,
 .brand-icon span {
   font-weight: bold;
+  font-family: "Geo Sans", serif;
 }
 
 .brand-icon img {
@@ -365,13 +361,11 @@ footer a {
   gap: 2rem;
 }
 
-footer.dark {
-  color: var(--text-dark);
-}
+/* Remove class-based dark footer; rely on variables */
 
 .container {
   margin: auto;
-  margin-top: 8rem;
+  margin-top: 1rem;
 }
 
 /* Modal */
@@ -452,5 +446,3 @@ footer {
 .error {
   margin: -2rem;
 }
-
-

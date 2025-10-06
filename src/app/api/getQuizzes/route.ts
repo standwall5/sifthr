@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import connectMongoDB from "@/app/lib/mongodbConnection";
 
-import Module from "@/app/lib/models/Modules";
+import Quiz from "@/app/lib/models/Quiz";
 
 export async function GET() {
   await connectMongoDB();
 
-  const modules = await Module.find();
+  const quizzes = await Quiz.find();
 
-  return NextResponse.json(modules);
+  return NextResponse.json(quizzes);
 }

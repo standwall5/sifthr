@@ -1,33 +1,33 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
+import React, { useState, useEffect } from "react";
+import "./styles.module.css";
 import "../moduleQuiz.css";
-import Image from "next/image";
+import Link from "next/link";
 
-// TODO: fix pagination
-
-type ModuleItem = {
-  moduleId: number;
+type QuizItem = {
+  _id: number;
   title: string;
   description: string;
 };
 
-export default function LearningModulesPage() {
-  const [modules, setModules] = useState<ModuleItem[]>([]);
+const QuizzesPage = () => {
+  const [quizzes, setQuizzes] = useState<QuizItem[]>([]);
   const [search, setSearch] = useState("");
+
   useEffect(() => {
-    fetch("/api/getModules")
+    fetch("/api/getQuizzes")
       .then((res) => res.json())
-      .then((data) => setModules(data))
+      .then((data) => setQuizzes(data))
       .catch((err) => {
         // Optionally handle errors here
         console.error("Failed to fetch quizzes:", err);
       });
   }, []);
 
-  const filteredModules = modules
+  const filteredQuizzes = quizzes
     .filter((q) => q.title.toLowerCase().includes(search.toLowerCase()))
     .slice(0, 5);
-
   return (
     <div className="module-container">
       <div className="module-quiz-box">
@@ -55,10 +55,10 @@ export default function LearningModulesPage() {
           </svg>
         </div>
         <div className="module-quiz-collection">
-          {filteredModules.map((module) => (
-            <div key={module.moduleId} className="module-quiz-card">
-              <h2>{module.title}</h2>
-              <p>{module.description}</p>
+          {filteredQuizzes.map((quiz) => (
+            <div key={quiz._id} className="module-quiz-card">
+              <h2>{quiz.title}</h2>
+              <p>{quiz.description}</p>
               <svg
                 className="animatedBorderSvg"
                 viewBox="0 0 100 100"
@@ -71,35 +71,7 @@ export default function LearningModulesPage() {
         </div>
       </div>
     </div>
-    // {/* {loading && (
-    //   <img
-    //     src="/assets/images/loading.gif"
-    //     alt="Loading"
-    //     width={64}
-    //     height={64}
-    //   />
-    // )} */}
-    // {/* {!loading && error && <p>{error}</p>}
-    // {!loading &&
-    //   !error &&
-    //   modules.map((m) => (
-    //     <div key={m.moduleId} className="module-box-menu" tabIndex={0}>
-    //       <div className="module-picture">
-    //         <Image
-    //           src="/assets/images/templatePicture.webp"
-    //           alt=""
-    //           width={160}
-    //           height={160}
-    //         />
-    //       </div>
-    //       <div className="module-details">
-    //         <h2>{m.title}</h2>
-    //         <p>{m.description}</p>
-    //       </div>
-    //       <button className="custom-button" onClick={() => goToModule(m)}>
-    //         Start
-    //       </button>
-    //     </div>
-    //   ))} */}
   );
-}
+};
+
+export default QuizzesPage;

@@ -16,7 +16,6 @@ export const signUp = async (
       email,
       password,
       age, // Just name, email, password, age
-      isAdmin,
       callbackURL: "/home",
     },
   });
