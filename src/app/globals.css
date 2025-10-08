@@ -214,15 +214,15 @@ body::before {
 /* Navigation */
 nav {
   top: 0;
-  position: fixed;
+  position: sticky;
   opacity: 1;
   transition: opacity 0.2s ease-in;
 
   /* border-bottom: 2px solid rgb(236, 223, 180); */
 
   /* background-color: rgba(109, 109, 109, 0.1); */
-  width: 100%;
-  z-index: 10;
+  right: 0;
+  z-index: 1;
   color: white;
   /* font-family: "Inter", serif; */
   /* font-weight: bold; */
@@ -238,11 +238,12 @@ nav {
   padding-top: 10rem;
 
   /*  where the real magic happens  */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 
   /* background: rgba(225, 225, 225, 0.05); */
   background: var(--nav);
+  backdrop-filter: blur(10px);
+
+  -webkit-backdrop-filter: blur(10px);
 
   mask-image: linear-gradient(
     rgb(0, 0, 0) 50%,
@@ -365,7 +366,6 @@ footer a {
 
 .container {
   margin: auto;
-  margin-top: 1rem;
 }
 
 /* Modal */
@@ -434,7 +434,7 @@ body {
 .app-main {
   flex: 1 0 auto;
   /* If your navbar is fixed ~6rem tall, avoid overlap: */
-  padding-top: 6rem; /* match your nav height */
+  padding-top: 1rem; /* match your nav height */
 }
 
 /* Ensure footer participates in normal flow (not fixed/absolute) */
@@ -446,3 +446,5 @@ footer {
 .error {
   margin: -2rem;
 }
+
+/* Module Quiz and everythin in home */

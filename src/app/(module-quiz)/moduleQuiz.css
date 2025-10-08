@@ -53,6 +53,22 @@
   justify-content: center;
 }
 
+.search-box-container {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: #fff;
+  background: linear-gradient(
+    180deg,
+    rgb(46, 27, 59) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
 .search-box {
   border: none;
   background-color: var(--card-bg);
@@ -146,16 +162,47 @@
 .module-quiz-box {
   width: 90%;
   height: 90%;
-  padding: 2rem;
+  /* padding: 2rem; */
   background-color: var(--box-bg);
   box-shadow: 5px 5px 0 var(--lime);
-
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
   border: inset 5px 5px 0 rgb(169, 125, 173);
   border-radius: 1rem;
 }
 
 .module-quiz-collection {
+  z-index: 1;
+  margin-top: 4rem;
   display: flex;
+  flex-wrap: wrap;
+}
+
+.article-box {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.article-redirect {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: flex-end;
+  transition: 0.2s;
+  /* flex: 1 1 0; */
+  margin-left: auto;
+  width: 30%;
+}
+
+.article-redirect p {
+  font-size: 1.2rem;
+}
+
+.article-box:hover .article-redirect {
+  color: var(--lime);
 }
 
 .module-picture {
