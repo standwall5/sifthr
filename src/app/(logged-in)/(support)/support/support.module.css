@@ -1,0 +1,31 @@
+:root {
+  --png-outline: rgb(255, 255, 255);
+}
+
+.supportCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 22rem;
+}
+
+.supportLogo {
+  width: 100%;
+  transition: 0.2s;
+
+  /* Logo PNG Outline */
+  filter: drop-shadow(1px 0 0 var(--png-outline))
+    drop-shadow(-1px 0 0 var(--png-outline))
+    drop-shadow(0 1px 0 var(--png-outline))
+    drop-shadow(0 -1px 0 var(--png-outline));
+}
+
+.supportCard:hover .supportLogo {
+  transform: scale(1.1);
+}
+
+.supportCollection {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}

@@ -1,3 +1,14 @@
+.module-container {
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  flex-direction: row;
+  gap: 2rem;
+  transition: 0.25s;
+  width: 100%;
+  height: 50rem;
+}
+
 .search-box-container {
   width: 100%;
   position: sticky;
@@ -110,7 +121,7 @@
   /* padding: 2rem; */
   background-color: var(--box-bg);
   box-shadow: 5px 5px 0 var(--lime);
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   position: relative;
   border: inset 5px 5px 0 rgb(169, 125, 173);

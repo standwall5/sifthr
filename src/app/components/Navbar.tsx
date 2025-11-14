@@ -59,18 +59,12 @@ const Navbar = () => {
               </li>
             )}
             <li>
-              <Link
-                className="nav-link"
-                href="/features/learning-module/pages/modules.php"
-              >
+              <Link className="nav-link" href="/learning-modules">
                 Modules
               </Link>
             </li>
             <li>
-              <Link
-                className="nav-link"
-                href="/features/quizzes/pages/quizzes.php"
-              >
+              <Link className="nav-link" href="/quizzes">
                 Quizzes
               </Link>
             </li>
@@ -78,12 +72,12 @@ const Navbar = () => {
         )}
 
         <li>
-          <Link className="nav-link" href="quizzes.php">
+          <Link className="nav-link" href="/latest-news">
             Latest News
           </Link>
         </li>
         <li>
-          <Link className="nav-link" href="quizzes.php">
+          <Link className="nav-link" href="/support">
             Support
           </Link>
         </li>

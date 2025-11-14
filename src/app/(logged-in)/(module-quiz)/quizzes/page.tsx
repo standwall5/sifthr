@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import "./styles.module.css";
-import "../moduleQuiz.css";
+import "../../styles.css";
 
 type QuizItem = {
   _id: number;

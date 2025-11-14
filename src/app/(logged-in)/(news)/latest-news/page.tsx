@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import "@/app/(module-quiz)/moduleQuiz.css";
-import "./style.css";
+import "@/app/(logged-in)/style.css";
+import "@/app/(logged-in)/(news)/latest-news/style.css";
 
 type ArticleItem = {
   _id: string;
@@ -41,7 +41,7 @@ const ArticlesPage = () => {
           <div className="search-box">
             <input
               type="text"
-              placeholder="Search news..."
+              placeholder="Search articles..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="mb-4 p-2 border rounded"
@@ -62,7 +62,6 @@ const ArticlesPage = () => {
             </svg>
           </div>
         </div>
-
         <div className="module-quiz-collection">
           {filteredArticles.map((article) => (
             <div
