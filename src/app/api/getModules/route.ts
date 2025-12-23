@@ -1,12 +1,21 @@
 import { NextResponse } from "next/server";
-import connectMongoDB from "@/app/lib/mongodbConnection";
+import { supabase } from "@/app/lib/supabaseClient";
+import type { Module } from "@/lib/models/types";
 
-import Module from "@/app/lib/models/Modules";
+export async function GET(): Promise<
+  NextResponse<Module[] | { error: string }>
+> {
+  const { data, error } = await supabase
+    .from("modules")
+    .select("*")
+    .order("id", { ascending: true });
 
-export async function GET() {
-  await connectMongoDB();
+  if (error || !data) {
+    return NextResponse.json(
+      { error: error?.message ?? "Failed to fetch modules" },
+      { status: 500 },
+    );
+  }
 
-  const modules = await Module.find();
-
-  return NextResponse.json(modules);
+  return NextResponse.json(data as Module[]);
 }

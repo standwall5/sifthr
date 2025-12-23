@@ -1,38 +1,52 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
+import React, { useMemo, useState } from "react";
 import "@/app/(logged-in)/style.css";
 import "@/app/(logged-in)/(news)/latest-news/style.css";
+import { useArticles } from "./components/useArticles";
+import { isScholarshipRelated } from "./components/utils";
+import { ArticlesSection } from "./components/ArticlesSection";
 
-type ArticleItem = {
-  _id: string;
-  title: string;
-  summary?: string;
-  thumbnail?: string;
-  link: string;
-  source: string;
-  publishedAt: string;
-};
+const LatestNewsPage: React.FC = () => {
+  const { articles, loading } = useArticles();
+  const [search, setSearch] = useState<string>("");
 
-const ArticlesPage = () => {
-  const [articles, setArticles] = useState<ArticleItem[]>([]);
-  const [search, setSearch] = useState("");
+  const filteredArticles = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    let filtered = articles;
 
-  useEffect(() => {
-    fetch("/api/news")
-      .then((res) => res.json())
-      .then((data) => {
-        // depending on your API response structure
-        if (data.data) setArticles(data.data);
-        else if (data.articles) setArticles(data.articles);
-      })
-      .catch((err) => console.error("Failed to fetch articles:", err));
-  }, []);
+    // Apply search filter if there's a query
+    if (q) {
+      filtered = articles.filter((a) => {
+        const title = a.title?.toLowerCase() ?? "";
+        const summary = a.summary?.toLowerCase() ?? "";
+        const source = a.source?.toLowerCase() ?? "";
+        return title.includes(q) || summary.includes(q) || source.includes(q);
+      });
+    }
 
-  const filteredArticles = articles.filter((a) =>
-    a.title.toLowerCase().includes(search.toLowerCase())
-  );
+    // Sort: scholarship/school articles first, then others by date
+    return filtered.sort((a, b) => {
+      const aIsScholarship = isScholarshipRelated(a);
+      const bIsScholarship = isScholarshipRelated(b);
+
+      // If one is scholarship-related and the other isn't, scholarship goes first
+      if (aIsScholarship && !bIsScholarship) return -1;
+      if (!aIsScholarship && bIsScholarship) return 1;
+
+      // If both are the same category, sort by date (newest first)
+      const aDate = new Date(a.published_at || 0).getTime();
+      const bDate = new Date(b.published_at || 0).getTime();
+      return bDate - aDate;
+    });
+  }, [articles, search]);
+
+  // Separate articles into categories for display
+  const { scholarshipArticles, otherArticles } = useMemo(() => {
+    const scholarship = filteredArticles.filter(isScholarshipRelated);
+    const other = filteredArticles.filter((a) => !isScholarshipRelated(a));
+    return { scholarshipArticles: scholarship, otherArticles: other };
+  }, [filteredArticles]);
 
   return (
     <div className="module-container">
@@ -45,6 +59,7 @@ const ArticlesPage = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="mb-4 p-2 border rounded"
+              aria-label="Search articles"
             />
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -53,6 +68,7 @@ const ArticlesPage = () => {
               strokeWidth={1.5}
               stroke="currentColor"
               className="size-6"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -62,59 +78,36 @@ const ArticlesPage = () => {
             </svg>
           </div>
         </div>
-        <div className="module-quiz-collection">
-          {filteredArticles.map((article) => (
-            <div
-              key={article._id}
-              className="module-quiz-card article-box"
-              onClick={() => window.open(article.link, "_blank")}
-            >
-              <div>
-                {article.thumbnail && (
-                  <img
-                    src={article.thumbnail}
-                    alt={article.title}
-                    className="thumbnail"
-                  />
-                )}
-                {article.thumbnail && (
-                  <Image
-                    src={article.thumbnail}
-                    alt={article.title}
-                    width={40}
-                    height={40}
-                  />
-                )}
-                <h2>{article.title}</h2>
-                <p>{article.summary}</p>
-                <small>
-                  Source: <b>{article.source}</b> —{" "}
-                  {new Date(article.publishedAt).toLocaleDateString()}
-                </small>
-              </div>
-              <div className="article-redirect">
-                <p>Read on their page</p>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-10"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
-                  />
-                </svg>
-              </div>
+
+        {loading ? (
+          <div className="module-quiz-collection">
+            <div className="module-quiz-card article-box">
+              <p>Loading latest news…</p>
             </div>
-          ))}
-        </div>
+          </div>
+        ) : filteredArticles.length === 0 ? (
+          <div className="module-quiz-collection">
+            <div className="module-quiz-card article-box">
+              <p>No articles found{search ? ` for "${search}"` : ""}.</p>
+            </div>
+          </div>
+        ) : (
+          <>
+            <ArticlesSection
+              title="Scholarship & School-Related Scams"
+              articles={scholarshipArticles}
+              icon="📚"
+            />
+            <ArticlesSection
+              title="Other Scam-Related News"
+              articles={otherArticles}
+              icon="🚨"
+            />
+          </>
+        )}
       </div>
     </div>
   );
 };
 
-export default ArticlesPage;
+export default LatestNewsPage;

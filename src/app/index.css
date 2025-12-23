@@ -1,111 +1,145 @@
 :root {
-  --lime: rgb(200, 229, 36); /* #c8e524 */
-  --blue: rgb(131, 165, 240); /* #83a5f0 */
-  --purple: rgb(153, 85, 235); /* #9955eb */
-  /* --bg: #16101b; #fdfef7 */
+    /*--lime: rgb(200, 229, 36);
+  --blue: rgb(131, 165, 240);
+  --purple: rgb(153, 85, 235);
   --bg: #f5f5dc;
   --text-dark: #dbdbdb;
   --text: #141414;
   --nav-dark: rgba(66, 61, 112, 0.322);
   --nav: rgba(166, 226, 110, 0.322);
 
-  --yellow: rgb(237, 183, 77); /* #edb74d */
-  --red: rgb(235, 102, 102); /* #eb6666 */
-  --green: rgb(111, 177, 138); /* #6fb18a */
+  --yellow: rgb(237, 183, 77);
+  --red: rgb(235, 102, 102);
+  --green: rgb(111, 177, 138); */
+
+    /* Silo Nino National High School Brand Colors */
+    --lime: rgb(34, 139, 34); /* Green from laurel leaves */
+    --blue: rgb(218, 165, 32); /* Gold from flame */
+    --purple: rgb(255, 140, 0); /* Orange from flame tip */
+
+    /* Additional school colors */
+    --school-green: rgb(34, 139, 34); /* Forest green from laurel leaves */
+    --school-gold: rgb(218, 165, 32); /* Goldenrod from flame */
+    --school-orange: rgb(255, 140, 0); /* Dark orange from flame tip */
+    --school-brown: rgb(139, 90, 43); /* Saddle brown from torch/book */
+    --school-cream: rgb(245, 245, 220); /* Beige/cream background */
+
+    /* Light mode theme using school colors */
+    --bgdark: #1a1a1a;
+    --bg: var(--school-cream); /* Light cream background */
+    --text-dark: #dbdbdb;
+    --text: #2c2c2c; /* Dark gray for readability */
+    --nav-dark: rgba(66, 61, 112, 0.322);
+    --nav: rgba(34, 139, 34, 0.15); /* Subtle green tint */
+
+    /* Primary actions use school gold */
+    --primary: var(--school-gold);
+    --primary-hover: rgb(204, 153, 25);
+
+    /* Secondary actions use school green */
+    --secondary: var(--school-green);
+    --secondary-hover: rgb(28, 115, 28);
+
+    /* Accent color from flame */
+    --accent: var(--school-orange);
+
+    --yellow: rgb(237, 183, 77); /* #edb74d */
+    --red: rgb(235, 102, 102); /* #eb6666 */
+    --green: rgb(111, 177, 138); /* #6fb18a */
 }
 
 .content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2rem;
-  font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+    font-weight: bold;
 }
 h1 {
-  text-align: center;
-  font-weight: lighter;
+    text-align: center;
+    font-weight: lighter;
 }
 
 .box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10rem;
 }
 
 #imageLogin {
-  object-fit: cover;
-  object-position: center;
-  /* border-radius: 2rem; */
+    object-fit: cover;
+    object-position: center;
+    /* border-radius: 2rem; */
 }
 
 .login-box {
-  height: 45rem;
-  /* background-color: var(--blue); */
-  width: 31rem;
-  border-radius: 2rem;
-  position: relative;
-  font-weight: 800;
-  padding: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 3rem;
-  font-family: "Geo Sans", serif;
+    height: 45rem;
+    /* background-color: var(--blue); */
+    width: 31rem;
+    border-radius: 2rem;
+    position: relative;
+    font-weight: 800;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 3rem;
+    font-family: "Geo Sans", serif;
 }
 
 .login-box button {
-  border: none;
-  background-color: var(--lime);
-  padding: 1rem;
-  border-radius: 0.5rem;
-  transition: 0.08s;
-  cursor: pointer;
-  font-size: 1.5rem;
-  font-weight: bold;
-  width: 70%;
-  position: relative;
+    border: none;
+    background-color: var(--lime);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    transition: 0.08s;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 70%;
+    position: relative;
 }
 
 /* Hover effect */
 .login-box button:hover {
-  box-shadow: 0 0.25rem 0 var(--purple);
-  background-color: rgb(214, 226, 51);
-  transform: translateY(-5px);
+    box-shadow: 0 0.25rem 0 var(--purple);
+    background-color: rgb(214, 226, 51);
+    transform: translateY(-5px);
 }
 
 /* Active effect that keeps the animation for 0.5s */
 .login-box button:active {
-  transition: 0.025s;
-  box-shadow: 0 0rem 0 var(--purple);
-  background-color: rgb(214, 226, 51);
-  transform: translateY(0px);
+    transition: 0.025s;
+    box-shadow: 0 0rem 0 var(--purple);
+    background-color: rgb(214, 226, 51);
+    transform: translateY(0px);
 }
 
 .login-box::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 2rem;
-  /* filter: url(#noiseFilter); */
-  opacity: 0.7; /* Only the background becomes transparent */
-  z-index: -1;
-  background-color: var(--blue);
-  box-shadow: 0 1rem 0 var(--purple);
-  z-index: -1;
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 2rem;
+    /* filter: url(#noiseFilter); */
+    opacity: 0.7; /* Only the background becomes transparent */
+    z-index: -1;
+    background-color: var(--blue);
+    box-shadow: 0 1rem 0 var(--purple);
+    z-index: -1;
 }
 .login-box::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 2rem;
-  /* filter: url(#noiseFilter); */
-  opacity: 0.7; /* Only the background becomes transparent */
-  z-index: -1;
-  /* background-color: var(--blue); */
-  box-shadow: 0 2.5rem 0 var(--lime);
-  z-index: -2;
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 2rem;
+    /* filter: url(#noiseFilter); */
+    opacity: 0.7; /* Only the background becomes transparent */
+    z-index: -1;
+    /* background-color: var(--blue); */
+    box-shadow: 0 2.5rem 0 var(--lime);
+    z-index: -2;
 }
 
 /* .login-box h1 {
@@ -117,194 +151,194 @@ h1 {
 } */
 
 #loginFormContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 2rem;
-  width: 30rem;
-  height: auto;
-  position: relative;
-  transition: 0.25s;
-  background-color: white;
-  position: fixed;
-  top: 50%; /* Centers vertically */
-  left: 50%; /* Centers horizontally */
-  transform: translate(-50%, -50%); /* Adjusts the center */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+    width: 30rem;
+    height: auto;
+    position: relative;
+    transition: 0.25s;
+    background-color: white;
+    position: fixed;
+    top: 50%; /* Centers vertically */
+    left: 50%; /* Centers horizontally */
+    transform: translate(-50%, -50%); /* Adjusts the center */
 
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
-  box-shadow: 0 1rem 0 var(--lime);
-  border-radius: 1rem;
-  z-index: 1000;
-  padding: 2rem;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 1rem 0 var(--lime);
+    border-radius: 1rem;
+    z-index: 1000;
+    padding: 2rem;
 }
 
 #loginFormContainer label {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 #loginFormContainer.show {
-  width: 30rem;
-  /* height: 40rem; */
-  height: auto;
-  padding: 2rem;
+    width: 30rem;
+    /* height: 40rem; */
+    height: auto;
+    padding: 2rem;
 }
 
 #loginFormContainer input {
-  border-bottom: 1px solid var(--lime);
-  background-color: #f3f3f3;
-  border-radius: 0.5rem;
+    border-bottom: 1px solid var(--lime);
+    background-color: #f3f3f3;
+    border-radius: 0.5rem;
 }
 
 #closeLogin,
 #closeSignup,
 .modal-close {
-  top: 0;
-  right: 0;
-  position: absolute;
-  margin: 1rem;
+    top: 0;
+    right: 0;
+    position: absolute;
+    margin: 1rem;
 }
 
 #closeLogin:hover,
 #closeSignup:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 #loginForm,
 #signupForm {
-  transition: 0.25s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3rem;
-  opacity: 1;
-  visibility: visible;
+    transition: 0.25s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    opacity: 1;
+    visibility: visible;
 }
 
 #loginForm.show,
 #signupForm.show {
-  opacity: 1;
-  visibility: visible;
+    opacity: 1;
+    visibility: visible;
 }
 
 #loginForm input,
 #signupForm input {
-  width: 20rem;
-  height: 2rem;
-  padding: 1rem;
+    width: 20rem;
+    height: 2rem;
+    padding: 1rem;
 }
 
 #loginForm input:focus,
 #signupForm input:focus {
-  outline: none;
+    outline: none;
 }
 
 #password {
-  position: relative;
+    position: relative;
 }
 
 #password img {
-  position: absolute;
-  width: 24px;
-  right: 15px;
-  bottom: 5px;
+    position: absolute;
+    width: 24px;
+    right: 15px;
+    bottom: 5px;
 }
 
 #password img:hover {
-  cursor: pointer;
-  filter: invert(0.5);
+    cursor: pointer;
+    filter: invert(0.5);
 }
 
 .cardContainer {
-  font-family: "Geo Sans";
+    font-family: "Geo Sans";
 }
 
 .card {
-  height: 500px;
-  background: rgb(173, 173, 173);
-  position: relative;
+    height: 500px;
+    background: rgb(173, 173, 173);
+    position: relative;
 
-  /* border-radius: 2rem; */
-  cursor: pointer;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  /* overflow: hidden; */
-  overflow: visible;
-  border-radius: 2rem;
-  margin: 3vw 1.5vw;
+    /* border-radius: 2rem; */
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    /* overflow: hidden; */
+    overflow: visible;
+    border-radius: 2rem;
+    margin: 3vw 1.5vw;
 }
 .card::before {
-  content: "";
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  box-shadow: 3rem 2rem 0 var(--purple);
-  border-radius: 2rem;
-  z-index: -1;
-  transition: 0.5s ease-in-out;
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    box-shadow: 3rem 2rem 0 var(--purple);
+    border-radius: 2rem;
+    z-index: -1;
+    transition: 0.5s ease-in-out;
 }
 .card::after {
-  content: "";
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  box-shadow: -3rem -2rem 0 var(--lime);
-  border-radius: 2rem;
-  top: 0;
-  left: 0;
-  z-index: -2;
-  transition: 0.5s ease-in-out;
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    box-shadow: -3rem -2rem 0 var(--lime);
+    border-radius: 2rem;
+    top: 0;
+    left: 0;
+    z-index: -2;
+    transition: 0.5s ease-in-out;
 }
 
 .card:hover::before {
-  box-shadow: 2rem 1.5rem 0 var(--purple);
+    box-shadow: 2rem 1.5rem 0 var(--purple);
 }
 
 .card:hover::after {
-  box-shadow: -2rem -1.5rem 0 var(--lime);
+    box-shadow: -2rem -1.5rem 0 var(--lime);
 }
 
 .card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 2rem;
-  box-shadow: 0 0 0 1rem var(--blue);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 2rem;
+    box-shadow: 0 0 0 1rem var(--blue);
 }
 .cardContent {
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  height: 80px;
-  padding: 1rem;
-  font-size: 18px;
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(25px);
-  border-radius: 0;
-  transform: scale(1);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-  overflow: hidden;
-  transition: all 0.5s ease-in-out;
-  display: flex;
-  flex-direction: column;
-  gap: 1.8rem;
-  border-radius: 0 0 2rem 2rem;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    height: 80px;
+    padding: 1rem;
+    font-size: 18px;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(25px);
+    border-radius: 0;
+    transform: scale(1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+    border-radius: 0 0 2rem 2rem;
 }
 .cardContent p {
-  font-size: 1rem;
+    font-size: 1rem;
 }
 .card:hover .cardContent {
-  transform: scale(0.95);
-  bottom: 6px;
-  height: 170px;
-  border-radius: 0.8rem;
+    transform: scale(0.95);
+    bottom: 6px;
+    height: 170px;
+    border-radius: 0.8rem;
 }
 
 .custom-button {
-  font-size: 1rem;
-  color: black;
+    font-size: 1rem;
+    color: black;
 }

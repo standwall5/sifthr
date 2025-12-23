@@ -1,18 +1,27 @@
 import { NextResponse } from "next/server";
 import Parser from "rss-parser";
-import connectMongoDB from "@/app/lib/mongodbConnection";
-import Article from "@/app/lib/models/Article";
+import { supabase } from "@/app/lib/supabaseClient";
 
-const parser = new Parser();
+type FeedItem = {
+  link?: string;
+  title?: string;
+  contentSnippet?: string;
+  content?: string;
+  "content:encoded"?: string;
+  isoDate?: string;
+  enclosure?: { url?: string };
+  "media:thumbnail"?: { url?: string };
+  "media:content"?: { url?: string };
+};
 
-// 📰 Google News RSS feeds with search filters
-const RSS_FEEDS = [
+const parser = new Parser<FeedItem>();
+
+const RSS_FEEDS: string[] = [
   "https://news.google.com/rss/search?q=fake+social+media+ads+OR+online+scam+OR+fake+advertisement+OR+phishing&hl=en&gl=PH&ceid=PH:en",
   "https://news.google.com/rss/search?q=facebook+scam+OR+instagram+scam+OR+tiktok+ad+fraud&hl=en&gl=PH&ceid=PH:en",
 ];
 
-// 🧩 Extract image from enclosure or content
-function extractImage(item: any): string | null {
+function extractImage(item: FeedItem): string | null {
   if (item.enclosure?.url) return item.enclosure.url;
   if (item["media:thumbnail"]?.url) return item["media:thumbnail"].url;
   if (item["media:content"]?.url) return item["media:content"].url;
@@ -24,61 +33,71 @@ function extractImage(item: any): string | null {
 
 export async function GET() {
   try {
-    console.log("🔌 Connecting to MongoDB...");
-    await connectMongoDB();
-
-    const relevantArticles: any[] = [];
+    const relevantArticles: Array<{
+      title: string;
+      summary: string;
+      link: string;
+      thumbnail: string | null;
+      source: string;
+      published_at: string;
+    }> = [];
 
     for (const feed of RSS_FEEDS) {
       try {
-        console.log("Fetching feed:", feed);
         const parsed = await parser.parseURL(feed);
-        const source = parsed.title || "Google News";
+        const source = parsed.title ?? "Google News";
 
-        for (const item of parsed.items) {
+        for (const item of parsed.items ?? []) {
           if (!item.link || !item.title) continue;
 
           relevantArticles.push({
             title: item.title,
-            summary: item.contentSnippet || "",
+            summary: item.contentSnippet ?? "",
             link: item.link,
             thumbnail: extractImage(item),
             source,
-            publishedAt: item.isoDate ? new Date(item.isoDate) : new Date(),
+            published_at: item.isoDate
+              ? new Date(item.isoDate).toISOString()
+              : new Date().toISOString(),
           });
         }
-      } catch (err) {
-        console.error("⚠️ Error fetching feed:", feed, err);
+      } catch {
+        // continue on next feed
       }
     }
 
-    console.log(
-      `🧾 ${relevantArticles.length} relevant Google News articles found.`
-    );
+    // Save to database (upsert to avoid duplicates based on link)
+    const articlesToSave = relevantArticles.slice(0, 20);
 
-    // Avoid duplicates
-    let added = 0;
-    for (const art of relevantArticles) {
-      const exists = await Article.findOne({ link: art.link });
-      if (!exists) {
-        await Article.create(art);
-        added++;
-      }
+    for (const article of articlesToSave) {
+      await supabase.from("news_articles").upsert(
+        {
+          title: article.title,
+          summary: article.summary,
+          link: article.link,
+          thumbnail: article.thumbnail,
+          source: article.source,
+          published_at: article.published_at,
+        },
+        { onConflict: "link" },
+      );
     }
-
-    const latest = await Article.find().sort({ publishedAt: -1 }).limit(20);
 
     return NextResponse.json({
       success: true,
-      added,
-      total: latest.length,
-      articles: latest,
+      total: relevantArticles.length,
+      saved: articlesToSave.length,
+      message: "Articles fetched and saved to database",
     });
-  } catch (err: any) {
-    console.error("❌ API error:", err);
+  } catch (e: unknown) {
+    let message = "Unexpected error";
+    if (e instanceof Error) {
+      message = e.message;
+    }
+
     return NextResponse.json(
-      { success: false, error: err.message },
-      { status: 500 }
+      { success: false, error: message },
+      { status: 500 },
     );
   }
 }

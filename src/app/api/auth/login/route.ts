@@ -1,31 +1,49 @@
-import { NextRequest } from "next/server";
-import bcrypt from "bcrypt";
-import connectMongoDB from "@/app/lib/mongodbConnection";
-import User from "@/app/lib/models/User";
+import { NextRequest, NextResponse } from "next/server";
+import { supabase } from "@/app/lib/supabaseClient";
+
+type LoginBody = {
+  email: string;
+  password: string;
+};
 
 export async function POST(req: NextRequest) {
-  await connectMongoDB();
+  try {
+    const { email, password } = (await req.json()) as LoginBody;
 
-  const { email, password } = await req.json();
+    if (!email || !password) {
+      return NextResponse.json(
+        { error: "Email and password are required" },
+        { status: 400 },
+      );
+    }
 
-  // Check user in your own database or json-server
-  const user = await User.findOne({ email });
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-  if (!user) {
-    return Response.json({ error: "Invalid credentials" }, { status: 401 });
+    if (error) {
+      return NextResponse.json(
+        { error: "Invalid credentials" },
+        { status: 401 },
+      );
+    }
+
+    // Do not upsert into public.users here. The trigger already created the row at signup.
+    // If you want to update fields later, do a targeted UPDATE with eq('auth_id', user.id)
+    // and ensure the users_update_self policy exists.
+
+    return NextResponse.json(
+      {
+        success: true,
+        user: { id: data.user?.id, email: data.user?.email },
+        session: data.session,
+      },
+      { status: 200 },
+    );
+  } catch (e: unknown) {
+    let message = "Unexpected server error";
+    if (e instanceof Error) message = e.message;
+    return NextResponse.json({ error: message }, { status: 500 });
   }
-
-  const passwordMatches = await bcrypt.compare(password, user.password);
-
-  if (!passwordMatches) {
-    return Response.json({ error: "Invalid credentials" }, { status: 401 });
-  }
-
-  const { password: _, ...userWithoutPassword } = user.toObject();
-
-  // Success!
-  return Response.json({
-    success: true,
-    user: userWithoutPassword,
-  });
 }

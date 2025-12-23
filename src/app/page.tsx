@@ -1,121 +1,124 @@
 "use client";
-import React, { useState, FormEvent, useEffect } from "react";
-import { redirect, useRouter } from "next/navigation";
+import React, { useState, useEffect, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import "./index.css";
 import Modal from "./components/Modal";
-import { signUp, signIn } from "@/app/lib/actions/auth-actions";
-import { authClient } from "./lib/authClient";
-
-type Session = any;
+import LoginForm from "./(auth)/login/components/LoginForm";
+import SignupForm from "./(auth)/signup/components/SignupForm";
+import { supabase } from "@/app/lib/supabaseClient";
 
 export default function Home() {
   const router = useRouter();
-  const [repeatPassword, setRepeatPassword] = useState("");
-  const [password, setPassword] = useState("");
-  const [match, setMatch] = useState(false);
+
+  const [password, setPassword] = useState<string>("");
+  const [repeatPassword, setRepeatPassword] = useState<string>("");
+  const [match, setMatch] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [formType, setFormType] = useState<"login" | "signup" | null>(null);
+  const [showPwdLogin, setShowPwdLogin] = useState<boolean>(false);
+  const [showPwdSignup, setShowPwdSignup] = useState<boolean>(false);
 
   useEffect(() => {
-    authClient.getSession().then(setSession);
-  }, []);
+    let cancelled = false;
+    supabase.auth.getSession().then(({ data }) => {
+      if (!cancelled && data.session) {
+        router.replace("/home");
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [router]);
 
-  if (session && session.data) {
-    redirect("/home");
-  }
-
-  React.useEffect(() => {
-    setMatch(password === repeatPassword);
+  useEffect(() => {
+    setMatch(password.length > 0 && password === repeatPassword);
   }, [password, repeatPassword]);
 
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setErrorMsg(null);
 
     const formData = new FormData(event.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+    const email = String(formData.get("email") ?? "");
+    const pwd = String(formData.get("password") ?? "");
 
-    try {
-      const result = await signIn(email, password);
-      if (result?.user) {
-        window.dispatchEvent(new Event("auth:changed")); // <--- This triggers the navbar to re-fetch session
-        router.push("/home");
-      } else {
-        setErrorMsg("Login failed. Please try again.");
-      }
-      // User is now registered and logged in automatically
-    } catch (error) {
-      setErrorMsg("Error occurred. Please try again.");
+    if (!email || !pwd) {
+      setErrorMsg("Email and password are required.");
+      return;
     }
 
-    // const response = await fetch("/api/auth/login", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ email, password }),
-    // });
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password: pwd,
+    });
 
-    // if (response.ok) {
-    //   router.push("/home");
-    // } else {
-    //   const data = await response.json();
-    //   setErrorMsg(data.error || "Login failed");
-    // }
+    if (error) {
+      setErrorMsg(error.message || "Login failed. Please try again.");
+      return;
+    }
+
+    // No users upsert here. The trigger handled the row creation at signup.
+    window.dispatchEvent(new Event("auth:changed"));
+    router.push("/home");
   }
 
   async function handleRegister(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setErrorMsg(null);
 
     const formData = new FormData(event.currentTarget);
-    const name = formData.get("name") as string;
-    const ageStr = formData.get("age") as string;
-    const age = Number(ageStr);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const repeatPassword = formData.get("repeatPassword") as string;
+    const name = String(formData.get("name") ?? "");
+    const ageStr = String(formData.get("age") ?? "");
+    const email = String(formData.get("email") ?? "");
+    const pwd = String(formData.get("password") ?? "");
+    const rpt = String(formData.get("repeatPassword") ?? "");
+    const age = Number.isNaN(Number(ageStr)) ? undefined : Number(ageStr);
 
-    try {
-      const result = await signUp(name, email, password, Number(age));
-      if (result?.user) {
-        console.log("Registration successful!");
-        window.dispatchEvent(new Event("auth:changed"));
-        router.push("/home");
-      } else {
-        setErrorMsg("Registration failed. Please try again.");
-      }
-      // User is now registered and logged in automatically
-    } catch (error) {
-      setErrorMsg("Error occurred. Please try again.");
+    if (!name || !email || !pwd || !rpt || age === undefined) {
+      setErrorMsg("All fields are required.");
+      return;
+    }
+    if (pwd !== rpt) {
+      setErrorMsg("Passwords do not match.");
+      return;
     }
 
-    // const response = await fetch("/api/auth/register", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ name, age, email, password, repeatPassword }),
-    // });
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password: pwd,
+      options: {
+        data: { name, age },
+      },
+    });
 
-    // if (response.ok) {
-    //   router.push("/home");
-    // } else {
-    //   const data = await response.json();
-    //   setErrorMsg(data.error || "Login failed");
-    // }
+    if (error) {
+      setErrorMsg(error.message || "Registration failed. Please try again.");
+      return;
+    }
+
+    // No users upsert here. The DB trigger creates public.users row automatically.
+    if (data.user) {
+      window.dispatchEvent(new Event("auth:changed"));
+      router.push("/home");
+    } else {
+      setErrorMsg("Please check your email to confirm your account.");
+    }
   }
-  const [modalOpen, setModalOpen] = useState(false);
-  const [formType, setFormType] = useState<"login" | "signup" | null>(null);
-  const [showPwdLogin, setShowPwdLogin] = useState(false);
-  const [showPwdSignup, setShowPwdSignup] = useState(false);
 
   const openLogin = () => {
     setFormType("login");
     setModalOpen(true);
     setShowPwdLogin(false);
+    setErrorMsg(null);
   };
 
   const openSignup = () => {
     setFormType("signup");
     setModalOpen(true);
     setShowPwdSignup(false);
+    setErrorMsg(null);
   };
 
   const closeModal = () => {
@@ -155,111 +158,30 @@ export default function Home() {
         <div className="login-box">
           <button onClick={openLogin}>Login</button>
           <button onClick={openSignup}>Sign-up</button>
-          <button>Browse as Guest</button>
+          <button onClick={() => router.push("/home")}>Browse as Guest</button>
         </div>
 
         <Modal open={modalOpen} onClose={closeModal}>
           {formType === "login" && (
-            <form id="loginForm" onSubmit={handleLogin}>
-              <h1>Login</h1>
-              <p id="closeLogin" onClick={closeModal}>
-                X
-              </p>
-              <label htmlFor="email">
-                E-mail
-                <input type="email" name="email" id="email" required />
-              </label>
-              <label htmlFor="passwordInput" id="password">
-                Password
-                <input
-                  type={showPwdLogin ? "text" : "password"}
-                  className="passwordInput"
-                  name="password"
-                  id="passwordInput"
-                  required
-                />
-                <img
-                  className="showPassword"
-                  src="../assets/images/eye.png"
-                  alt="Show password"
-                  onClick={() => setShowPwdLogin((prev) => !prev)}
-                  style={{ cursor: "pointer" }}
-                />
-              </label>
-              {errorMsg && (
-                <div className="error" style={{ color: "red" }}>
-                  {errorMsg}
-                </div>
-              )}
-              <button type="submit" className="custom-button">
-                Login
-              </button>
-            </form>
+            <LoginForm
+              handleLogin={handleLogin}
+              closeModal={closeModal}
+              showPwdLogin={showPwdLogin}
+              errorMsg={errorMsg}
+              toggleShowPwdLogin={() => setShowPwdLogin((prev) => !prev)}
+            />
           )}
           {formType === "signup" && (
-            <form id="signupForm" onSubmit={handleRegister}>
-              <h1>Sign-up</h1>
-              <p id="closeSignup" onClick={closeModal}>
-                X
-              </p>
-              <label htmlFor="name">
-                Full Name (i.e. Juan E. Dela Cruz)
-                <input type="text" name="name" required />
-              </label>
-              <label htmlFor="age">
-                Age
-                <input type="text" name="age" required />
-              </label>
-              <label htmlFor="email">
-                E-mail
-                <input type="email" name="email" required />
-              </label>
-              <label htmlFor="password" id="password">
-                Password
-                <input
-                  type={showPwdSignup ? "text" : "password"}
-                  className="passwordInput"
-                  name="password"
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-                <img
-                  className="showPassword"
-                  src="../assets/images/eye.png"
-                  alt="Show Password"
-                  onClick={() => setShowPwdSignup((prev) => !prev)}
-                  style={{ cursor: "pointer" }}
-                />
-              </label>
-              <label htmlFor="repeatPassword" id="password">
-                Password
-                <input
-                  type={showPwdSignup ? "text" : "password"}
-                  className="passwordInput"
-                  name="repeatPassword"
-                  onChange={(e) => setRepeatPassword(e.target.value)}
-                  required
-                />
-                <img
-                  className="showPassword"
-                  src="../assets/images/eye.png"
-                  alt="Show Password"
-                  onClick={() => setShowPwdSignup((prev) => !prev)}
-                  style={{ cursor: "pointer" }}
-                />
-              </label>
-              {!match && (
-                <div style={{ color: "red" }}>Passwords do not match</div>
-              )}
-              {errorMsg && (
-                <div className="error" style={{ color: "red" }}>
-                  {errorMsg}
-                </div>
-              )}
-              <button type="submit" className="custom-button" disabled={!match}>
-                Sign-up
-              </button>
-            </form>
+            <SignupForm
+              handleRegister={handleRegister}
+              closeModal={closeModal}
+              showPwdSignup={showPwdSignup}
+              errorMsg={errorMsg}
+              toggleShowPwdSignup={() => setShowPwdSignup((prev) => !prev)}
+              onPasswordChange={(e) => setPassword(e.target.value)}
+              onRepeatPasswordChange={(e) => setRepeatPassword(e.target.value)}
+              match={match}
+            />
           )}
         </Modal>
       </div>

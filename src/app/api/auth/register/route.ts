@@ -1,56 +1,61 @@
-import { NextRequest } from "next/server";
-import bcrypt from "bcrypt";
-import connectMongoDB from "@/app/lib/mongodbConnection";
-import User from "@/app/lib/models/User";
+import { NextRequest, NextResponse } from "next/server";
+import { supabase } from "@/app/lib/supabaseClient";
+
+type RegisterBody = {
+  name: string;
+  age?: number;
+  email: string;
+  password: string;
+  repeatPassword: string;
+};
 
 export async function POST(req: NextRequest) {
-  await connectMongoDB();
   try {
-    const { name, age, email, password, repeatPassword } = await req.json();
+    const { name, age, email, password, repeatPassword } =
+      (await req.json()) as RegisterBody;
 
-    console.log("Sending data:", {
-      name,
-      age,
-      email,
-      password,
-      repeatPassword,
-    });
-
-    // Basic validation
     if (!name || !email || !password || !repeatPassword) {
-      return Response.json(
+      return NextResponse.json(
         { error: "All fields are required" },
-        { status: 400 }
+        { status: 400 },
+      );
+    }
+    if (password !== repeatPassword) {
+      return NextResponse.json(
+        { error: "Passwords do not match" },
+        { status: 400 },
       );
     }
 
-    // Check if user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return Response.json(
-        { error: "Email already registered" },
-        { status: 409 }
-      );
+    // Put name/age into user_metadata so you still capture it at signup
+    const { data: signUpData, error: signUpError } = await supabase.auth.signUp(
+      {
+        email,
+        password,
+        options: {
+          data: { name, age },
+        },
+      },
+    );
+
+    if (signUpError) {
+      return NextResponse.json({ error: signUpError.message }, { status: 400 });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    // Create new user object
-    const createdUser = await User.create({
-      name,
-      age,
-      email,
-      password: hashedPassword,
-      isAdmin: false,
-    });
+    const authUser = signUpData.user;
 
-    const { password: _, ...userWithoutPassword } = createdUser.toObject();
-
-    return Response.json({
-      success: true,
-      user: userWithoutPassword,
-    });
-  } catch (e) {
-    console.error("Registration error:", e);
-    return Response.json({ error: "Server error" }, { status: 500 });
+    // With the DB trigger, public.users row is auto-created. No app-side upsert/insert here.
+    return NextResponse.json(
+      {
+        success: true,
+        requiresEmailConfirm: !authUser,
+        user: authUser ? { id: authUser.id, email: authUser.email } : null,
+      },
+      { status: 200 },
+    );
+  } catch (e: unknown) {
+    let message = "Unexpected server error";
+    if (e instanceof Error) message = e.message;
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

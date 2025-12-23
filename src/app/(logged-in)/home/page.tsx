@@ -6,7 +6,7 @@ import Link from "next/link";
 import "./styles.css";
 
 const page = () => {
-  const router = useRouter();
+  // const router = useRouter();
 
   return (
     <>
@@ -21,7 +21,7 @@ const page = () => {
             media ad scams and how to identify them.
           </p>
           <div className="items">
-            <ul>
+            {/*<ul>
               <li>
                 <img src="" alt="" />
               </li>
@@ -31,19 +31,19 @@ const page = () => {
               <li>
                 <img src="" alt="" />
               </li>
-            </ul>
+            </ul>*/}
           </div>
         </Link>
         <Link className="box" id="quizzes" href="quizzes">
           <h1>Quizzes</h1>
           <p>
-            Test your knowledge and reinforce what you've learned about social
-            media ad scams. This quiz will help you identify the signs of
-            fraudulent ads and ensure you're equipped with the right strategies
-            to stay safe online. Ready to challenge yourself?
+            Test your knowledge and reinforce what you&apos;ve learned about
+            social media ad scams. This quiz will help you identify the signs of
+            fraudulent ads and ensure you&apos;re equipped with the right
+            strategies to stay safe online. Ready to challenge yourself?
           </p>
           <div className="items">
-            <ul>
+            {/*<ul>
               <li>
                 <img src="" alt="" />
               </li>
@@ -53,7 +53,7 @@ const page = () => {
               <li>
                 <img src="" alt="" />
               </li>
-            </ul>
+            </ul>*/}
           </div>
         </Link>
         <Link className="box" id="latestNews" href="latest-news">
@@ -64,7 +64,7 @@ const page = () => {
             online scams.
           </p>
           <div className="items">
-            <ul>
+            {/*<ul>
               <li>
                 <img src="" alt="" />
               </li>
@@ -74,19 +74,19 @@ const page = () => {
               <li>
                 <img src="" alt="" />
               </li>
-            </ul>
+            </ul>*/}
           </div>
         </Link>
         <Link className="box" id="support" href="/support">
           <h1>Support</h1>
           <p>
-            Test your knowledge and reinforce what you've learned about social
-            media ad scams. This quiz will help you identify the signs of
-            fraudulent ads and ensure you're equipped with the right strategies
-            to stay safe online. Ready to challenge yourself?
+            Test your knowledge and reinforce what you&apos;ve learned about
+            social media ad scams. This quiz will help you identify the signs of
+            fraudulent ads and ensure you&apos;re equipped with the right
+            strategies to stay safe online. Ready to challenge yourself?
           </p>
           <div className="items">
-            <ul>
+            {/*<ul>
               <li>
                 <img src="" alt="" />
               </li>
@@ -96,7 +96,7 @@ const page = () => {
               <li>
                 <img src="" alt="" />
               </li>
-            </ul>
+            </ul>*/}
           </div>
         </Link>
       </div>
