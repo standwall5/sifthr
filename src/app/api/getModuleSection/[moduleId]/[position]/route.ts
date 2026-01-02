@@ -2,22 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/app/lib/supabaseClient";
 import type { ModuleSection } from "@/lib/models/types";
 
-type Params = {
-  moduleId: string;
-  position: string;
-};
-
 export async function GET(
   _req: NextRequest,
-  { params }: { params: Params },
+  { params }: { params: Promise<{ moduleId: string; position: string }> },
 ): Promise<
   NextResponse<
     { section: ModuleSection; totalPages: number } | { error: string }
   >
 > {
+  const { moduleId: moduleIdStr, position: positionStr } = await params;
+
   // Validate and parse params
-  const moduleId = Number(params.moduleId);
-  const position = Number(params.position);
+  const moduleId = Number(moduleIdStr);
+  const position = Number(positionStr);
 
   if (!Number.isFinite(moduleId) || moduleId <= 0) {
     return NextResponse.json({ error: "Invalid moduleId" }, { status: 400 });

@@ -2,10 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/app/lib/supabaseClient";
 import type { Quiz, Question, Answer } from "@/lib/models/types";
 
-type Params = {
-  quizId: string;
-};
-
 type QuestionWithAnswers = Question & {
   answers: Answer[];
 };
@@ -17,9 +13,10 @@ type QuizComplete = {
 
 export async function GET(
   _req: NextRequest,
-  { params }: { params: Params },
+  { params }: { params: Promise<{ quizId: string }> },
 ): Promise<NextResponse<QuizComplete | { error: string }>> {
-  const id = Number(params.quizId);
+  const { quizId } = await params;
+  const id = Number(quizId);
 
   if (!Number.isFinite(id) || id <= 0) {
     return NextResponse.json({ error: "Invalid quiz id" }, { status: 400 });

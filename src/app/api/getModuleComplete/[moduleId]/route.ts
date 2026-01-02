@@ -2,10 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/app/lib/supabaseClient";
 import type { Module, ModuleSection, Quiz, Resource } from "@/lib/models/types";
 
-type Params = {
-  moduleId: string;
-};
-
 type ModuleComplete = {
   module: Module;
   sections: ModuleSection[];
@@ -15,9 +11,10 @@ type ModuleComplete = {
 
 export async function GET(
   _req: NextRequest,
-  { params }: { params: Params },
+  { params }: { params: Promise<{ moduleId: string }> },
 ): Promise<NextResponse<ModuleComplete | { error: string }>> {
-  const id = Number(params.moduleId);
+  const { moduleId } = await params;
+  const id = Number(moduleId);
 
   if (!Number.isFinite(id) || id <= 0) {
     return NextResponse.json({ error: "Invalid module id" }, { status: 400 });

@@ -8,15 +8,16 @@ const supabaseServiceKey =
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { sectionId: string } },
+  { params }: { params: Promise<{ sectionId: string }> },
 ) {
   try {
+    const { sectionId } = await params;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     const { error } = await supabase
       .from("module_sections")
       .delete()
-      .eq("id", parseInt(params.sectionId));
+      .eq("id", parseInt(sectionId));
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });

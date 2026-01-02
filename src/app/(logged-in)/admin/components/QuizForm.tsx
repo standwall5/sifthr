@@ -138,9 +138,7 @@ export default function QuizForm() {
     alert("Question added! Add more or submit the quiz.");
   }
 
-  async function handleCreateQuiz(e: React.FormEvent) {
-    e.preventDefault();
-
+  async function handleCreateQuiz() {
     if (!isStandalone && !selectedModule) {
       alert("Please select a module or mark as standalone");
       return;
@@ -470,7 +468,6 @@ export default function QuizForm() {
               ))}
             </div>
             <Button
-              type="submit"
               onClick={handleCreateQuiz}
               loading={loading}
               loadingComponent={<Loading color="black" />}

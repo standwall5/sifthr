@@ -2,10 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/app/lib/supabaseClient";
 import type { Module, ModuleSection, Quiz, Resource } from "@/lib/models/types";
 
-type Params = {
-  moduleId: string;
-};
-
 type ModuleComplete = {
   module: Module;
   sections: ModuleSection[];
@@ -14,10 +10,20 @@ type ModuleComplete = {
 };
 
 export async function GET(
-  _req: NextRequest,
-  { params }: { params: Params },
+  req: NextRequest,
 ): Promise<NextResponse<ModuleComplete | { error: string }>> {
-  const moduleId = Number(params.moduleId);
+  // Get moduleId from query params instead
+  const { searchParams } = new URL(req.url);
+  const moduleIdStr = searchParams.get("moduleId");
+
+  if (!moduleIdStr) {
+    return NextResponse.json(
+      { error: "Missing moduleId parameter" },
+      { status: 400 },
+    );
+  }
+
+  const moduleId = Number(moduleIdStr);
 
   if (!Number.isFinite(moduleId) || moduleId <= 0) {
     return NextResponse.json({ error: "Invalid moduleId" }, { status: 400 });
