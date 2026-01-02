@@ -1,11 +1,17 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import type { Badge, UserBadge } from "@/app/lib/models/types";
+import type { Badge } from "@/app/lib/models/types";
 
 type BadgeNotification = {
   badge: Badge;
   type: "badge" | "milestone" | "streak";
+};
+
+type BadgeCheckResponse = {
+  badges: Array<{
+    badge: Badge;
+  }>;
 };
 
 export function useBadgeNotifications() {
@@ -20,19 +26,17 @@ export function useBadgeNotifications() {
     try {
       const res = await fetch("/api/badges/check", { method: "POST" });
       if (res.ok) {
-        const data = await res.json();
+        const data = (await res.json()) as BadgeCheckResponse;
         if (data.badges && data.badges.length > 0) {
-          const notifications: BadgeNotification[] = data.badges.map(
-            (ub: any) => ({
-              badge: ub.badge,
-              type:
-                ub.badge.badge_type === "streak"
-                  ? "streak"
-                  : ub.badge.badge_type === "milestone"
-                    ? "milestone"
-                    : "badge",
-            }),
-          );
+          const notifications: BadgeNotification[] = data.badges.map((ub) => ({
+            badge: ub.badge,
+            type:
+              ub.badge.badge_type === "streak"
+                ? "streak"
+                : ub.badge.badge_type === "milestone"
+                  ? "milestone"
+                  : "badge",
+          }));
           setBadgeQueue((prev) => [...prev, ...notifications]);
         }
       }

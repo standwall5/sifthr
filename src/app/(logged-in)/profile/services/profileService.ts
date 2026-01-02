@@ -7,6 +7,7 @@ export type Profile = User & {
   completionPercent: number;
   averageScore: number;
   letterGrade: string;
+  profile_picture_url?: string;
 };
 
 export async function fetchProfile(userId: string): Promise<Profile> {

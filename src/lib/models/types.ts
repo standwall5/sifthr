@@ -1,12 +1,13 @@
 // types.ts
 
 export type User = {
-  id: string; // uuid from public.users
-  auth_id?: string; // Supabase auth UUID
+  id: string;
+  auth_id?: string;
   name: string;
   age?: number;
   email?: string;
   is_admin: boolean;
+  profile_picture_url?: string;
   created_at: string;
 };
 

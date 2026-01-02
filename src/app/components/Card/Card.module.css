@@ -57,3 +57,7 @@
 .card:hover .animatedBorderSvg rect {
     stroke-dashoffset: 2;
 }
+
+.description {
+    overflow: auto;
+}

@@ -1,14 +1,16 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import MediumCard from "@/app/components/MediumCard";
 import { useProfile } from "@/app/(logged-in)/profile/hooks/useProfile";
 import { OrbitProgress } from "react-loading-indicators";
 import styles from "./Profile.module.css";
 import BadgesDisplay from "./BadgesDisplay";
 import StreakDisplay from "./StreakDisplay";
+import ProfilePictureUpload from "./ProfilePictureUpload";
 
 const Profile = () => {
   const { profile, loading } = useProfile();
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
 
   if (loading) {
     return (
@@ -20,15 +22,27 @@ const Profile = () => {
     return <MediumCard>Not signed in</MediumCard>;
   }
 
+  const currentProfilePicture =
+    profilePicture ||
+    profile.profile_picture_url ||
+    "/assets/images/userIcon.png";
+
   return (
     <div className={styles.profileWrapper}>
       <MediumCard>
         <div className={styles.profileContainer}>
-          <img
-            src="/assets/images/userIcon.png"
-            alt={profile.name}
-            className={styles.avatar}
-          />
+          <div className={styles.avatarContainer}>
+            <img
+              src={currentProfilePicture}
+              alt={profile.name}
+              className={styles.avatar}
+            />
+            <ProfilePictureUpload
+              currentImageUrl={currentProfilePicture}
+              userId={profile.id}
+              onUploadSuccess={(newUrl) => setProfilePicture(newUrl)}
+            />
+          </div>
           <div className={styles.info}>
             <h1>{profile.name}</h1>
             <h2>{profile.age}</h2>
