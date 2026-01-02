@@ -4,6 +4,8 @@ import React, { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { supabase } from "@/app/lib/supabaseClient";
 import styles from "./ProfilePictureUpload.module.css";
+import Cropper from "react-easy-crop";
+import { Area } from "react-easy-crop";
 
 type ProfilePictureUploadProps = {
   currentImageUrl: string;
@@ -11,14 +13,63 @@ type ProfilePictureUploadProps = {
   onUploadSuccess: (newImageUrl: string) => void;
 };
 
+// Helper function to create image element from URL
+const createImage = (url: string): Promise<HTMLImageElement> =>
+  new Promise((resolve, reject) => {
+    const image = new Image();
+    image.addEventListener("load", () => resolve(image));
+    image.addEventListener("error", (error) => reject(error));
+    image.setAttribute("crossOrigin", "anonymous");
+    image.src = url;
+  });
+
+// Helper function to get cropped image
+async function getCroppedImg(
+  imageSrc: string,
+  pixelCrop: Area,
+): Promise<string> {
+  const image = await createImage(imageSrc);
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  if (!ctx) {
+    throw new Error("No 2d context");
+  }
+
+  // Set canvas size to the cropped area
+  canvas.width = pixelCrop.width;
+  canvas.height = pixelCrop.height;
+
+  // Draw the cropped image
+  ctx.drawImage(
+    image,
+    pixelCrop.x,
+    pixelCrop.y,
+    pixelCrop.width,
+    pixelCrop.height,
+    0,
+    0,
+    pixelCrop.width,
+    pixelCrop.height,
+  );
+
+  // Return as base64
+  return canvas.toDataURL("image/jpeg", 0.95);
+}
+
 export default function ProfilePictureUpload({
   currentImageUrl,
   userId,
   onUploadSuccess,
 }: ProfilePictureUploadProps) {
   const [uploading, setUploading] = useState(false);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [originalImage, setOriginalImage] = useState<string | null>(null);
+  const [croppedImage, setCroppedImage] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
+  const [showCropper, setShowCropper] = useState(false);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length === 0) return;
@@ -37,10 +88,15 @@ export default function ProfilePictureUpload({
       return;
     }
 
-    // Create preview
+    // Create preview from the raw file
     const reader = new FileReader();
     reader.onloadend = () => {
-      setPreview(reader.result as string);
+      setOriginalImage(reader.result as string);
+      setCroppedImage(null);
+      setShowCropper(true);
+      // Reset crop settings
+      setCrop({ x: 0, y: 0 });
+      setZoom(1);
     };
     reader.readAsDataURL(file);
   }, []);
@@ -53,14 +109,37 @@ export default function ProfilePictureUpload({
     multiple: false,
   });
 
+  const onCropComplete = useCallback(
+    (croppedArea: Area, croppedAreaPixels: Area) => {
+      setCroppedAreaPixels(croppedAreaPixels);
+    },
+    [],
+  );
+
+  const handleCropConfirm = async () => {
+    if (!originalImage || !croppedAreaPixels) return;
+
+    try {
+      const croppedImageData = await getCroppedImg(
+        originalImage,
+        croppedAreaPixels,
+      );
+      setCroppedImage(croppedImageData);
+      setShowCropper(false);
+    } catch (error) {
+      console.error("Error cropping image:", error);
+      alert("Failed to crop image. Please try again.");
+    }
+  };
+
   const handleUpload = async () => {
-    if (!preview) return;
+    if (!croppedImage) return;
 
     setUploading(true);
 
     try {
       // Convert base64 to blob
-      const response = await fetch(preview);
+      const response = await fetch(croppedImage);
       const blob = await response.blob();
 
       // Generate unique filename
@@ -100,7 +179,11 @@ export default function ProfilePictureUpload({
       // Success!
       onUploadSuccess(publicUrl);
       setIsOpen(false);
-      setPreview(null);
+      setOriginalImage(null);
+      setCroppedImage(null);
+      setShowCropper(false);
+      setCrop({ x: 0, y: 0 });
+      setZoom(1);
 
       window.dispatchEvent(
         new CustomEvent("toast:show", {
@@ -120,7 +203,16 @@ export default function ProfilePictureUpload({
 
   const handleCancel = () => {
     setIsOpen(false);
-    setPreview(null);
+    setOriginalImage(null);
+    setCroppedImage(null);
+    setShowCropper(false);
+    setCrop({ x: 0, y: 0 });
+    setZoom(1);
+  };
+
+  const handleRecrop = () => {
+    setShowCropper(true);
+    setCroppedImage(null);
   };
 
   return (
@@ -140,7 +232,7 @@ export default function ProfilePictureUpload({
           <div className={styles.modalContent}>
             <h3>Upload Profile Picture</h3>
 
-            {!preview ? (
+            {!originalImage ? (
               <div
                 {...getRootProps()}
                 className={`${styles.dropzone} ${
@@ -166,10 +258,40 @@ export default function ProfilePictureUpload({
                   </small>
                 </div>
               </div>
+            ) : showCropper ? (
+              <div className={styles.cropContainer}>
+                <div className={styles.cropperWrapper}>
+                  <Cropper
+                    image={originalImage}
+                    crop={crop}
+                    zoom={zoom}
+                    aspect={1}
+                    onCropChange={setCrop}
+                    onZoomChange={setZoom}
+                    onCropComplete={onCropComplete}
+                    cropShape="round"
+                    showGrid={false}
+                  />
+                </div>
+                <div className={styles.controls}>
+                  <label className={styles.zoomLabel}>
+                    Zoom:
+                    <input
+                      type="range"
+                      min={1}
+                      max={3}
+                      step={0.1}
+                      value={zoom}
+                      onChange={(e) => setZoom(Number(e.target.value))}
+                      className={styles.zoomSlider}
+                    />
+                  </label>
+                </div>
+              </div>
             ) : (
               <div className={styles.previewContainer}>
                 <img
-                  src={preview}
+                  src={croppedImage || originalImage}
                   alt="Preview"
                   className={styles.previewImage}
                 />
@@ -177,22 +299,44 @@ export default function ProfilePictureUpload({
             )}
 
             <div className={styles.buttonGroup}>
-              {preview && (
+              {originalImage && (
                 <>
-                  <button
-                    onClick={handleUpload}
-                    disabled={uploading}
-                    className={styles.uploadButton}
-                  >
-                    {uploading ? "Uploading..." : "Set as Profile Picture"}
-                  </button>
-                  <button
-                    onClick={() => setPreview(null)}
-                    disabled={uploading}
-                    className={styles.secondaryButton}
-                  >
-                    Choose Different Image
-                  </button>
+                  {showCropper ? (
+                    <button
+                      onClick={handleCropConfirm}
+                      className={styles.uploadButton}
+                    >
+                      Confirm Crop
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        onClick={handleUpload}
+                        disabled={uploading || !croppedImage}
+                        className={styles.uploadButton}
+                      >
+                        {uploading ? "Uploading..." : "Set as Profile Picture"}
+                      </button>
+                      <button
+                        onClick={handleRecrop}
+                        disabled={uploading}
+                        className={styles.secondaryButton}
+                      >
+                        Adjust Crop
+                      </button>
+                      <button
+                        onClick={() => {
+                          setOriginalImage(null);
+                          setCroppedImage(null);
+                          setShowCropper(false);
+                        }}
+                        disabled={uploading}
+                        className={styles.secondaryButton}
+                      >
+                        Choose Different Image
+                      </button>
+                    </>
+                  )}
                 </>
               )}
               <button

@@ -28,9 +28,9 @@ export default function Toast({
 
   const defaultIcon =
     type === "success"
-      ? "✓"
+      ? ""
       : type === "error"
-        ? "✕"
+        ? ""
         : type === "streak"
           ? "🔥"
           : "ℹ";

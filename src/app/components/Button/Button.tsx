@@ -5,6 +5,7 @@ import styles from "./Button.module.css";
 type ButtonProps = {
   children?: React.ReactNode;
   onClick?: () => void;
+  formAction?: (formData: FormData) => void | Promise<void>; // ✅ Fixed type
   disabled?: boolean;
   className?: string;
   type?: "button" | "submit" | "reset";
@@ -15,6 +16,7 @@ type ButtonProps = {
 export default function Button({
   children,
   onClick,
+  formAction,
   disabled,
   className,
   type = "button",
@@ -29,6 +31,7 @@ export default function Button({
       onClick={onClick}
       disabled={disabled || loading}
       type={type}
+      formAction={formAction}
     >
       <div className={styles.body}>
         {loading && loadingComponent && (

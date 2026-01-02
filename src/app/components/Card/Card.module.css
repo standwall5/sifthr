@@ -23,6 +23,15 @@
 
 .description {
     font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 .card:hover {

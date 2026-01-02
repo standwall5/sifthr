@@ -80,7 +80,7 @@ export async function getUserQuizzes(
 ): Promise<{ quizzes: Quiz[]; averageScore: number; letterGrade: string }> {
   const { data: quizSubmissions, error: quizSubmissionsError } = await supabase
     .from("quiz_submissions")
-    .select("*")
+    .select("quiz_id, score")
     .eq("user_id", id);
 
   if (quizSubmissionsError || !quizSubmissions) {
@@ -89,12 +89,32 @@ export async function getUserQuizzes(
     );
   }
 
-  // Calculate average score
+  // Calculate average score as percentage
   let averageScore = 0;
   let letterGrade = "N/A";
   if (quizSubmissions.length > 0) {
-    const total = quizSubmissions.reduce((sum, q) => sum + (q.score ?? 0), 0);
-    averageScore = total / quizSubmissions.length;
+    // Get question counts for each quiz
+    const quizIds = [...new Set(quizSubmissions.map((qs) => qs.quiz_id))];
+    const { data: quizQuestions } = await supabase
+      .from("questions")
+      .select("quiz_id")
+      .in("quiz_id", quizIds);
+
+    // Count questions per quiz
+    const questionCounts = new Map<number, number>();
+    quizQuestions?.forEach((q) => {
+      questionCounts.set(q.quiz_id, (questionCounts.get(q.quiz_id) || 0) + 1);
+    });
+
+    // Calculate percentage for each submission
+    const percentages = quizSubmissions.map((submission) => {
+      const totalQuestions = questionCounts.get(submission.quiz_id) || 1;
+      return (submission.score / totalQuestions) * 100;
+    });
+
+    // Calculate average percentage
+    const totalPercentage = percentages.reduce((sum, pct) => sum + pct, 0);
+    averageScore = totalPercentage / percentages.length;
     letterGrade = getLetterGrade(averageScore);
   }
 

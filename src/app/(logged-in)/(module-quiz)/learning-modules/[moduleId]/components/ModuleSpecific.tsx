@@ -9,7 +9,7 @@ import "../../../moduleQuiz.css";
 import styles from "./ModuleSpecific.module.css";
 import { useModule } from "../hooks/useModule";
 import { OrbitProgress } from "react-loading-indicators";
-import { supabase } from "@/app/lib/supabaseClient"; // Add this import
+import { supabase } from "@/app/lib/supabaseClient";
 
 type ModuleSpecificProps = {
   id: string;
@@ -32,13 +32,21 @@ export default function ModuleSpecific({ id }: ModuleSpecificProps) {
   } = useModule(id);
 
   useEffect(() => {
-    if (complete) {
+    if (complete && moduleData) {
       const t = setTimeout(() => {
-        router.push("/learning-modules");
+        // Check if there's a quiz connected to this module
+        if (moduleData.quizzes && moduleData.quizzes.length > 0) {
+          // Redirect to the first quiz associated with this module
+          const firstQuiz = moduleData.quizzes[0];
+          router.push(`/quizzes/${firstQuiz.id}`);
+        } else {
+          // No quiz, redirect back to modules list
+          router.push("/learning-modules");
+        }
       }, 5000);
       return () => clearTimeout(t);
     }
-  }, [complete, router]);
+  }, [complete, router, moduleData]);
 
   // Mark section as complete when navigating
   const handleNext = async () => {
@@ -71,7 +79,7 @@ export default function ModuleSpecific({ id }: ModuleSpecificProps) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${session.access_token}`, // Add auth header
+          Authorization: `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({
           module_id: moduleId,
@@ -87,10 +95,16 @@ export default function ModuleSpecific({ id }: ModuleSpecificProps) {
 
         // If module is fully complete, show celebration
         if (result.module_complete) {
+          // Check if there's a quiz to indicate it in the message
+          const hasQuiz = moduleData?.quizzes && moduleData.quizzes.length > 0;
+          const message = hasQuiz
+            ? "🎉 Module completed! Get ready for the quiz!"
+            : "🎉 Module completed! Check for new badges!";
+
           window.dispatchEvent(
             new CustomEvent("toast:show", {
               detail: {
-                message: "🎉 Module completed! Check for new badges!",
+                message,
                 type: "success",
               },
             }),
@@ -124,6 +138,8 @@ export default function ModuleSpecific({ id }: ModuleSpecificProps) {
     );
   if (!moduleData || !section) return <div>Failed to load section.</div>;
 
+  const hasQuiz = moduleData.quizzes && moduleData.quizzes.length > 0;
+
   return (
     <div className={styles.moduleSpecificContainer}>
       <div className="module-box">
@@ -145,7 +161,7 @@ export default function ModuleSpecific({ id }: ModuleSpecificProps) {
           </>
         )}
 
-        <SuccessScreen show={complete} />
+        <SuccessScreen show={complete} hasQuiz={hasQuiz} />
       </div>
     </div>
   );

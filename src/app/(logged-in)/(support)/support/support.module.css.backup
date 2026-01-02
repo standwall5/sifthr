@@ -1,0 +1,41 @@
+:root {
+    --png-outline: rgb(255, 255, 255);
+}
+
+.supportCard {
+    display: flex !important;
+    align-items: space-between !important;
+    justify-content: space-around !important;
+    overflow: hidden;
+    min-width: 20rem;
+    min-height: 15rem;
+    max-height: 15rem;
+    gap: 1rem;
+}
+
+.supportLogo {
+    width: 8rem;
+    transition: 0.2s;
+
+    /* Logo PNG Outline */
+    filter: drop-shadow(1px 0 0 var(--png-outline))
+        drop-shadow(-1px 0 0 var(--png-outline))
+        drop-shadow(0 1px 0 var(--png-outline))
+        drop-shadow(0 -1px 0 var(--png-outline));
+
+    align-self: center;
+}
+
+.supportCard:hover .supportLogo {
+    transform: scale(1.1);
+}
+
+.supportCollection {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.supportName {
+    text-align: center !important;
+    width: 100%;
+}

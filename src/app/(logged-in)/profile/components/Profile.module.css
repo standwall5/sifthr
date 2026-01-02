@@ -38,7 +38,7 @@
     color: var(--text); /* Changed from --text-color to --text */
 }
 
-.profileContainer img {
+.avatar {
     width: 10rem;
     height: 10rem;
     border-radius: 50%;
@@ -104,4 +104,62 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.moduleQuizHistoryContainer {
+    width: 100%;
+}
+
+.moduleQuizHistory h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+}
+
+.moduleQuizHistory ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.moduleQuizHistory li {
+    background-color: #160a20;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    transition:
+        transform 0.3s,
+        box-shadow 0.3s;
+    border: 2px solid transparent;
+}
+
+.moduleQuizHistory li:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(153, 85, 235, 0.2);
+    border-color: rgb(153, 85, 235);
+}
+
+.moduleQuizHistory li h3 {
+    font-size: 1.2rem;
+    color: var(--purple);
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.moduleQuizHistory li p {
+    color: var(--text);
+    opacity: 0.8;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.moduleQuizHistory > p {
+    color: var(--text);
+    opacity: 0.6;
+    font-style: italic;
+    text-align: center;
+    padding: 2rem;
 }

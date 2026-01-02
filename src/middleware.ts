@@ -1,49 +1,19 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { createServerClient } from "@supabase/ssr";
+import { type NextRequest } from "next/server";
+import { updateSession } from "@/utils/supabase/middleware";
 
-export async function middleware(req: NextRequest) {
-  const { pathname, origin } = req.nextUrl;
-
-  // Only do auth check for the root path
-  if (pathname === "/") {
-    const res = NextResponse.next();
-
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return req.cookies
-              .getAll()
-              .map(({ name, value }) => ({ name, value }));
-          },
-          setAll(cookies) {
-            cookies.forEach(({ name, value, options }) => {
-              res.cookies.set(name, value, options);
-            });
-          },
-        },
-      },
-    );
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (user) {
-      return NextResponse.redirect(new URL("/home", origin));
-    }
-
-    return res;
-  }
-
-  // For all other paths, just pass through
-  return NextResponse.next();
+export async function middleware(request: NextRequest) {
+  return await updateSession(request);
 }
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|oldFavicon.ico|robots.txt|sitemap.xml).*)",
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * Feel free to modify this pattern to include more paths.
+     */
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };

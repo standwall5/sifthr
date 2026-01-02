@@ -4,12 +4,9 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/app/lib/supabaseClient";
-import {
-  getCachedAdminStatus,
-  fetchAndCacheAdminStatus,
-  signOutUser,
-} from "@/app/lib/authActions";
+import { User } from "@/lib/models/types";
+import { signout } from "@/lib/auth-actions";
+import { createClient } from "@/utils/supabase/client";
 
 interface UserStreak {
   current_streak: number;
@@ -20,14 +17,11 @@ interface UserStreak {
 const Navbar: React.FC = () => {
   const router = useRouter();
 
-  // Auth state
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  // UI state
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [streak, setStreak] = useState<number>(0);
+  const supabase = createClient();
 
   // Fetch user streak
   const fetchStreak = async () => {
@@ -42,60 +36,59 @@ const Navbar: React.FC = () => {
     }
   };
 
-  // Check auth status on mount only
   useEffect(() => {
-    const checkAuth = async () => {
+    const fetchUser = async () => {
+      // Get Supabase auth user
       const {
-        data: { user },
+        data: { user: authUser },
       } = await supabase.auth.getUser();
 
-      if (user) {
-        setLoggedIn(true);
-        fetchStreak();
+      if (authUser) {
+        // Fetch your app's user data from the database
+        const { data: appUser } = await supabase
+          .from("users")
+          .select("*")
+          .eq("auth_id", authUser.id)
+          .single();
 
-        // Check admin status
-        const cachedAdmin = getCachedAdminStatus();
-        if (cachedAdmin !== null) {
-          setIsAdmin(cachedAdmin);
+        if (appUser) {
+          setUser(appUser);
+          fetchStreak();
         }
-
-        const isAdminStatus = await fetchAndCacheAdminStatus(user.id);
-        setIsAdmin(isAdminStatus);
       } else {
-        setLoggedIn(false);
-        setIsAdmin(false);
+        // No user logged in
+        setUser(null);
       }
 
       setIsLoading(false);
     };
 
-    checkAuth();
+    // Fetch on mount
+    fetchUser();
 
-    // Listen ONLY for custom events (not Supabase auth changes)
-    const onAuthChanged = () => checkAuth();
-    window.addEventListener("auth:changed", onAuthChanged);
+    // Listen for auth state changes (login/logout)
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        // User logged in - refetch user data
+        fetchUser();
+      } else {
+        // User logged out - clear user data
+        setUser(null);
+        setStreak(0);
+        setIsLoading(false);
+      }
+    });
 
+    // Cleanup subscription on unmount
     return () => {
-      window.removeEventListener("auth:changed", onAuthChanged);
+      subscription.unsubscribe();
     };
   }, []);
 
-  async function handleSignOut() {
-    try {
-      setIsDropdownOpen(false);
-      await signOutUser();
-
-      // Update local state immediately
-      setLoggedIn(false);
-      setIsAdmin(false);
-
-      router.push("/");
-      router.refresh();
-    } catch (error) {
-      console.error("Error signing out:", error);
-      router.push("/");
-    }
-  }
+  const loggedIn = !!user;
+  const isAdmin = user?.is_admin || false;
 
   return (
     <nav>
@@ -150,12 +143,13 @@ const Navbar: React.FC = () => {
         {!isLoading && loggedIn && (
           <li id="user-icon" className="relative">
             <Image
-              src="/assets/images/userIcon.png"
+              src={user.profile_picture_url || "/assets/images/userIcon.png"}
               alt="User Profile"
               width={70}
               height={70}
-              className="cursor-pointer"
+              className="cursor-pointer user-profile-image"
               onClick={() => setIsDropdownOpen((o) => !o)}
+              style={{ borderRadius: "50%", border: "2px solid var(--purple)" }}
             />
             {isDropdownOpen && (
               <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg z-50 border dark:border-gray-700">
@@ -187,7 +181,7 @@ const Navbar: React.FC = () => {
                     Settings
                   </Link>
                   <button
-                    onClick={handleSignOut}
+                    onClick={signout}
                     className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
                     Sign Out

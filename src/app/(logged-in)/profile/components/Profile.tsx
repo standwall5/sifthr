@@ -61,7 +61,7 @@ const Profile = () => {
           </span>
           <span className={styles.modulePercent}>
             <span className={styles.percent}>{profile.letterGrade}</span>
-            <span className={styles.percentText}> Overall Quiz Grade</span>
+            <span className={styles.percentText}> Average Quiz Grade</span>
           </span>
         </div>
       </MediumCard>

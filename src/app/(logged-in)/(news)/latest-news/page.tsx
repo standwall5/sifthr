@@ -129,20 +129,25 @@ const LatestNewsPage: React.FC = () => {
             >
               School
             </Link>
-            <ArticlesSection
-              ref={schoolSectionRef}
-              title="Scholarship & School-Related Scams"
-              articles={scholarshipArticles}
-              icon="📚"
-              id="school"
-            />
-            <ArticlesSection
-              ref={otherSectionRef}
-              title="Other Scam-Related News"
-              articles={otherArticles}
-              icon="🚨"
-              id="other"
-            />
+            <div
+              className="module-quiz-collection"
+              style={{ alignItems: "center" }}
+            >
+              <ArticlesSection
+                ref={schoolSectionRef}
+                title="Scholarship & School-Related Scams"
+                articles={scholarshipArticles}
+                icon="📚"
+                id="school"
+              />
+              <ArticlesSection
+                ref={otherSectionRef}
+                title="Other Scam-Related News"
+                articles={otherArticles}
+                icon="🚨"
+                id="other"
+              />
+            </div>
           </>
         )}
       </div>

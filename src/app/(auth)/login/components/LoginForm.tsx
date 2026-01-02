@@ -1,5 +1,6 @@
 import Loading from "@/app/components/Loading";
 import Button from "@/app/components/Button/Button";
+import { login } from "@/lib/auth-actions";
 
 type LoginFormProps = {
   handleLogin: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -54,6 +55,7 @@ export default function LoginForm({
         type="submit"
         className="custom-button"
         loading={loading}
+        formAction={login}
         loadingComponent={<Loading color="white" style={{ fontSize: "8px" }} />}
       >
         Login

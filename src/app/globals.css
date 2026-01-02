@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Configure Tailwind dark mode to use prefers-color-scheme */
+@variant dark (@media (prefers-color-scheme: dark));
+
 /* Remove class-based dark variant; we rely on prefers-color-scheme instead */
 
 * {
@@ -259,6 +262,21 @@ nav {
     /* font-weight: bold; */
 }
 
+.user-profile-image {
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 1rem;
+    transition: all 0.3s ease;
+}
+
+.user-profile-image:hover {
+    box-shadow:
+        0 0 20px 5px rgba(168, 85, 247, 0.6),
+        0 0 40px 10px rgba(168, 85, 247, 0.4),
+        0 0 60px 15px rgba(168, 85, 247, 0.2);
+    transform: scale(1.05);
+}
+
 .backdrop {
     width: 100%;
     height: 100%;
@@ -477,5 +495,3 @@ footer {
 .error {
     margin: -2rem;
 }
-
-/* Module Quiz and everythin in home */
