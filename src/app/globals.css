@@ -12,7 +12,7 @@
 :root {
     /* Let the browser style form controls and scrollbars based on OS theme */
     /* Original Color Scheme */
-    /*color-scheme: light dark;
+    color-scheme: light dark;
     --lime: rgb(200, 229, 36);
     --blue: rgb(131, 165, 240);
     --purple: rgb(153, 85, 235);
@@ -25,49 +25,43 @@
 
     --yellow: rgb(237, 183, 77);
     --red: rgb(235, 102, 102);
-    --green: rgb(111, 177, 138);*/
+    --green: rgb(111, 177, 138);
 
-    color-scheme: light dark;
+    /*color-scheme: light dark;*/
 
-    /* Silo Nino National High School Brand Colors */
-    --lime: rgb(34, 139, 34); /* Green from laurel leaves */
-    --blue: rgb(218, 165, 32); /* Gold from flame */
-    --purple: rgb(255, 140, 0); /* Orange from flame tip */
+    /*--lime: rgb(34, 139, 34);
+    --blue: rgb(218, 165, 32);
+    --purple: rgb(255, 140, 0);
 
-    /* Additional school colors */
-    --school-green: rgb(34, 139, 34); /* Forest green from laurel leaves */
-    --school-gold: rgb(218, 165, 32); /* Goldenrod from flame */
-    --school-orange: rgb(255, 140, 0); /* Dark orange from flame tip */
-    --school-brown: rgb(139, 90, 43); /* Saddle brown from torch/book */
-    --school-cream: rgb(245, 245, 220); /* Beige/cream background */
+    --school-green: rgb(34, 139, 34);
+    --school-gold: rgb(218, 165, 32);
+    --school-orange: rgb(255, 140, 0);
+    --school-brown: rgb(139, 90, 43);
+    --school-cream: rgb(245, 245, 220);
 
-    /* Light mode theme using school colors */
     --bgdark: #1a1a1a;
-    --bg: var(--school-cream); /* Light cream background */
+    --bg: var(--school-cream);
     --text-dark: #dbdbdb;
-    --text: #2c2c2c; /* Dark gray for readability */
+    --text: #2c2c2c;
     --nav-dark: rgba(66, 61, 112, 0.322);
-    --nav: rgba(34, 139, 34, 0.15); /* Subtle green tint */
+    --nav: rgba(34, 139, 34, 0.15);
 
-    /* Primary actions use school gold */
     --primary: var(--school-gold);
     --primary-hover: rgb(204, 153, 25);
 
-    /* Secondary actions use school green */
     --secondary: var(--school-green);
     --secondary-hover: rgb(28, 115, 28);
 
-    /* Accent color from flame */
     --accent: var(--school-orange);
 
-    --yellow: rgb(237, 183, 77); /* #edb74d */
-    --red: rgb(235, 102, 102); /* #eb6666 */
-    --green: rgb(111, 177, 138); /* #6fb18a */
+    --yellow: rgb(237, 183, 77);
+    --red: rgb(235, 102, 102);
+    --green: rgb(111, 177, 138); */
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        /*--box: #352a3d;
+        --box: #352a3d;
 
         --lime: rgb(200, 229, 36);
         --blue: rgb(131, 165, 240);
@@ -78,42 +72,6 @@
         --card-bg-highlight: #402641;
         --text: #ffffff;
         --nav: rgba(66, 61, 112, 0.322);
-
-        --yellow: rgb(237, 183, 77);
-        --red: rgb(235, 102, 102);
-        --green: rgb(111, 177, 138); */
-
-        --box: #1a1a1a;
-
-        /* Brighter school colors for dark mode visibility */
-        --lime: rgb(46, 160, 46); /* Brighter green for dark mode */
-        --blue: rgb(240, 190, 60); /* Brighter gold for dark mode */
-        --purple: rgb(255, 160, 30); /* Brighter orange for dark mode */
-
-        /* Additional school colors (brighter for dark mode) */
-        --school-green: rgb(46, 160, 46);
-        --school-gold: rgb(240, 190, 60);
-        --school-orange: rgb(255, 160, 30);
-        --school-brown: rgb(160, 110, 60);
-
-        /* Dark mode theme */
-        --bg: #0f0f0f; /* Very dark background */
-        --box-bg: #1a1a1a;
-        --card-bg: #232323;
-        --card-bg-highlight: #2d2d2d;
-        --text: #e8e8e8; /* Light gray text */
-        --nav: rgba(46, 160, 46, 0.2); /* Subtle green tint */
-
-        /* Primary actions use bright school gold */
-        --primary: var(--school-gold);
-        --primary-hover: rgb(255, 210, 80);
-
-        /* Secondary actions use bright school green */
-        --secondary: var(--school-green);
-        --secondary-hover: rgb(56, 180, 56);
-
-        /* Accent color from flame */
-        --accent: var(--school-orange);
 
         --yellow: rgb(237, 183, 77);
         --red: rgb(235, 102, 102);
@@ -295,7 +253,7 @@ nav {
 
     /* background-color: rgba(109, 109, 109, 0.1); */
     right: 0;
-    z-index: 1;
+    z-index: 50;
     color: white;
     /* font-family: "Inter", serif; */
     /* font-weight: bold; */
@@ -312,7 +270,7 @@ nav {
 
     /*  where the real magic happens  */
 
-    /* background: rgba(225, 225, 225, 0.05); */
+    /*background: rgba(225, 225, 225, 0.05);*/
     background: var(--nav);
     backdrop-filter: blur(10px);
 

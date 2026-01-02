@@ -1,9 +1,13 @@
+import Loading from "@/app/components/Loading";
+import Button from "@/app/components/Button/Button";
+
 type LoginFormProps = {
   handleLogin: (e: React.FormEvent<HTMLFormElement>) => void;
   closeModal: () => void;
   showPwdLogin: boolean;
   errorMsg?: string | null;
   toggleShowPwdLogin: () => void;
+  loading: boolean;
 };
 
 export default function LoginForm({
@@ -12,6 +16,7 @@ export default function LoginForm({
   showPwdLogin,
   errorMsg,
   toggleShowPwdLogin,
+  loading,
 }: LoginFormProps) {
   return (
     <form id="loginForm" onSubmit={handleLogin}>
@@ -45,9 +50,14 @@ export default function LoginForm({
           {errorMsg}
         </div>
       )}
-      <button type="submit" className="custom-button">
+      <Button
+        type="submit"
+        className="custom-button"
+        loading={loading}
+        loadingComponent={<Loading color="white" style={{ fontSize: "8px" }} />}
+      >
         Login
-      </button>
+      </Button>
     </form>
   );
 }

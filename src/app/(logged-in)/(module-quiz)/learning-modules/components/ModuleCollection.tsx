@@ -2,35 +2,51 @@
 
 import { useRouter } from "next/navigation";
 import type { Module } from "@/lib/models/types";
+import { OrbitProgress } from "react-loading-indicators";
+import Card from "@/app/components/Card/Card";
 
 type ModuleCollectionProps = {
   filteredModules: Module[];
+  loading: boolean;
 };
 
 export default function ModuleCollection({
   filteredModules,
+  loading,
 }: ModuleCollectionProps) {
   const router = useRouter();
+
+  if (loading)
+    return (
+      <div
+        style={{
+          justifySelf: "center",
+          alignSelf: "center",
+          height: "100%",
+        }}
+      >
+        <OrbitProgress
+          dense
+          color="#92e97c"
+          size="medium"
+          text=""
+          textColor=""
+        />
+      </div>
+    );
 
   return (
     <div className="module-quiz-collection">
       {filteredModules.map((module) => (
-        <div
+        <Card
           key={module.id}
-          className="module-quiz-card"
-          style={{ cursor: "pointer" }}
           onClick={() => router.push(`/learning-modules/${module.id}`)}
+          title={module.title}
+          description={module.description}
         >
-          <h2>{module.title}</h2>
-          <p>{module.description}</p>
-          <svg
-            className="animatedBorderSvg"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-          >
-            <rect x="2" y="2" width="96" height="96" rx="16" ry="16" />
-          </svg>
-        </div>
+          {/*<h2>{module.title}</h2>
+          <p>{module.description}</p>*/}
+        </Card>
       ))}
     </div>
   );

@@ -1,199 +1,100 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import type { Session, User as SupabaseAuthUser } from "@supabase/supabase-js";
 import { supabase } from "@/app/lib/supabaseClient";
+import {
+  getCachedAdminStatus,
+  fetchAndCacheAdminStatus,
+  signOutUser,
+} from "@/app/lib/authActions";
 
-// Minimal app user shape for admin checks
-type AppUser = {
-  is_admin: boolean;
-};
-
-// Theme handling
-type Theme = "light" | "dark";
-
-// These should mirror the CSS variables in globals.css
-const lightThemeVars: Record<string, string> = {
-  "--bg": "#f5f5dc",
-  "--text": "#141414",
-  "--nav": "rgba(166, 226, 110, 0.322)",
-  "--lime": "rgb(200, 229, 36)",
-  "--blue": "rgb(131, 165, 240)",
-  "--purple": "rgb(153, 85, 235)",
-  "--yellow": "rgb(237, 183, 77)",
-  "--red": "rgb(235, 102, 102)",
-  "--green": "rgb(111, 177, 138)",
-  // Optional extras used in dark theme; keep defaults for light
-  "--box": "#ffffff",
-  "--box-bg": "#ffffff",
-  "--card-bg": "#ffffff",
-  "--card-bg-highlight": "#ffffff",
-};
-
-const darkThemeVars: Record<string, string> = {
-  "--bg": "#16101b",
-  "--text": "#ffffff",
-  "--nav": "rgba(66, 61, 112, 0.322)",
-  "--lime": "rgb(200, 229, 36)",
-  "--blue": "rgb(131, 165, 240)",
-  "--purple": "rgb(153, 85, 235)",
-  "--yellow": "rgb(237, 183, 77)",
-  "--red": "rgb(235, 102, 102)",
-  "--green": "rgb(111, 177, 138)",
-  "--box": "#352a3d",
-  "--box-bg": "#160a20",
-  "--card-bg": "#25192e",
-  "--card-bg-highlight": "#402641",
-};
-
-function applyTheme(theme: Theme) {
-  const vars = theme === "dark" ? darkThemeVars : lightThemeVars;
-  const root = document.documentElement;
-
-  // Set an attribute for possible CSS hooks; not strictly required
-  root.setAttribute("data-theme", theme);
-
-  // Apply CSS variables inline for immediate effect (no refresh)
-  Object.entries(vars).forEach(([key, value]) => {
-    root.style.setProperty(key, value);
-  });
-}
-
-function getInitialTheme(): Theme {
-  // Respect persisted preference first
-  const saved =
-    typeof window !== "undefined" ? localStorage.getItem("theme") : null;
-  if (saved === "light" || saved === "dark") return saved;
-
-  // Fallback to system preference
-  if (typeof window !== "undefined" && window.matchMedia) {
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-  }
-  return "light";
+interface UserStreak {
+  current_streak: number;
+  longest_streak: number;
+  last_activity_date: string;
 }
 
 const Navbar: React.FC = () => {
   const router = useRouter();
 
   // Auth state
-  const [session, setSession] = useState<Session | null>(null);
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // UI state
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const [streak, setStreak] = useState<number>(0);
 
-  // Theme state
-  const [theme, setTheme] = useState<Theme>(getInitialTheme());
-
-  const loggedIn = useMemo(() => !!session?.user, [session]);
-
-  // Initialize theme and listen to changes
-  useEffect(() => {
-    // Apply initial theme immediately
-    applyTheme(theme);
-
-    // Persist preference
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
-  // Sync theme when opening in new tabs (optional)
-  useEffect(() => {
-    const onStorage = (e: StorageEvent) => {
-      if (e.key === "theme") {
-        const value = e.newValue;
-        if (value === "light" || value === "dark") {
-          setTheme(value);
-          applyTheme(value);
-        }
+  // Fetch user streak
+  const fetchStreak = async () => {
+    try {
+      const response = await fetch("/api/streaks/current");
+      if (response.ok) {
+        const data = await response.json();
+        setStreak(data.streak?.current_streak || 0);
       }
-    };
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
-  }, []);
+    } catch (error) {
+      console.error("Error fetching streak:", error);
+    }
+  };
 
-  // Supabase auth state handling
+  // Check auth status on mount only
   useEffect(() => {
-    let isMounted = true;
+    const checkAuth = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-    const refreshSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      if (!isMounted) return;
-      setSession(data.session ?? null);
+      if (user) {
+        setLoggedIn(true);
+        fetchStreak();
+
+        // Check admin status
+        const cachedAdmin = getCachedAdminStatus();
+        if (cachedAdmin !== null) {
+          setIsAdmin(cachedAdmin);
+        }
+
+        const isAdminStatus = await fetchAndCacheAdminStatus(user.id);
+        setIsAdmin(isAdminStatus);
+      } else {
+        setLoggedIn(false);
+        setIsAdmin(false);
+      }
+
+      setIsLoading(false);
     };
 
-    // Initial load
-    refreshSession();
+    checkAuth();
 
-    // Listen for auth changes
-    const { data: sub } = supabase.auth.onAuthStateChange(
-      (_event, _session) => {
-        setSession(_session ?? null);
-        // Broadcast to other listeners in the app
-        window.dispatchEvent(new Event("auth:changed"));
-      },
-    );
-
-    // Also respond to custom events from other components
-    const onAuthChanged = () => refreshSession();
+    // Listen ONLY for custom events (not Supabase auth changes)
+    const onAuthChanged = () => checkAuth();
     window.addEventListener("auth:changed", onAuthChanged);
 
     return () => {
-      isMounted = false;
-      sub.subscription.unsubscribe();
       window.removeEventListener("auth:changed", onAuthChanged);
     };
   }, []);
 
-  // Load app user (for admin flag) when session changes
-  useEffect(() => {
-    let cancelled = false;
-
-    const loadAdminFlag = async (authUser: SupabaseAuthUser) => {
-      const { data, error } = await supabase
-        .from("users")
-        .select("is_admin")
-        .eq("auth_id", authUser.id)
-        .maybeSingle();
-
-      if (cancelled) return;
-
-      if (error || !data) {
-        setIsAdmin(false);
-      } else {
-        setIsAdmin(Boolean((data as AppUser).is_admin));
-      }
-    };
-
-    if (session?.user) {
-      loadAdminFlag(session.user);
-    } else {
-      setIsAdmin(false);
-    }
-
-    return () => {
-      cancelled = true;
-    };
-  }, [session]);
-
   async function handleSignOut() {
-    await supabase.auth.signOut();
-    setSession(null);
-    setIsAdmin(false);
-    window.dispatchEvent(new Event("auth:changed"));
-    router.push("/");
-  }
+    try {
+      setIsDropdownOpen(false);
+      await signOutUser();
 
-  function toggleTheme() {
-    setTheme((t) => {
-      const next = t === "dark" ? "light" : "dark";
-      // Persist and apply immediately handled by useEffect
-      return next;
-    });
+      // Update local state immediately
+      setLoggedIn(false);
+      setIsAdmin(false);
+
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      console.error("Error signing out:", error);
+      router.push("/");
+    }
   }
 
   return (
@@ -213,7 +114,7 @@ const Navbar: React.FC = () => {
           </Link>
         </li>
 
-        {loggedIn && (
+        {!isLoading && loggedIn && (
           <>
             {isAdmin && (
               <li>
@@ -246,20 +147,7 @@ const Navbar: React.FC = () => {
           </Link>
         </li>
 
-        {/* Theme toggle */}
-        <li>
-          <button
-            type="button"
-            className="nav-link"
-            aria-label="Toggle theme"
-            onClick={toggleTheme}
-            title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-          >
-            {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
-          </button>
-        </li>
-
-        {loggedIn && (
+        {!isLoading && loggedIn && (
           <li id="user-icon" className="relative">
             <Image
               src="/assets/images/userIcon.png"
@@ -270,21 +158,37 @@ const Navbar: React.FC = () => {
               onClick={() => setIsDropdownOpen((o) => !o)}
             />
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 border">
+              <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg z-50 border dark:border-gray-700">
                 <div className="py-1">
+                  {streak > 0 && (
+                    <div className="px-4 py-3 border-b dark:border-gray-700">
+                      <div className="flex items-center gap-2 text-sm">
+                        <span className="text-2xl">🔥</span>
+                        <div>
+                          <div className="font-bold text-gray-900 dark:text-white">
+                            {streak} Day Streak
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   <Link
                     href="/profile"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                     onClick={() => setIsDropdownOpen(false)}
                   >
                     Profile
                   </Link>
+                  <Link
+                    href="/settings"
+                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    Settings
+                  </Link>
                   <button
-                    onClick={() => {
-                      handleSignOut();
-                      setIsDropdownOpen(false);
-                    }}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    onClick={handleSignOut}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
                     Sign Out
                   </button>

@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ProgressBar from "./ProgressBar";
 import QuestionContent from "./QuestionContent";
 import NavigationButtons from "./NavigationButtons";
@@ -34,6 +34,8 @@ export default function QuizSpecific({ id }: QuizSpecificProps) {
     submit,
   } = useQuiz(id);
 
+  const [selectedCheckboxes, setSelectedCheckboxes] = useState<number[]>([]);
+
   // Keep routing concerns in the component
   useEffect(() => {
     if (complete) {
@@ -43,6 +45,18 @@ export default function QuizSpecific({ id }: QuizSpecificProps) {
       return () => clearTimeout(t);
     }
   }, [complete, router]);
+
+  const handleToggleCheckbox = (answerId: number) => {
+    setSelectedCheckboxes((prev) => {
+      if (prev.includes(answerId)) {
+        // Remove if already selected
+        return prev.filter((id) => id !== answerId);
+      } else {
+        // Add if not selected
+        return [...prev, answerId];
+      }
+    });
+  };
 
   if (loading) return <div>Loading...</div>;
   if (error)
@@ -67,6 +81,8 @@ export default function QuizSpecific({ id }: QuizSpecificProps) {
                 onSelectAnswer={selectAnswer}
                 userInput={textInputs.get(currentQuestion) || ""}
                 onInputChange={changeInput}
+                selectedAnswers={selectedCheckboxes}
+                onToggleCheckbox={handleToggleCheckbox}
               />
             </div>
 

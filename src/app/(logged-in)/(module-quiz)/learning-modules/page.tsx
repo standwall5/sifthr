@@ -13,14 +13,17 @@ import ModuleCollection from "./components/ModuleCollection";
 export default function LearningModulesPage() {
   const [modules, setModules] = useState<Module[]>([]);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
+    setLoading(true);
     fetch("/api/getModules")
       .then((res) => res.json())
       .then((data) => setModules(data))
       .catch((err) => {
         // Optionally handle errors here
         console.error("Failed to fetch quizzes:", err);
-      });
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const filteredModules = modules
@@ -30,8 +33,12 @@ export default function LearningModulesPage() {
   return (
     <div className="module-container">
       <div className="module-quiz-box">
-        <Search search={search} setSearch={setSearch} />
-        <ModuleCollection filteredModules={filteredModules} />
+        <Search
+          search={search}
+          setSearch={setSearch}
+          placeholder="Search modules..."
+        />
+        <ModuleCollection filteredModules={filteredModules} loading={loading} />
       </div>
     </div>
   );

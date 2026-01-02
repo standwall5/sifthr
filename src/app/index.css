@@ -1,51 +1,16 @@
 :root {
-    /*--lime: rgb(200, 229, 36);
-  --blue: rgb(131, 165, 240);
-  --purple: rgb(153, 85, 235);
-  --bg: #f5f5dc;
-  --text-dark: #dbdbdb;
-  --text: #141414;
-  --nav-dark: rgba(66, 61, 112, 0.322);
-  --nav: rgba(166, 226, 110, 0.322);
-
-  --yellow: rgb(237, 183, 77);
-  --red: rgb(235, 102, 102);
-  --green: rgb(111, 177, 138); */
-
-    /* Silo Nino National High School Brand Colors */
-    --lime: rgb(34, 139, 34); /* Green from laurel leaves */
-    --blue: rgb(218, 165, 32); /* Gold from flame */
-    --purple: rgb(255, 140, 0); /* Orange from flame tip */
-
-    /* Additional school colors */
-    --school-green: rgb(34, 139, 34); /* Forest green from laurel leaves */
-    --school-gold: rgb(218, 165, 32); /* Goldenrod from flame */
-    --school-orange: rgb(255, 140, 0); /* Dark orange from flame tip */
-    --school-brown: rgb(139, 90, 43); /* Saddle brown from torch/book */
-    --school-cream: rgb(245, 245, 220); /* Beige/cream background */
-
-    /* Light mode theme using school colors */
-    --bgdark: #1a1a1a;
-    --bg: var(--school-cream); /* Light cream background */
+    --lime: rgb(200, 229, 36);
+    --blue: rgb(131, 165, 240);
+    --purple: rgb(153, 85, 235);
+    --bg: #f5f5dc;
     --text-dark: #dbdbdb;
-    --text: #2c2c2c; /* Dark gray for readability */
+    --text: #141414;
     --nav-dark: rgba(66, 61, 112, 0.322);
-    --nav: rgba(34, 139, 34, 0.15); /* Subtle green tint */
+    --nav: rgba(166, 226, 110, 0.322);
 
-    /* Primary actions use school gold */
-    --primary: var(--school-gold);
-    --primary-hover: rgb(204, 153, 25);
-
-    /* Secondary actions use school green */
-    --secondary: var(--school-green);
-    --secondary-hover: rgb(28, 115, 28);
-
-    /* Accent color from flame */
-    --accent: var(--school-orange);
-
-    --yellow: rgb(237, 183, 77); /* #edb74d */
-    --red: rgb(235, 102, 102); /* #eb6666 */
-    --green: rgb(111, 177, 138); /* #6fb18a */
+    --yellow: rgb(237, 183, 77);
+    --red: rgb(235, 102, 102);
+    --green: rgb(111, 177, 138);
 }
 
 .content {

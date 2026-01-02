@@ -6,6 +6,7 @@ import "@/app/(logged-in)/(news)/latest-news/style.css";
 import { useArticles } from "./components/useArticles";
 import { isScholarshipRelated } from "./components/utils";
 import { ArticlesSection } from "./components/ArticlesSection";
+import Link from "next/link";
 
 const LatestNewsPage: React.FC = () => {
   const { articles, loading } = useArticles();
@@ -48,9 +49,26 @@ const LatestNewsPage: React.FC = () => {
     return { scholarshipArticles: scholarship, otherArticles: other };
   }, [filteredArticles]);
 
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const otherSectionRef = React.useRef<HTMLDivElement>(null);
+  const schoolSectionRef = React.useRef<HTMLDivElement>(null);
+
+  const scrollToOtherSection = (
+    ref: React.RefObject<HTMLDivElement | null>,
+  ) => {
+    const container = containerRef.current;
+    const target = ref.current;
+    if (container && target) {
+      container.scrollTo({
+        top: target.offsetTop,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <div className="module-container">
-      <div className="module-quiz-box">
+      <div className="module-quiz-box" ref={containerRef}>
         <div className="search-box-container">
           <div className="search-box">
             <input
@@ -93,15 +111,37 @@ const LatestNewsPage: React.FC = () => {
           </div>
         ) : (
           <>
+            <Link
+              href="#other"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToOtherSection(otherSectionRef);
+              }}
+            >
+              Other
+            </Link>{" "}
+            <Link
+              href="#school"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToOtherSection(schoolSectionRef);
+              }}
+            >
+              School
+            </Link>
             <ArticlesSection
+              ref={schoolSectionRef}
               title="Scholarship & School-Related Scams"
               articles={scholarshipArticles}
               icon="📚"
+              id="school"
             />
             <ArticlesSection
+              ref={otherSectionRef}
               title="Other Scam-Related News"
               articles={otherArticles}
               icon="🚨"
+              id="other"
             />
           </>
         )}

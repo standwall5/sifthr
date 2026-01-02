@@ -20,7 +20,7 @@ export function useModule(id: string) {
 
     fetchModuleComplete(id)
       .then((data) => {
-        if (!data.sections.length)
+        if (!data || !data.sections.length)
           throw new Error("No sections found for this module");
         if (!cancelled) {
           setModuleData(data);

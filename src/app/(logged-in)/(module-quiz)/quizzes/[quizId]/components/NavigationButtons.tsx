@@ -1,3 +1,5 @@
+import Button from "@/app/components/Button/Button";
+
 type NavigationButtonsProps = {
   currentPage: number;
   totalPages: number;
@@ -17,21 +19,13 @@ export default function NavigationButtons({
 }: NavigationButtonsProps) {
   return (
     <div className="nextPrev" style={{ marginTop: 24 }}>
-      <button
-        className="sifthr-button"
-        onClick={onPrev}
-        disabled={currentPage <= 1}
-      >
+      <Button onClick={onPrev} disabled={currentPage <= 1}>
         Previous
-      </button>
+      </Button>
       {currentPage < totalPages ? (
-        <button className="sifthr-button" onClick={onNext}>
-          Next
-        </button>
+        <Button onClick={onNext}>Next</Button>
       ) : !isComplete ? (
-        <button className="sifthr-button" onClick={onSubmit}>
-          Submit Quiz
-        </button>
+        <Button onClick={onSubmit}>Submit Quiz</Button>
       ) : null}
     </div>
   );

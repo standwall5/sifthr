@@ -27,14 +27,19 @@ const Support = () => {
     <div className="module-container">
       <div className="module-quiz-box">
         <div className={`module-quiz-collection ${styles.supportCollection}`}>
-          {/* Place support groups here */}
-          <div className={`module-quiz-card ${styles.supportCard}`}>
-            <img
-              className={styles.supportLogo}
-              src="/assets/images/NPC_Logo.webp"
-              alt="National Privacy Commission"
-            />
-          </div>
+          {supportOrganizations.map((org) => (
+            <div
+              key={org.supportId}
+              className={`module-quiz-card ${styles.supportCard}`}
+            >
+              <img
+                className={styles.supportLogo}
+                src={org.imageUrl}
+                alt={org.name}
+              />
+              <div className={styles.supportName}>{org.name}</div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

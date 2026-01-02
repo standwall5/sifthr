@@ -42,22 +42,22 @@ export async function getCurrentAppUser(): Promise<User | null> {
  * If not present, upsert a row with provided partial values.
  * Returns the resulting application user or null if not authenticated.
  */
-export async function ensureAppUserUpsert(partial: Partial<User> = {}): Promise<User | null> {
+export async function ensureAppUserUpsert(
+  partial: Partial<User> = {},
+): Promise<User | null> {
   const authUser = await getCurrentAuthUser();
   if (!authUser) return null;
 
-  const { error } = await supabase
-    .from("users")
-    .upsert(
-      {
-        auth_id: authUser.id,
-        name: partial.name ?? authUser.email ?? "User",
-        email: partial.email ?? authUser.email ?? undefined,
-        age: partial.age ?? undefined,
-        is_admin: partial.is_admin ?? false,
-      },
-      { onConflict: "auth_id" }
-    );
+  const { error } = await supabase.from("users").upsert(
+    {
+      auth_id: authUser.id,
+      name: partial.name ?? authUser.email ?? "User",
+      email: partial.email ?? authUser.email ?? undefined,
+      age: partial.age ?? undefined,
+      is_admin: partial.is_admin ?? false,
+    },
+    { onConflict: "auth_id" },
+  );
 
   if (error) {
     // Upsert failed (e.g., RLS or constraint); return null so caller can decide next steps

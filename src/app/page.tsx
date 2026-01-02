@@ -1,133 +1,37 @@
 "use client";
-import React, { useState, useEffect, FormEvent } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import "./index.css";
 import Modal from "./components/Modal";
 import LoginForm from "./(auth)/login/components/LoginForm";
 import SignupForm from "./(auth)/signup/components/SignupForm";
-import { supabase } from "@/app/lib/supabaseClient";
+import { useAuth } from "./hooks/useAuth";
+import { useNextStep } from "nextstepjs";
 
 export default function Home() {
   const router = useRouter();
-
-  const [password, setPassword] = useState<string>("");
-  const [repeatPassword, setRepeatPassword] = useState<string>("");
-  const [match, setMatch] = useState<boolean>(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [formType, setFormType] = useState<"login" | "signup" | null>(null);
-  const [showPwdLogin, setShowPwdLogin] = useState<boolean>(false);
-  const [showPwdSignup, setShowPwdSignup] = useState<boolean>(false);
-
-  useEffect(() => {
-    let cancelled = false;
-    supabase.auth.getSession().then(({ data }) => {
-      if (!cancelled && data.session) {
-        router.replace("/home");
-      }
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [router]);
-
-  useEffect(() => {
-    setMatch(password.length > 0 && password === repeatPassword);
-  }, [password, repeatPassword]);
-
-  async function handleLogin(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setErrorMsg(null);
-
-    const formData = new FormData(event.currentTarget);
-    const email = String(formData.get("email") ?? "");
-    const pwd = String(formData.get("password") ?? "");
-
-    if (!email || !pwd) {
-      setErrorMsg("Email and password are required.");
-      return;
-    }
-
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password: pwd,
-    });
-
-    if (error) {
-      setErrorMsg(error.message || "Login failed. Please try again.");
-      return;
-    }
-
-    // No users upsert here. The trigger handled the row creation at signup.
-    window.dispatchEvent(new Event("auth:changed"));
-    router.push("/home");
-  }
-
-  async function handleRegister(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setErrorMsg(null);
-
-    const formData = new FormData(event.currentTarget);
-    const name = String(formData.get("name") ?? "");
-    const ageStr = String(formData.get("age") ?? "");
-    const email = String(formData.get("email") ?? "");
-    const pwd = String(formData.get("password") ?? "");
-    const rpt = String(formData.get("repeatPassword") ?? "");
-    const age = Number.isNaN(Number(ageStr)) ? undefined : Number(ageStr);
-
-    if (!name || !email || !pwd || !rpt || age === undefined) {
-      setErrorMsg("All fields are required.");
-      return;
-    }
-    if (pwd !== rpt) {
-      setErrorMsg("Passwords do not match.");
-      return;
-    }
-
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password: pwd,
-      options: {
-        data: { name, age },
-      },
-    });
-
-    if (error) {
-      setErrorMsg(error.message || "Registration failed. Please try again.");
-      return;
-    }
-
-    // No users upsert here. The DB trigger creates public.users row automatically.
-    if (data.user) {
-      window.dispatchEvent(new Event("auth:changed"));
-      router.push("/home");
-    } else {
-      setErrorMsg("Please check your email to confirm your account.");
-    }
-  }
-
-  const openLogin = () => {
-    setFormType("login");
-    setModalOpen(true);
-    setShowPwdLogin(false);
-    setErrorMsg(null);
-  };
-
-  const openSignup = () => {
-    setFormType("signup");
-    setModalOpen(true);
-    setShowPwdSignup(false);
-    setErrorMsg(null);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-    setFormType(null);
-    setShowPwdLogin(false);
-    setShowPwdSignup(false);
-    setErrorMsg(null);
-  };
+  const { startNextStep } = useNextStep();
+  const {
+    password,
+    repeatPassword,
+    match,
+    errorMsg,
+    modalOpen,
+    formType,
+    showPwdLogin,
+    showPwdSignup,
+    setPassword,
+    setRepeatPassword,
+    handleLogin,
+    handleRegister,
+    openLogin,
+    openSignup,
+    closeModal,
+    toggleShowPwdLogin,
+    toggleShowPwdSignup,
+    loading,
+  } = useAuth();
 
   return (
     <div className="content">
@@ -137,10 +41,10 @@ export default function Home() {
 
           <div className="card">
             <Image
-              src="/assets/images/indexPhoto.webp"
+              src="/assets/images/landing-page/using-laptop.webp"
               alt="Be prepared"
-              width={500}
-              height={500}
+              width={800}
+              height={800}
               id="imageLogin"
             />
             <div className="cardContent">
@@ -158,7 +62,19 @@ export default function Home() {
         <div className="login-box">
           <button onClick={openLogin}>Login</button>
           <button onClick={openSignup}>Sign-up</button>
-          <button onClick={() => router.push("/home")}>Browse as Guest</button>
+          <button onClick={() => router.push("/latest-news")}>
+            Browse as Guest
+          </button>
+          {/*<button
+            onClick={() => startNextStep("firstVisitTour")}
+            style={{
+              background: "var(--lime)",
+              color: "#000",
+              fontWeight: "bold",
+            }}
+          >
+            🎯 Start Tour (Test)
+          </button>*/}
         </div>
 
         <Modal open={modalOpen} onClose={closeModal}>
@@ -168,7 +84,8 @@ export default function Home() {
               closeModal={closeModal}
               showPwdLogin={showPwdLogin}
               errorMsg={errorMsg}
-              toggleShowPwdLogin={() => setShowPwdLogin((prev) => !prev)}
+              toggleShowPwdLogin={toggleShowPwdLogin}
+              loading={loading}
             />
           )}
           {formType === "signup" && (
@@ -177,10 +94,11 @@ export default function Home() {
               closeModal={closeModal}
               showPwdSignup={showPwdSignup}
               errorMsg={errorMsg}
-              toggleShowPwdSignup={() => setShowPwdSignup((prev) => !prev)}
+              toggleShowPwdSignup={toggleShowPwdSignup}
               onPasswordChange={(e) => setPassword(e.target.value)}
               onRepeatPasswordChange={(e) => setRepeatPassword(e.target.value)}
               match={match}
+              loading={loading}
             />
           )}
         </Modal>

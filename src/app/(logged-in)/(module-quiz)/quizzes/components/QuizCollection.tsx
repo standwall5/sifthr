@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import type { Quiz } from "@/lib/models/types";
+import Card from "@/app/components/Card/Card";
 
 type QuizCollectionProps = {
   filteredQuizzes: Quiz[];
@@ -15,22 +16,12 @@ export default function QuizCollection({
   return (
     <div className="module-quiz-collection">
       {filteredQuizzes.map((quiz) => (
-        <div
+        <Card
           key={quiz.id}
-          className="module-quiz-card"
-          style={{ cursor: "pointer" }}
           onClick={() => router.push(`/quizzes/${quiz.id}`)}
-        >
-          <h2>{quiz.title}</h2>
-          <p>{quiz.description}</p>
-          <svg
-            className="animatedBorderSvg"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-          >
-            <rect x="2" y="2" width="96" height="96" rx="16" ry="16" />
-          </svg>
-        </div>
+          title={quiz.title}
+          description={quiz.description}
+        ></Card>
       ))}
     </div>
   );

@@ -1,5 +1,6 @@
 import React from "react";
 import type { NewsArticle } from "@/lib/models/types";
+import MediumCard from "@/app/components/MediumCard";
 
 interface ArticleCardProps {
   article: NewsArticle;
@@ -17,12 +18,12 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
   };
 
   return (
-    <div
-      className="module-quiz-card article-box"
+    <MediumCard
       onClick={handleClick}
       role="button"
       tabIndex={0}
       onKeyDown={handleKeyDown}
+      hovered={true}
     >
       <div>
         <h2>{article.title}</h2>
@@ -52,6 +53,6 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
           />
         </svg>
       </div>
-    </div>
+    </MediumCard>
   );
 };

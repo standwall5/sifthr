@@ -75,10 +75,50 @@ export function useQuiz(id: string) {
       return next;
     });
   };
-  const submit = () => {
+  const submit = async () => {
     if (!quizData) return;
+
     const newScore = evaluateQuiz(quizData, selectedAnswers, textInputs);
     setScore(newScore);
+
+    // Prepare answers for submission
+    const answers = quizData.questions.map((q, index) => {
+      const isInputType = q.question_type === "input";
+      const userInput = isInputType ? textInputs.get(index) || "" : null;
+      const selectedAnswerId = selectedAnswers.get(index);
+
+      let isCorrect = false;
+      if (isInputType && userInput) {
+        isCorrect =
+          userInput.trim().toLowerCase() ===
+          q.correct_answer?.trim().toLowerCase();
+      } else if (selectedAnswerId) {
+        const selectedAnswer = q.answers.find((a) => a.id === selectedAnswerId);
+        isCorrect = selectedAnswer?.is_correct || false;
+      }
+
+      return {
+        question_id: q.id,
+        user_input: userInput || selectedAnswerId?.toString() || null,
+        is_correct: isCorrect,
+      };
+    });
+
+    // Submit to API
+    try {
+      await fetch("/api/quizzes/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          quiz_id: parseInt(id),
+          score: newScore,
+          answers,
+        }),
+      });
+    } catch (error) {
+      console.error("Failed to submit quiz:", error);
+    }
+
     setComplete(true);
   };
 

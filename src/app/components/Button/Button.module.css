@@ -1,0 +1,46 @@
+.sifthrButton {
+    border: none;
+    background-color: var(--lime);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    transition:
+        transform 0.08s,
+        opacity 1s;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 70%;
+    color: black;
+    position: relative;
+}
+
+/* Hover effect */
+.sifthrButton:hover {
+    box-shadow: 0 0.25rem 0 var(--purple);
+    background-color: rgb(214, 226, 51);
+    transform: translateY(-5px);
+}
+
+/* Active effect that keeps the animation for 0.5s */
+.sifthrButton:active {
+    transition: 0.025s;
+    box-shadow: 0 0rem 0 var(--purple);
+    background-color: rgb(214, 226, 51);
+    transform: translateY(0px);
+}
+
+.body {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.loadingSpinner {
+    position: absolute;
+    left: 1rem; /* Adjust this value based on your button padding */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

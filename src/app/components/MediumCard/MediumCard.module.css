@@ -1,0 +1,29 @@
+.mediumCard {
+    width: 90%;
+    height: 90%;
+    /* padding: 2rem; */
+    background-color: var(--card-bg);
+
+    box-shadow: 5px 5px 0 var(--lime);
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    border: inset 5px 5px 0 rgb(169, 125, 173);
+    border-radius: 1rem;
+}
+
+.body {
+    margin: 1rem;
+}
+
+.hovered {
+    transition:
+        transform 0.2s cubic-bezier(0.4, 0.2, 0.2, 1),
+        box-shadow 0.2s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.hovered:hover {
+    transform: translateY(-8px);
+    cursor: pointer;
+    color: var(--lime);
+}

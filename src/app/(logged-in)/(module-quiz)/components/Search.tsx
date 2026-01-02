@@ -2,20 +2,23 @@
 
 "use client";
 
-import { useState } from "react";
-
 type SearchProps = {
   search: string;
   setSearch: (value: string) => void;
+  placeholder: string;
 };
 
-export default function Search({ search, setSearch }: SearchProps) {
+export default function Search({
+  search,
+  setSearch,
+  placeholder,
+}: SearchProps) {
   return (
     <div className="search-box-container">
       <div className="search-box">
         <input
           type="text"
-          placeholder="Search quizzes..."
+          placeholder={placeholder}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="mb-4 p-2 border rounded"

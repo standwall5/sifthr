@@ -2,6 +2,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 3rem;
 }
 
 .animatedBorderSvg {
@@ -12,13 +13,13 @@
     pointer-events: none;
     z-index: 0;
     transform: rotate(180deg);
+    vector-effect: non-scaling-stroke;
 }
 
 .animatedBorderSvg rect {
     fill: none;
     stroke: var(--lime);
     stroke-width: 1;
-
     stroke-dasharray: 380; /* perimeter of the rect */
     stroke-dashoffset: 380;
     stroke-linecap: round;
@@ -27,22 +28,64 @@
     transition: stroke-dashoffset 1s cubic-bezier(0.11, 0, 0.11, 1);
 }
 
+.module-quiz-card {
+    width: auto;
+    height: auto;
+    padding: 2rem;
+    font-size: 1rem;
+    background-color: var(--card-bg);
+    box-shadow: 5px 5px 0 var(--lime);
+    margin: 2rem 1rem;
+    border-radius: 1rem;
+    transition: 0.2s;
+    border: 0px solid var(--lime);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    cursor: pointer;
+}
+
 .module-quiz-card:hover .animatedBorderSvg rect {
     stroke-dashoffset: 2;
 }
 
 .article-box {
     width: 80%;
-    height: 10rem;
+    height: auto;
     aspect-ratio: 3/1;
+    overflow: hidden; /* add this */
+}
+
+.article-box {
+    width: 80%;
+    height: 10rem; /* already set */
+    aspect-ratio: 3/1;
+    overflow: hidden; /* add this */
+}
+.article-box p {
+    /* Optionally, clamp lines for a more elegant look */
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* number of lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .section-header {
     font-size: 1.5rem;
     font-weight: bold;
-    margin: 2rem 0 1rem 0;
+    margin: 2rem 0 0rem 0;
     color: var(--text);
     text-align: center;
-    border-bottom: 2px solid var(--purple);
-    padding-bottom: 0.5rem;
+
+    /*border-bottom: 2px solid var(--purple);*/
+    /*padding-bottom: 0.5rem;*/
+}
+
+.section-header span {
+    text-shadow: 0px 2px 0px #000;
+    background-color: var(--purple);
+    padding: 1rem;
 }

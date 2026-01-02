@@ -1,0 +1,46 @@
+.streakContainer {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-around;
+    padding: 1rem;
+}
+
+.streakItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.streakIcon {
+    font-size: 3rem;
+}
+
+.streakInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.streakNumber {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.streakLabel {
+    font-size: 0.9rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+    .streakContainer {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .streakItem {
+        justify-content: center;
+    }
+}

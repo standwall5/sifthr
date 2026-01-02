@@ -1,3 +1,6 @@
+import Button from "@/app/components/Button/Button";
+import Loading from "@/app/components/Loading";
+
 type SignupFormProps = {
   handleRegister: (e: React.FormEvent<HTMLFormElement>) => void;
   closeModal: () => void;
@@ -7,6 +10,7 @@ type SignupFormProps = {
   onPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onRepeatPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   match: boolean;
+  loading: boolean;
 };
 
 export default function SignupForm({
@@ -18,9 +22,10 @@ export default function SignupForm({
   onPasswordChange,
   onRepeatPasswordChange,
   match,
+  loading,
 }: SignupFormProps) {
   return (
-    <form id="signupForm" onSubmit={handleRegister}>
+    <form id="signupForm" onSubmit={handleRegister} style={{ zIndex: 1000 }}>
       <h1>Sign-up</h1>
       <p id="closeSignup" onClick={closeModal}>
         X
@@ -77,9 +82,14 @@ export default function SignupForm({
           {errorMsg}
         </div>
       )}
-      <button type="submit" className="custom-button" disabled={!match}>
+      <Button
+        type="submit"
+        className="custom-button"
+        loading={loading}
+        loadingComponent={<Loading color="white" style={{ fontSize: "8px" }} />}
+      >
         Sign-up
-      </button>
+      </Button>
     </form>
   );
 }

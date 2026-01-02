@@ -1,0 +1,101 @@
+.profileWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.profileContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5rem;
+    background-color: var(--card-bg); /* Adapts to dark/light */
+    padding: 2rem;
+    border-radius: 1rem;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.info h2,
+.info h1 {
+    font-weight: bold;
+    color: var(--text); /* Uses theme-aware text color */
+}
+
+.profileContainer h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.profileContainer h2 {
+    font-size: 18px;
+    color: var(--text); /* Changed from --text-color to --text */
+}
+
+.profileContainer img {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    border: 3px solid var(--purple); /* Adds a themed border */
+}
+
+.summaryContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background-color: var(--box-bg); /* Adapts to dark/light */
+    padding: 2rem;
+    border-radius: 1rem;
+}
+
+.modulePercent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.percent {
+    font-size: 5rem;
+    font-weight: bold;
+    color: var(--lime); /* Use theme color */
+    text-shadow: 0 4px 0 var(--purple);
+}
+
+.percentText {
+    font-size: 1.5rem;
+    width: 50%;
+    color: var(--text); /* Adapts to dark/light */
+}
+
+/* Responsive adjustments for dark mode */
+@media (prefers-color-scheme: dark) {
+    .profileContainer {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .summaryContainer {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* Light mode specific adjustments */
+@media (prefers-color-scheme: light) {
+    .profileContainer {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e0e0e0;
+    }
+
+    .summaryContainer {
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e0e0e0;
+    }
+}

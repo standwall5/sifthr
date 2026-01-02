@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import "./styles.module.css";
 import "../../style.css";
 import type { Quiz } from "@/lib/models/types";
 import Search from "@/app/(logged-in)/(module-quiz)/components/Search";
@@ -27,7 +26,11 @@ const QuizzesPage = () => {
   return (
     <div className="module-container">
       <div className="module-quiz-box">
-        <Search search={search} setSearch={setSearch} />
+        <Search
+          search={search}
+          setSearch={setSearch}
+          placeholder="Search quizzes..."
+        />
         <QuizCollection filteredQuizzes={filteredQuizzes} />
       </div>
     </div>
