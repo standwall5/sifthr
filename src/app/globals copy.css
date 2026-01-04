@@ -1,8 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Configure Tailwind dark mode to use class-based toggling */
-@variant dark (.dark &);
+/* Configure Tailwind dark mode to use prefers-color-scheme */
+@variant dark (@media (prefers-color-scheme: dark));
+
+/* Remove class-based dark variant; we rely on prefers-color-scheme instead */
 
 * {
     padding: 0;
@@ -11,8 +13,9 @@
 }
 
 :root {
-    /* Light mode (default) */
-    color-scheme: light;
+    /* Let the browser style form controls and scrollbars based on OS theme */
+    /* Original Color Scheme */
+    color-scheme: light dark;
     --lime: rgb(200, 229, 36);
     --blue: rgb(131, 165, 240);
     --purple: rgb(153, 85, 235);
@@ -27,31 +30,56 @@
     --red: rgb(235, 102, 102);
     --green: rgb(111, 177, 138);
 
-    /* Light mode specific */
-    --box: transparent;
-    --box-bg: #ffffff;
-    --card-bg: #ffffff;
-    --card-bg-highlight: #f0f0f0;
-}
+    /*color-scheme: light dark;*/
 
-/* Dark mode - triggered by .dark class on html element */
-html.dark {
-    color-scheme: dark;
-    --box: #352a3d;
+    /*--lime: rgb(34, 139, 34);
+    --blue: rgb(218, 165, 32);
+    --purple: rgb(255, 140, 0);
 
-    --lime: rgb(200, 229, 36);
-    --blue: rgb(131, 165, 240);
-    --purple: rgb(153, 85, 235);
-    --bg: #16101b;
-    --box-bg: #160a20;
-    --card-bg: #25192e;
-    --card-bg-highlight: #402641;
-    --text: #ffffff;
-    --nav: rgba(66, 61, 112, 0.322);
+    --school-green: rgb(34, 139, 34);
+    --school-gold: rgb(218, 165, 32);
+    --school-orange: rgb(255, 140, 0);
+    --school-brown: rgb(139, 90, 43);
+    --school-cream: rgb(245, 245, 220);
+
+    --bgdark: #1a1a1a;
+    --bg: var(--school-cream);
+    --text-dark: #dbdbdb;
+    --text: #2c2c2c;
+    --nav-dark: rgba(66, 61, 112, 0.322);
+    --nav: rgba(34, 139, 34, 0.15);
+
+    --primary: var(--school-gold);
+    --primary-hover: rgb(204, 153, 25);
+
+    --secondary: var(--school-green);
+    --secondary-hover: rgb(28, 115, 28);
+
+    --accent: var(--school-orange);
 
     --yellow: rgb(237, 183, 77);
     --red: rgb(235, 102, 102);
-    --green: rgb(111, 177, 138);
+    --green: rgb(111, 177, 138); */
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --box: #352a3d;
+
+        --lime: rgb(200, 229, 36);
+        --blue: rgb(131, 165, 240);
+        --purple: rgb(153, 85, 235);
+        --bg: #16101b;
+        --box-bg: #160a20;
+        --card-bg: #25192e;
+        --card-bg-highlight: #402641;
+        --text: #ffffff;
+        --nav: rgba(66, 61, 112, 0.322);
+
+        --yellow: rgb(237, 183, 77);
+        --red: rgb(235, 102, 102);
+        --green: rgb(111, 177, 138);
+    }
 }
 
 /* Blobs by Juxtoposed */
@@ -63,17 +91,15 @@ html.dark {
     font-weight: normal;
     font-style: normal;
 }
-
 body {
     background-color: var(--bg);
     font-family: "Inter", serif;
     opacity: 1;
     font-family: "Geo Sans";
     color: var(--text);
-    transition:
-        background-color 0.3s ease,
-        color 0.3s ease;
 }
+
+/* Remove class-based dark mode; prefers-color-scheme handles theme */
 
 body::before,
 body::after {
@@ -84,6 +110,7 @@ body::after {
     width: 100%;
     height: 100%;
     z-index: -1;
+
     opacity: 100%;
 }
 
@@ -95,7 +122,6 @@ body::before {
     display: none;
     position: absolute;
 }
-
 .blob-cont {
     display: flex;
     flex-direction: column;

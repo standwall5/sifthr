@@ -20,7 +20,7 @@ export default function LoginForm({
   loading,
 }: LoginFormProps) {
   return (
-    <form id="loginForm" onSubmit={handleLogin}>
+    <form id="loginForm">
       <h1>Login</h1>
       <p id="closeLogin" onClick={closeModal}>
         X

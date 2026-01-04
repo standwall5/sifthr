@@ -7,6 +7,7 @@ import BgBlob from "./components/BgBlob";
 import NotificationProvider from "./components/NotificationProvider";
 import { ThemeProvider } from "./context/ThemeContext";
 import { LanguageProvider } from "./context/LanguageContext";
+import { GuestModeProvider } from "./context/GuestModeContext";
 import CookieConsent from "./components/CookieConsent/CookieConsent";
 import FirstTimeVisitor from "./components/FirstTimeVisitor/FirstTimeVisitor";
 import { NextStepProvider, NextStep } from "nextstepjs";
@@ -83,23 +84,27 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}
       >
-        <LanguageProvider>
-          <NotificationProvider>
-            <NextStepProvider>
-              <NextStep steps={steps} cardComponent={VisualNovelCard}>
-                <FirstTimeVisitor>
-                  <Navbar />
-                  <BgBlob />
-                  <main className="app-main">
-                    <div className="container">{children}</div>
-                  </main>
-                  <Footer />
-                  <CookieConsent />
-                </FirstTimeVisitor>
-              </NextStep>
-            </NextStepProvider>
-          </NotificationProvider>
-        </LanguageProvider>
+        <ThemeProvider>
+          <LanguageProvider>
+            <GuestModeProvider>
+              <NotificationProvider>
+                <NextStepProvider>
+                  <NextStep steps={steps} cardComponent={VisualNovelCard}>
+                    <FirstTimeVisitor>
+                      <Navbar />
+                      <BgBlob />
+                      <main className="app-main">
+                        <div className="container">{children}</div>
+                      </main>
+                      <Footer />
+                      <CookieConsent />
+                    </FirstTimeVisitor>
+                  </NextStep>
+                </NextStepProvider>
+              </NotificationProvider>
+            </GuestModeProvider>
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

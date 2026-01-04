@@ -26,7 +26,7 @@ export default function SignupForm({
   loading,
 }: SignupFormProps) {
   return (
-    <form id="signupForm" onSubmit={handleRegister} style={{ zIndex: 1000 }}>
+    <form id="signupForm" style={{ zIndex: 1000 }}>
       <h1>Sign-up</h1>
       <p id="closeSignup" onClick={closeModal}>
         X

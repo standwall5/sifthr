@@ -8,10 +8,13 @@ import LoginForm from "./(auth)/login/components/LoginForm";
 import SignupForm from "./(auth)/signup/components/SignupForm";
 import { useAuth } from "./hooks/useAuth";
 import { useNextStep } from "nextstepjs";
+import { activateGuestMode, getOrCreateGuestProfile } from "./lib/guestService";
+import { useGuestMode } from "./context/GuestModeContext";
 
 export default function Home() {
   const router = useRouter();
   const { startNextStep } = useNextStep();
+  const { refreshGuestStatus } = useGuestMode();
   const {
     password,
     repeatPassword,
@@ -32,6 +35,29 @@ export default function Home() {
     toggleShowPwdSignup,
     loading,
   } = useAuth();
+
+  // ✅ Handle browse as guest
+  const handleBrowseAsGuest = () => {
+    try {
+      // Activate guest mode
+      activateGuestMode();
+
+      // Create or get guest profile
+      getOrCreateGuestProfile();
+
+      console.log("Guest mode activated");
+
+      // Refresh guest status in context
+      refreshGuestStatus();
+
+      // Navigate to home page for guests
+      router.push("/home");
+    } catch (error) {
+      console.error("Failed to initialize guest mode:", error);
+      // Still navigate even if localStorage fails
+      router.push("/home");
+    }
+  };
 
   return (
     <div className="content">
@@ -62,9 +88,7 @@ export default function Home() {
         <div className="login-box">
           <button onClick={openLogin}>Login</button>
           <button onClick={openSignup}>Sign-up</button>
-          <button onClick={() => router.push("/latest-news")}>
-            Browse as Guest
-          </button>
+          <button onClick={handleBrowseAsGuest}>Browse as Guest</button>
           {/*<button
             onClick={() => startNextStep("firstVisitTour")}
             style={{

@@ -16,15 +16,18 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>("light");
   const [mounted, setMounted] = useState(false);
 
+  // Initialize theme from localStorage only (no device preference detection)
   useEffect(() => {
     setMounted(true);
     const savedTheme = localStorage.getItem("sifthr-theme") as Theme;
-    if (savedTheme) {
+    if (savedTheme && (savedTheme === "light" || savedTheme === "dark")) {
       setThemeState(savedTheme);
       document.documentElement.classList.toggle("dark", savedTheme === "dark");
     }
+    // Default is light mode if nothing is saved
   }, []);
 
+  // Update theme when it changes
   useEffect(() => {
     if (mounted) {
       document.documentElement.classList.toggle("dark", theme === "dark");

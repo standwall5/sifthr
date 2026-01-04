@@ -2,6 +2,7 @@
 import { useEffect, useState, useMemo } from "react";
 import type { Quiz, Question, Answer } from "@/lib/models/types";
 import { fetchQuizComplete, evaluateQuiz } from "../services/quizService";
+import { isGuestMode, submitGuestQuiz } from "@/app/lib/guestService";
 
 type QuestionWithAnswers = Question & { answers: Answer[] };
 type QuizComplete = { quiz: Quiz; questions: QuestionWithAnswers[] };
@@ -18,6 +19,12 @@ export function useQuiz(id: string) {
   );
   const [textInputs, setTextInputs] = useState<Map<number, string>>(new Map());
   const [score, setScore] = useState(0);
+  const [isGuest, setIsGuest] = useState(false);
+
+  useEffect(() => {
+    // Check if user is in guest mode
+    setIsGuest(isGuestMode());
+  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -98,23 +105,34 @@ export function useQuiz(id: string) {
       }
 
       return {
+        questionId: q.id,
         question_id: q.id,
+        userInput: userInput || selectedAnswerId?.toString() || null,
         user_input: userInput || selectedAnswerId?.toString() || null,
+        isCorrect: isCorrect,
         is_correct: isCorrect,
       };
     });
 
-    // Submit to API
+    // Submit based on guest mode or authenticated user
     try {
-      await fetch("/api/quizzes/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          quiz_id: parseInt(id),
-          score: newScore,
-          answers,
-        }),
-      });
+      if (isGuest) {
+        // Save to localStorage for guest
+        submitGuestQuiz(parseInt(id), newScore, answers);
+        console.log("✅ Guest quiz submission saved to localStorage");
+      } else {
+        // Submit to API for authenticated user
+        await fetch("/api/quizzes/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            quiz_id: parseInt(id),
+            score: newScore,
+            answers,
+          }),
+        });
+        console.log("✅ Quiz submitted to database");
+      }
     } catch (error) {
       console.error("Failed to submit quiz:", error);
     }
@@ -139,5 +157,6 @@ export function useQuiz(id: string) {
     selectAnswer,
     changeInput,
     submit,
+    isGuest,
   };
 }

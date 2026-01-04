@@ -14,15 +14,24 @@
     position: sticky;
     top: 0;
     z-index: 2;
-    background-color: #fff;
+    /* Light mode gradient - light purple/lavender to transparent */
+    background: linear-gradient(
+        180deg,
+        rgb(230, 220, 240) 60%,
+        rgba(245, 245, 220, 0) 100%
+    );
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+/* Dark mode gradient - dark purple to transparent */
+html.dark .search-box-container {
     background: linear-gradient(
         180deg,
         rgb(46, 27, 59) 60%,
         rgba(255, 255, 255, 0) 100%
     );
-    padding: 2rem;
-    display: flex;
-    justify-content: center;
 }
 
 .search-box {

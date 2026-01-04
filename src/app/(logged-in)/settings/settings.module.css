@@ -2,12 +2,16 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 .title {
     font-size: 2.5rem;
     margin-bottom: 2rem;
     text-align: center;
+    color: var(--text);
 }
 
 .settingSection {
@@ -30,9 +34,9 @@
     flex: 1;
     min-width: 150px;
     padding: 1rem 1.5rem;
-    border: 2px solid #ddd;
+    border: 2px solid var(--card-bg-highlight);
     border-radius: 8px;
-    background: white;
+    background: var(--box-bg);
     cursor: pointer;
     font-size: 1rem;
     display: flex;
@@ -40,18 +44,19 @@
     justify-content: center;
     gap: 0.5rem;
     transition: all 0.3s ease;
-    color: #333;
+    color: var(--text);
 }
 
 .optionButton:hover {
     border-color: var(--lime);
     transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .optionButton.active {
     border-color: var(--lime);
     background: var(--lime);
-    color: black;
+    color: #000;
     font-weight: bold;
 }
 
@@ -60,14 +65,11 @@
 }
 
 .infoBox {
-    margin-top: 2rem;
     padding: 1rem;
-    background: #f0f9ff;
-    border-left: 4px solid var(--lime);
-    border-radius: 4px;
+    text-align: center;
+    color: var(--text);
 }
 
 .infoBox p {
     margin: 0;
-    color: #333;
 }
