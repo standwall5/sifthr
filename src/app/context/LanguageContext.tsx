@@ -78,7 +78,19 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setMounted(true);
-    const savedLanguage = localStorage.getItem("sifthr-language") as Language;
+    // Try new key first
+    let savedLanguage = localStorage.getItem("adeducate-language") as Language;
+
+    // Fallback to old key for migration
+    if (!savedLanguage) {
+      savedLanguage = localStorage.getItem("sifthr-language") as Language;
+      if (savedLanguage) {
+        // Migrate to new key
+        localStorage.setItem("adeducate-language", savedLanguage);
+        localStorage.removeItem("sifthr-language");
+      }
+    }
+
     if (savedLanguage) {
       setLanguageState(savedLanguage);
     }
@@ -87,7 +99,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
     if (mounted) {
-      localStorage.setItem("sifthr-language", lang);
+      localStorage.setItem("adeducate-language", lang);
     }
   };
 

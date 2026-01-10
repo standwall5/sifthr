@@ -9,12 +9,18 @@ import { signout } from "@/lib/auth-actions";
 import { supabase } from "@/app/lib/supabaseClient";
 import { clearGuestData } from "@/app/lib/guestService";
 import { useGuestMode } from "@/app/context/GuestModeContext";
-
-interface UserStreak {
-  current_streak: number;
-  longest_streak: number;
-  last_activity_date: string;
-}
+import ThemeToggle from "@/app/components/ThemeToggle";
+import {
+  UserCircleIcon,
+  Cog6ToothIcon,
+  ArrowRightOnRectangleIcon,
+  FireIcon,
+  PlusCircleIcon,
+  AcademicCapIcon,
+  NewspaperIcon,
+  QuestionMarkCircleIcon,
+  ClipboardDocumentListIcon,
+} from "@heroicons/react/24/outline";
 
 const Navbar: React.FC = () => {
   const router = useRouter();
@@ -25,46 +31,42 @@ const Navbar: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [streak, setStreak] = useState<number>(0);
 
-  // Fetch user streak
-  const fetchStreak = async () => {
-    try {
-      const response = await fetch("/api/streaks/current");
-      if (response.ok) {
-        const data = await response.json();
-        setStreak(data.streak?.current_streak || 0);
-      }
-    } catch (error) {
-      console.error("Error fetching streak:", error);
-    }
-  };
-
-  const fetchUser = async () => {
-    // Get Supabase auth user
-    const {
-      data: { user: authUser },
-    } = await supabase.auth.getUser();
-
-    if (authUser) {
-      // Fetch your app's user data from the database
-      const { data: appUser } = await supabase
-        .from("users")
-        .select("*")
-        .eq("auth_id", authUser.id)
-        .single();
-
-      if (appUser) {
-        setUser(appUser);
-        fetchStreak();
-      }
-    } else {
-      // No user logged in
-      setUser(null);
-    }
-
-    setIsLoading(false);
-  };
-
   useEffect(() => {
+    const fetchUser = async () => {
+      // Get Supabase auth user
+      const {
+        data: { user: authUser },
+      } = await supabase.auth.getUser();
+
+      if (authUser) {
+        // Fetch your app's user data from the database
+        const { data: appUser } = await supabase
+          .from("users")
+          .select("*")
+          .eq("auth_id", authUser.id)
+          .single();
+
+        if (appUser) {
+          setUser(appUser);
+          // Fetch streak
+          try {
+            const response = await fetch("/api/streaks/current");
+            if (response.ok) {
+              const data = await response.json();
+              setStreak(data.streak?.current_streak || 0);
+            }
+          } catch (error) {
+            console.error("Error fetching streak:", error);
+          }
+        }
+      } else {
+        // No user logged in
+        setUser(null);
+      }
+
+      setIsLoading(false);
+    };
+
     // Initial fetch
     fetchUser();
 
@@ -89,7 +91,7 @@ const Navbar: React.FC = () => {
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [refreshGuestStatus]);
 
   const handleExitGuestMode = () => {
     clearGuestData();
@@ -108,12 +110,12 @@ const Navbar: React.FC = () => {
           <Link href={loggedIn || isGuest ? "/home" : "/"}>
             <Image
               src="/assets/images/logoModuleFinal.png"
-              alt="Sifthr Logo"
+              alt="AdEducate Logo"
               width={100}
               height={40}
             />
             <h1>
-              Sif<span>thr</span>
+              Ad<span>Educate</span>
             </h1>
           </Link>
         </li>
@@ -123,28 +125,84 @@ const Navbar: React.FC = () => {
           <>
             {isAdmin && (
               <li>
-                <Link className="nav-link" id="adminButton" href="/admin">
+                <Link
+                  className="nav-link"
+                  id="adminButton"
+                  href="/admin"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <PlusCircleIcon
+                    style={{ width: "1.25rem", height: "1.25rem" }}
+                  />
                   Add Content
                 </Link>
               </li>
             )}
             <li>
-              <Link className="nav-link" href="/learning-modules">
+              <Link
+                className="nav-link"
+                href="/learning-modules"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
+                <AcademicCapIcon
+                  style={{ width: "1.25rem", height: "1.25rem" }}
+                />
                 Modules
               </Link>
             </li>
             <li>
-              <Link className="nav-link" href="/quizzes">
+              <Link
+                className="nav-link"
+                href="/quizzes"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
+                <ClipboardDocumentListIcon
+                  style={{ width: "1.25rem", height: "1.25rem" }}
+                />
                 Quizzes
               </Link>
             </li>
             <li>
-              <Link className="nav-link" href="/latest-news">
+              <Link
+                className="nav-link"
+                href="/latest-news"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
+                <NewspaperIcon
+                  style={{ width: "1.25rem", height: "1.25rem" }}
+                />
                 Latest News
               </Link>
             </li>
             <li>
-              <Link className="nav-link" href="/support">
+              <Link
+                className="nav-link"
+                href="/support"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
+                <QuestionMarkCircleIcon
+                  style={{ width: "1.25rem", height: "1.25rem" }}
+                />
                 Support
               </Link>
             </li>
@@ -155,16 +213,45 @@ const Navbar: React.FC = () => {
         {!isLoading && !loggedIn && !isGuest && (
           <>
             <li>
-              <Link className="nav-link" href="/latest-news">
+              <Link
+                className="nav-link"
+                href="/latest-news"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
+                <NewspaperIcon
+                  style={{ width: "1.25rem", height: "1.25rem" }}
+                />
                 Latest News
               </Link>
             </li>
             <li>
-              <Link className="nav-link" href="/support">
+              <Link
+                className="nav-link"
+                href="/support"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
+                <QuestionMarkCircleIcon
+                  style={{ width: "1.25rem", height: "1.25rem" }}
+                />
                 Support
               </Link>
             </li>
           </>
+        )}
+
+        {/* Theme Toggle - Shows for everyone */}
+        {!isLoading && (
+          <li>
+            <ThemeToggle />
+          </li>
         )}
 
         {/* User Icon - Shows for both logged in users and guests */}
@@ -206,15 +293,33 @@ const Navbar: React.FC = () => {
             </div>
 
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg z-50 border dark:border-gray-700">
+              <div
+                className="absolute right-0 mt-2 w-56 rounded-md shadow-lg z-50"
+                style={{
+                  backgroundColor: "var(--card-bg)",
+                  border: "1px solid var(--border-color)",
+                }}
+              >
                 <div className="py-1">
                   {/* For authenticated users - show streak */}
                   {loggedIn && streak > 0 && (
-                    <div className="px-4 py-3 border-b dark:border-gray-700">
+                    <div
+                      className="px-4 py-3"
+                      style={{ borderBottom: "1px solid var(--border-color)" }}
+                    >
                       <div className="flex items-center gap-2 text-sm">
-                        <span className="text-2xl">🔥</span>
+                        <FireIcon
+                          style={{
+                            width: "1.5rem",
+                            height: "1.5rem",
+                            color: "#ff6b35",
+                          }}
+                        />
                         <div>
-                          <div className="font-bold text-gray-900 dark:text-white">
+                          <div
+                            className="font-bold"
+                            style={{ color: "var(--text)" }}
+                          >
                             {streak} Day Streak
                           </div>
                         </div>
@@ -224,11 +329,17 @@ const Navbar: React.FC = () => {
 
                   {/* For guests - show guest notice */}
                   {isGuest && (
-                    <div className="px-4 py-3 border-b dark:border-gray-700">
+                    <div
+                      className="px-4 py-3"
+                      style={{ borderBottom: "1px solid var(--border-color)" }}
+                    >
                       <div className="flex items-center gap-2 text-sm">
                         <span className="text-2xl">🎭</span>
                         <div>
-                          <div className="font-bold text-gray-900 dark:text-white">
+                          <div
+                            className="font-bold"
+                            style={{ color: "var(--text)" }}
+                          >
                             Guest Mode
                           </div>
                         </div>
@@ -238,16 +349,48 @@ const Navbar: React.FC = () => {
 
                   <Link
                     href={isGuest ? "/guest-profile" : "/profile"}
-                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    className="block px-4 py-2 text-sm transition-colors"
+                    style={{
+                      color: "var(--text)",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor =
+                        "var(--card-bg-highlight)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "transparent";
+                    }}
                     onClick={() => setIsDropdownOpen(false)}
                   >
+                    <UserCircleIcon
+                      style={{ width: "1.25rem", height: "1.25rem" }}
+                    />
                     Profile
                   </Link>
                   <Link
                     href="/settings"
-                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    className="block px-4 py-2 text-sm transition-colors"
+                    style={{
+                      color: "var(--text)",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor =
+                        "var(--card-bg-highlight)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "transparent";
+                    }}
                     onClick={() => setIsDropdownOpen(false)}
                   >
+                    <Cog6ToothIcon
+                      style={{ width: "1.25rem", height: "1.25rem" }}
+                    />
                     Settings
                   </Link>
 
@@ -255,15 +398,47 @@ const Navbar: React.FC = () => {
                   {isGuest ? (
                     <button
                       onClick={handleExitGuestMode}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="block w-full text-left px-4 py-2 text-sm transition-colors"
+                      style={{
+                        color: "var(--text)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor =
+                          "var(--card-bg-highlight)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = "transparent";
+                      }}
                     >
+                      <ArrowRightOnRectangleIcon
+                        style={{ width: "1.25rem", height: "1.25rem" }}
+                      />
                       Exit Guest Mode
                     </button>
                   ) : (
                     <button
                       onClick={signout}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="block w-full text-left px-4 py-2 text-sm transition-colors"
+                      style={{
+                        color: "var(--text)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor =
+                          "var(--card-bg-highlight)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = "transparent";
+                      }}
                     >
+                      <ArrowRightOnRectangleIcon
+                        style={{ width: "1.25rem", height: "1.25rem" }}
+                      />
                       Sign Out
                     </button>
                   )}

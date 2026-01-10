@@ -1,23 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { IBM_Plex_Sans } from "next/font/google";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const ibmPlexSans = IBM_Plex_Sans({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const inter = Inter({
-  variable: "--font--inter",
+  variable: "--font-ibm-plex-sans",
 });
 
 export const metadata: Metadata = {
-  title: "Sifthr",
-  description: "Learning module against scams",
+  title: "AdEducate",
+  description:
+    "E-learning platform to identify fake social media advertisements",
 };
 
 export default async function RootLayout({

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Button from "@/app/components/Button/Button";
 import Loading from "@/app/components/Loading";
 import styles from "./Forms.module.css";
+import MarkdownRenderer from "@/app/components/MarkdownRenderer";
 
 type Module = {
   id: number;
@@ -44,8 +45,8 @@ export default function QuizForm() {
     answers: [{ answer_text: "", is_correct: false }],
   });
 
-  // Pin game preview
-  const [showPinPreview, setShowPinPreview] = useState(false);
+  // Question preview state
+  const [showQuestionPreview, setShowQuestionPreview] = useState(false);
 
   useEffect(() => {
     fetchModules();
@@ -247,19 +248,89 @@ export default function QuizForm() {
         <h3>Add Questions ({questions.length} added)</h3>
 
         <div className={styles.formGroup}>
-          <label htmlFor="questionText">Question</label>
-          <input
-            id="questionText"
-            type="text"
-            value={currentQuestion.question_text}
-            onChange={(e) =>
-              setCurrentQuestion({
-                ...currentQuestion,
-                question_text: e.target.value,
-              })
-            }
-            placeholder="Enter your question..."
-          />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "0.5rem",
+            }}
+          >
+            <label htmlFor="questionText">Question (Markdown Supported)</label>
+            <button
+              type="button"
+              onClick={() => setShowQuestionPreview(!showQuestionPreview)}
+              className={styles.previewToggle}
+              style={{
+                padding: "0.5rem 1rem",
+                backgroundColor: "var(--purple)",
+                color: "white",
+                border: "none",
+                borderRadius: "0.5rem",
+                cursor: "pointer",
+                fontSize: "0.875rem",
+                fontWeight: "600",
+              }}
+            >
+              {showQuestionPreview ? "📝 Edit" : "👁️ Preview"}
+            </button>
+          </div>
+
+          {!showQuestionPreview ? (
+            <>
+              <textarea
+                id="questionText"
+                value={currentQuestion.question_text}
+                onChange={(e) =>
+                  setCurrentQuestion({
+                    ...currentQuestion,
+                    question_text: e.target.value,
+                  })
+                }
+                placeholder="Enter your question using Markdown...&#10;&#10;Examples:&#10;**bold** *italic* - bullet point"
+                rows={4}
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "0.9rem",
+                  width: "100%",
+                  padding: "0.75rem",
+                  borderRadius: "0.5rem",
+                  border: "1px solid var(--border-color)",
+                  backgroundColor: "var(--card-bg)",
+                  color: "var(--text)",
+                }}
+              />
+              <small
+                className={styles.hint}
+                style={{ display: "block", marginTop: "0.5rem" }}
+              >
+                💡 Use **bold**, *italic*, - bullets, 1. numbers, [link](url)
+              </small>
+            </>
+          ) : (
+            <div
+              style={{
+                backgroundColor: "var(--card-bg)",
+                border: "1px solid var(--border-color)",
+                borderRadius: "0.5rem",
+                padding: "1rem",
+                minHeight: "120px",
+              }}
+            >
+              {currentQuestion.question_text ? (
+                <MarkdownRenderer content={currentQuestion.question_text} />
+              ) : (
+                <p
+                  style={{
+                    color: "var(--text-secondary)",
+                    fontStyle: "italic",
+                  }}
+                >
+                  No question text to preview.
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         <div className={styles.formGroup}>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone & Fake Ad Detection - Test Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .video-container {
+            position: relative;
+            background: black;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        video {
+            width: 100%;
+            display: block;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .status {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.active {
+            background: #10b981;
+        }
+
+        .status-indicator.inactive {
+            background: #ef4444;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border-left: 5px solid #667eea;
+        }
+
+        .instructions h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .instructions ul {
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #c33;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2em;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 Phone & Fake Ad Detector</h1>
+            <p class="subtitle">Standalone test page - Point your camera at a phone screen showing social media</p>
+        </div>
+
+        <div id="error" class="error" style="display: none;"></div>
+
+        <div class="controls">
+            <button id="startBtn" onclick="startDetection()">🎥 Start Camera</button>
+            <button id="stopBtn" onclick="stopDetection()" disabled>⏹️ Stop</button>
+            <button onclick="location.reload()">🔄 Reload</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="fpsCount">0</div>
+                <div class="stat-label">FPS</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="phoneCount">0</div>
+                <div class="stat-label">Phones Detected</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="socialCount">0</div>
+                <div class="stat-label">Social Media</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="adCount">0</div>
+                <div class="stat-label">Suspicious Ads</div>
+            </div>
+        </div>
+
+        <div class="video-container" id="videoContainer">
+            <video id="video" autoplay playsinline muted></video>
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <div class="status">
+            <span class="status-indicator inactive" id="statusIndicator"></span>
+            <span id="statusText">Ready to start - Click "Start Camera"</span>
+        </div>
+
+        <div class="instructions">
+            <h3>📋 Instructions</h3>
+            <ul>
+                <li><strong>Step 1:</strong> Click "Start Camera" and grant permissions</li>
+                <li><strong>Step 2:</strong> Point your camera at another phone screen</li>
+                <li><strong>Step 3:</strong> Make sure the phone is showing social media (Instagram, Facebook, TikTok, etc.)</li>
+                <li><strong>Step 4:</strong> Watch for colored boxes around detected phones and ads</li>
+                <li><strong>Note:</strong> This is a simplified test page. For full features, use the main app at <code>/camera</code></li>
+            </ul>
+            <h3 style="margin-top: 20px;">🎨 Color Legend</h3>
+            <ul>
+                <li><span style="color: #4a9eff;">🟦 Blue Box</span> - Phone detected</li>
+                <li><span style="color: #00ff88;">🟢 Green Box</span> - Phone with social media detected</li>
+                <li><span style="color: #ffd400;">🟡 Yellow Box</span> - Suspicious ad</li>
+                <li><span style="color: #ff4d4f;">🔴 Red Box</span> - Likely scam ad</li>
+            </ul>
+        </div>
+    </div>
+
+    <script type="module">
+        import { ObjectDetector, FilesetResolver } from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14';
+
+        let detector = null;
+        let stream = null;
+        let animationId = null;
+        let isRunning = false;
+        let fpsCounter = 0;
+        let lastFpsUpdate = 0;
+
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        async function initDetector() {
+            try {
+                updateStatus('Loading MediaPipe model...', false);
+
+                const vision = await FilesetResolver.forVisionTasks(
+                    'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm'
+                );
+
+                detector = await ObjectDetector.createFromOptions(vision, {
+                    baseOptions: {
+                        modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/object_detector/efficientdet_lite0/float16/1/efficientdet_lite0.tflite',
+                        delegate: 'GPU'
+                    },
+                    scoreThreshold: 0.3,
+                    runningMode: 'VIDEO'
+                });
+
+                updateStatus('Model loaded! Starting camera...', false);
+                return true;
+            } catch (error) {
+                showError('Failed to load MediaPipe: ' + error.message);
+                return false;
+            }
+        }
+
+        async function startCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        facingMode: 'environment',
+                        width: { ideal: 1920 },
+                        height: { ideal: 1080 }
+                    },
+                    audio: false
+                });
+
+                video.srcObject = stream;
+
+                video.onloadedmetadata = () => {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    updateStatus('Camera ready - Point at a phone screen!', true);
+                    detect();
+                };
+
+                return true;
+            } catch (error) {
+                showError('Failed to access camera: ' + error.message);
+                return false;
+            }
+        }
+
+        function detect() {
+            if (!isRunning || !detector || video.readyState !== 4) {
+                if (isRunning) {
+                    animationId = requestAnimationFrame(detect);
+                }
+                return;
+            }
+
+            const startTime = performance.now();
+
+            try {
+                const detections = detector.detectForVideo(video, startTime);
+
+                // Filter for phones
+                const phones = detections.detections.filter(d =>
+                    d.categories[0].categoryName === 'cell phone' ||
+                    d.categories[0].categoryName === 'mobile phone'
+                );
+
+                drawDetections(phones);
+                updateStats(phones);
+
+                // FPS calculation
+                fpsCounter++;
+                if (startTime - lastFpsUpdate > 1000) {
+                    document.getElementById('fpsCount').textContent = fpsCounter;
+                    fpsCounter = 0;
+                    lastFpsUpdate = startTime;
+                }
+            } catch (error) {
+                console.error('Detection error:', error);
+            }
+
+            animationId = requestAnimationFrame(detect);
+        }
+
+        function drawDetections(phones) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            phones.forEach(detection => {
+                const bbox = detection.boundingBox;
+                const confidence = detection.categories[0].score;
+
+                // Simple color coding
+                const color = confidence > 0.7 ? '#00ff88' : '#4a9eff';
+
+                // Draw box
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 4;
+                ctx.strokeRect(bbox.originX, bbox.originY, bbox.width, bbox.height);
+
+                // Draw label
+                const label = `Phone ${(confidence * 100).toFixed(0)}%`;
+                ctx.font = 'bold 16px Arial';
+                const textWidth = ctx.measureText(label).width;
+
+                ctx.fillStyle = 'rgba(0,0,0,0.8)';
+                ctx.fillRect(bbox.originX, bbox.originY - 30, textWidth + 20, 25);
+
+                ctx.fillStyle = color;
+                ctx.fillText(label, bbox.originX + 10, bbox.originY - 10);
+
+                // Draw simple indicator if likely showing content
+                if (confidence > 0.8) {
+                    ctx.fillStyle = 'rgba(0,255,136,0.9)';
+                    ctx.fillRect(bbox.originX, bbox.originY + bbox.height + 5, 150, 25);
+                    ctx.fillStyle = '#fff';
+                    ctx.font = 'bold 14px Arial';
+                    ctx.fillText('📱 Screen visible', bbox.originX + 10, bbox.originY + bbox.height + 22);
+                }
+            });
+        }
+
+        function updateStats(phones) {
+            document.getElementById('phoneCount').textContent = phones.length;
+            // Simplified - in real app, these would be calculated from actual detection
+            document.getElementById('socialCount').textContent = phones.filter(p => p.categories[0].score > 0.8).length;
+            document.getElementById('adCount').textContent = '0'; // Placeholder
+        }
+
+        function updateStatus(text, active) {
+            document.getElementById('statusText').textContent = text;
+            const indicator = document.getElementById('statusIndicator');
+            indicator.className = 'status-indicator ' + (active ? 'active' : 'inactive');
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = '❌ ' + message;
+            errorDiv.style.display = 'block';
+            updateStatus('Error - Check message above', false);
+        }
+
+        window.startDetection = async function() {
+            if (isRunning) return;
+
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('startBtn').disabled = true;
+
+            if (!detector) {
+                const success = await initDetector();
+                if (!success) {
+                    document.getElementById('startBtn').disabled = false;
+                    return;
+                }
+            }
+
+            const success = await startCamera();
+            if (success) {
+                isRunning = true;
+                document.getElementById('stopBtn').disabled = false;
+            } else {
+                document.getElementById('startBtn').disabled = false;
+            }
+        };
+
+        window.stopDetection = function() {
+            isRunning = false;
+
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+            updateStatus('Stopped', false);
+        };
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (isRunning) {
+                stopDetection();
+            }
+        });
+    </script>
+</body>
+</html>

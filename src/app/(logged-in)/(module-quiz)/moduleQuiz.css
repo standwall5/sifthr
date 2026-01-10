@@ -99,7 +99,7 @@ h2 {
     background-color: var(--lime);
 }
 
-.sifthr-button {
+.adeducate-button {
     border: none;
     background-color: var(--lime);
     padding: 1rem;
@@ -110,20 +110,19 @@ h2 {
     cursor: pointer;
     font-size: 1.5rem;
     font-weight: bold;
-    width: 70%;
-    color: black;
     position: relative;
+    color: black;
 }
 
 /* Hover effect */
-.sifthr-button:hover {
+.adeducate-button:hover {
     box-shadow: 0 0.25rem 0 var(--purple);
     background-color: rgb(214, 226, 51);
     transform: translateY(-5px);
 }
 
 /* Active effect that keeps the animation for 0.5s */
-.sifthr-button:active {
+.adeducate-button:active {
     transition: 0.025s;
     box-shadow: 0 0rem 0 var(--purple);
     background-color: rgb(214, 226, 51);
@@ -165,10 +164,10 @@ input[type="radio"] {
 }
 
 input[type="radio"]:checked + label {
-    background-color: var(--purple);
-    /* color: white; */
+    background-color: var(--lime);
+    color: var(--text);
     transform: translateY(2px);
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 0 var(--purple);
 }
 
 .quiz-score {
@@ -204,7 +203,7 @@ input[type="checkbox"] + label::before {
     content: "☐";
     margin-right: 0.75rem;
     font-size: 1.5rem;
-    color: var(--purple);
+    color: var(--text);
 }
 
 input[type="checkbox"]:checked + label {

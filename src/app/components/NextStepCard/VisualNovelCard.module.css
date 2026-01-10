@@ -38,7 +38,7 @@
     position: fixed;
     bottom: 40px;
     z-index: 10000;
-    background: var(--card-bg, #ffffff);
+    background: var(--card-bg);
     border: 3px solid var(--lime);
     border-radius: 20px;
     padding: 28px;
@@ -72,44 +72,6 @@
     }
 }
 
-/* Light mode */
-@media (prefers-color-scheme: light) {
-    .dialogueBox {
-        background: #ffffff;
-    }
-
-    .content {
-        color: #2c2c2c;
-    }
-
-    .dialogueLeft::after {
-        border-right-color: #ffffff;
-    }
-
-    .dialogueRight::after {
-        border-left-color: #ffffff;
-    }
-}
-
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-    .dialogueBox {
-        background: var(--card-bg, #25192e);
-    }
-
-    .content {
-        color: var(--text-dark, #dbdbdb);
-    }
-
-    .dialogueLeft::after {
-        border-right-color: var(--card-bg, #25192e);
-    }
-
-    .dialogueRight::after {
-        border-left-color: var(--card-bg, #25192e);
-    }
-}
-
 /* Speech bubble - when mascot on LEFT */
 .dialogueLeft::before {
     content: "";
@@ -128,7 +90,7 @@
     bottom: 80px;
     border-top: 12px solid transparent;
     border-bottom: 12px solid transparent;
-    border-right: 17px solid var(--card-bg, #ffffff);
+    border-right: 17px solid var(--card-bg);
 }
 
 /* Speech bubble - when mascot on RIGHT */
@@ -149,7 +111,7 @@
     bottom: 80px;
     border-top: 12px solid transparent;
     border-bottom: 12px solid transparent;
-    border-left: 17px solid var(--card-bg, #ffffff);
+    border-left: 17px solid var(--card-bg);
 }
 
 .titleContainer {

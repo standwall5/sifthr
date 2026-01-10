@@ -23,7 +23,7 @@ export default function Button({
   loading = false,
   loadingComponent,
 }: ButtonProps) {
-  const buttonClassName = `${styles.sifthrButton} ${className || ""}`.trim();
+  const buttonClassName = `${styles.adeducateButton} ${className || ""}`.trim();
 
   return (
     <button

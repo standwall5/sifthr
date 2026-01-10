@@ -8,7 +8,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
-    border: inset 5px 5px 0 rgb(169, 125, 173);
+    border: inset 5px 5px 0 var(--purple);
     border-radius: 1rem;
 }
 

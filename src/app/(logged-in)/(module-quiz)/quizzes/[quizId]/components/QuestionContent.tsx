@@ -1,4 +1,5 @@
 import type { Answer, Question } from "@/lib/models/types";
+import MarkdownRenderer from "@/app/components/MarkdownRenderer";
 
 type QuestionContentProps = {
   question: Question;
@@ -23,7 +24,9 @@ export default function QuestionContent({
 }: QuestionContentProps) {
   return (
     <>
-      <h2 className="title">{question.question_text}</h2>
+      <div className="title">
+        <MarkdownRenderer content={question.question_text} />
+      </div>
       {(() => {
         switch (question.question_type) {
           case "multipleChoice":
@@ -41,7 +44,7 @@ export default function QuestionContent({
                     />
                     <label
                       htmlFor={`answer-${answer.id}`}
-                      className="sifthr-button"
+                      className="adeducate-button"
                     >
                       {answer.answer_text}
                     </label>
@@ -65,7 +68,7 @@ export default function QuestionContent({
                     />
                     <label
                       htmlFor={`answer-${answer.id}`}
-                      className="sifthr-button"
+                      className="adeducate-button"
                     >
                       {answer.answer_text}
                     </label>

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
+import Breadcrumbs from "./components/Breadcrumbs";
 import Footer from "./components/Footer";
 import BgBlob from "./components/BgBlob";
 import NotificationProvider from "./components/NotificationProvider";
@@ -14,23 +15,16 @@ import { NextStepProvider, NextStep } from "nextstepjs";
 import type { Tour } from "nextstepjs";
 import VisualNovelCard from "./components/NextStepCard/VisualNovelCard";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const ibmPlexSans = IBM_Plex_Sans({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const inter = Inter({
-  variable: "--font--inter",
+  variable: "--font-ibm-plex-sans",
 });
 
 export const metadata: Metadata = {
-  title: "Sifthr",
-  description: "Learning module against scams",
+  title: "AdEducate",
+  description:
+    "E-learning platform to identify fake social media advertisements",
 };
 
 // Define tour steps
@@ -40,11 +34,11 @@ const steps: Tour[] = [
     steps: [
       {
         icon: <>👋</>,
-        title: "Welcome to Sifthr!",
+        title: "Welcome to AdEducate!",
         content: (
           <>
             Hi there! I&apos;m your guide. Let me show you around and help you
-            get started with learning about scam prevention.
+            get started with learning about spotting fake advertisements.
           </>
         ),
         side: "bottom",
@@ -59,7 +53,7 @@ const steps: Tour[] = [
         content: (
           <>
             This is where you&apos;ll find all our interactive learning modules
-            to help you identify and avoid scams. Click through to start
+            to help you identify and avoid fake ads. Click through to start
             learning!
           </>
         ),
@@ -81,9 +75,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}
-      >
+      <body className={`${ibmPlexSans.variable} antialiased`}>
         <ThemeProvider>
           <LanguageProvider>
             <GuestModeProvider>
@@ -93,6 +85,7 @@ export default async function RootLayout({
                     <FirstTimeVisitor>
                       <Navbar />
                       <BgBlob />
+                      <Breadcrumbs />
                       <main className="app-main">
                         <div className="container">{children}</div>
                       </main>

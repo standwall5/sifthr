@@ -19,7 +19,19 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Initialize theme from localStorage only (no device preference detection)
   useEffect(() => {
     setMounted(true);
-    const savedTheme = localStorage.getItem("sifthr-theme") as Theme;
+    // Try new key first
+    let savedTheme = localStorage.getItem("adeducate-theme") as Theme;
+
+    // Fallback to old key for migration
+    if (!savedTheme) {
+      savedTheme = localStorage.getItem("sifthr-theme") as Theme;
+      if (savedTheme) {
+        // Migrate to new key
+        localStorage.setItem("adeducate-theme", savedTheme);
+        localStorage.removeItem("sifthr-theme");
+      }
+    }
+
     if (savedTheme && (savedTheme === "light" || savedTheme === "dark")) {
       setThemeState(savedTheme);
       document.documentElement.classList.toggle("dark", savedTheme === "dark");
@@ -31,7 +43,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (mounted) {
       document.documentElement.classList.toggle("dark", theme === "dark");
-      localStorage.setItem("sifthr-theme", theme);
+      localStorage.setItem("adeducate-theme", theme);
     }
   }, [theme, mounted]);
 

@@ -40,8 +40,8 @@ const VisualNovelCard: React.FC<CardComponentProps> = ({
         }`}
       >
         <Image
-          src="/assets/images/next-step/mascotSifthr.webp"
-          alt="Sifthr Mascot"
+          src="/assets/images/next-step/mascotAdEducate.webp"
+          alt="AdEducate Mascot"
           width={300}
           height={400}
           className={styles.mascotImage}

@@ -1,9 +1,5 @@
 .badgesContainer {
-    margin-top: 2rem;
-    padding: 2rem;
-    background-color: var(--card-bg);
-    border-radius: 1rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 0;
 }
 
 .title {
@@ -11,10 +7,12 @@
     font-weight: bold;
     margin-bottom: 1.5rem;
     text-align: center;
+    color: var(--text);
 }
 
 .noBadges {
     text-align: center;
+    color: var(--text-secondary);
     opacity: 0.7;
     font-size: 1.1rem;
     padding: 2rem;
@@ -35,14 +33,16 @@
     align-items: center;
     transition:
         transform 0.3s,
-        box-shadow 0.3s;
-    border: 2px solid transparent;
+        box-shadow 0.3s,
+        border-color 0.3s;
+    border: 2px solid var(--border-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .badgeCard:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 20px rgba(153, 85, 235, 0.2);
-    border-color: rgb(153, 85, 235);
+    border-color: var(--purple);
 }
 
 .badgeIcon {
@@ -52,12 +52,10 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    position: relative;
 }
 
 .badgeIcon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
     filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
 }
 
@@ -73,42 +71,29 @@
 .badgeInfo h4 {
     font-size: 1.2rem;
     font-weight: bold;
-    color: rgb(153, 85, 235);
+    color: var(--purple);
     margin-bottom: 0.25rem;
 }
 
 .badgeInfo p {
     font-size: 0.9rem;
+    color: var(--text);
     opacity: 0.8;
     margin-bottom: 0.5rem;
 }
 
 .earnedDate {
     font-size: 0.8rem;
+    color: var(--text-secondary);
     opacity: 0.6;
     font-style: italic;
 }
 
-/* Light mode specific (default) */
-.badgesContainer {
-    background-color: #f5f5f5;
-    border: 1px solid #e0e0e0;
-}
-
-.badgeCard {
-    background-color: #ffffff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    border: 1px solid #f0f0f0;
-}
-
-/* Dark mode specific */
-html.dark .badgesContainer {
-    background-color: #25192e;
-    border: none;
-}
-
+/* Dark mode adjustments */
 html.dark .badgeCard {
-    background-color: #160a20;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    border: 2px solid transparent;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+html.dark .badgeCard:hover {
+    box-shadow: 0 8px 20px rgba(153, 85, 235, 0.3);
 }

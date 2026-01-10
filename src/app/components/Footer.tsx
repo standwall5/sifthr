@@ -22,7 +22,7 @@ const Footer = () => {
         <a href="#">
           <img src="/assets/images/logoModuleFinal.png" alt="" />
           <h1>
-            Sif<span>thr</span>
+            Ad<span>Educate</span>
           </h1>
         </a>
       </div>

@@ -1,6 +1,7 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import MarkdownRenderer from "@/app/components/MarkdownRenderer";
 import "../../../moduleQuiz.css";
 
 type SectionData = {
@@ -47,7 +48,7 @@ export default function ModuleSectionPage() {
 
   const progress = Math.min(
     100,
-    Math.max(0, (data.section.position / data.totalPages) * 100)
+    Math.max(0, (data.section.position / data.totalPages) * 100),
   );
 
   const handleNext = () => {
@@ -106,22 +107,22 @@ export default function ModuleSectionPage() {
           </div>
         </div>
         <h2>{data.section.title}</h2>
-        <p>{data.section.content}</p>
+        <MarkdownRenderer content={data.section.content} />
       </div>
       <div className="nextPrev" style={{ marginTop: 24 }}>
         <button
-          className="sifthr-button"
+          className="adeducate-button"
           onClick={handlePrev}
           disabled={data.section.position <= 1}
         >
           Previous
         </button>
         {data.section.position < data.totalPages ? (
-          <button className="sifthr-button" onClick={handleNext}>
+          <button className="adeducate-button" onClick={handleNext}>
             Next
           </button>
         ) : !complete ? (
-          <button className="sifthr-button" onClick={handleComplete}>
+          <button className="adeducate-button" onClick={handleComplete}>
             Complete
           </button>
         ) : null}

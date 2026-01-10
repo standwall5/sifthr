@@ -6,6 +6,7 @@ import Loading from "@/app/components/Loading";
 import styles from "./Forms.module.css";
 import { supabase } from "@/app/lib/supabaseClient";
 import Image from "next/image";
+import MarkdownRenderer from "@/app/components/MarkdownRenderer";
 
 type Module = {
   id: number;
@@ -48,6 +49,7 @@ export default function ModuleForm() {
   const [sectionImagePreview, setSectionImagePreview] = useState<string | null>(
     null,
   );
+  const [showMarkdownPreview, setShowMarkdownPreview] = useState(false);
 
   useEffect(() => {
     fetchModules();
@@ -564,15 +566,87 @@ export default function ModuleForm() {
 
                 {mediaType === "text" ? (
                   <div className={styles.formGroup}>
-                    <label htmlFor="sectionContent">Section Content</label>
-                    <textarea
-                      id="sectionContent"
-                      value={sectionContent}
-                      onChange={(e) => setSectionContent(e.target.value)}
-                      placeholder="Enter the content for this section..."
-                      rows={8}
-                      required
-                    />
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: "0.5rem",
+                      }}
+                    >
+                      <label htmlFor="sectionContent">
+                        Section Content (Markdown Supported)
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setShowMarkdownPreview(!showMarkdownPreview)
+                        }
+                        className={styles.previewToggle}
+                        style={{
+                          padding: "0.5rem 1rem",
+                          backgroundColor: "var(--purple)",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "0.5rem",
+                          cursor: "pointer",
+                          fontSize: "0.875rem",
+                          fontWeight: "600",
+                        }}
+                      >
+                        {showMarkdownPreview ? "📝 Edit" : "👁️ Preview"}
+                      </button>
+                    </div>
+
+                    {!showMarkdownPreview ? (
+                      <>
+                        <textarea
+                          id="sectionContent"
+                          value={sectionContent}
+                          onChange={(e) => setSectionContent(e.target.value)}
+                          placeholder="Enter the content for this section using Markdown...&#10;&#10;Examples:&#10;# Heading 1&#10;## Heading 2&#10;**bold text**&#10;*italic text*&#10;- Bullet point&#10;1. Numbered list&#10;[Link text](https://example.com)"
+                          rows={12}
+                          required
+                          style={{
+                            fontFamily: "monospace",
+                            fontSize: "0.9rem",
+                          }}
+                        />
+                        <small
+                          className={styles.hint}
+                          style={{ display: "block", marginTop: "0.5rem" }}
+                        >
+                          💡 <strong>Markdown Tips:</strong> Use # for headings,
+                          **bold**, *italic*, - for bullets, 1. for numbers,
+                          [text](url) for links, &gt; for quotes
+                        </small>
+                      </>
+                    ) : (
+                      <div
+                        style={{
+                          backgroundColor: "var(--card-bg)",
+                          border: "1px solid var(--border-color)",
+                          borderRadius: "0.5rem",
+                          padding: "1rem",
+                          minHeight: "300px",
+                          maxHeight: "500px",
+                          overflowY: "auto",
+                        }}
+                      >
+                        {sectionContent ? (
+                          <MarkdownRenderer content={sectionContent} />
+                        ) : (
+                          <p
+                            style={{
+                              color: "var(--text-secondary)",
+                              fontStyle: "italic",
+                            }}
+                          >
+                            No content to preview. Start typing in the editor.
+                          </p>
+                        )}
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div className={styles.formGroup}>

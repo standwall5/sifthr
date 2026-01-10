@@ -59,11 +59,16 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   // Check if guest mode is active by looking for the guest mode cookie
-  const guestModeCookie = request.cookies.get("sifthr_guest_mode_active");
+  const guestModeCookie = request.cookies.get("adeducate_guest_mode_active");
   const isGuestMode = guestModeCookie?.value === "true";
 
   // If user is authenticated and trying to access the landing page, redirect to /home
   if (user && request.nextUrl.pathname === "/") {
+    return NextResponse.redirect(new URL("/home", request.url));
+  }
+
+  // If guest is trying to access the landing page, redirect to /home
+  if (isGuestMode && request.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL("/home", request.url));
   }
 

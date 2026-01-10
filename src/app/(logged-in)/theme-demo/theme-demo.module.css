@@ -1,0 +1,174 @@
+.demoWrapper {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header h1 {
+    font-size: 3rem;
+    margin: 0;
+    color: var(--text);
+}
+
+.header p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.colorGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.colorSwatch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.swatch {
+    width: 80px;
+    height: 80px;
+    border-radius: 0.5rem;
+    border: 2px solid var(--border-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.swatch:hover {
+    transform: scale(1.1);
+}
+
+.colorSwatch span {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.colorSwatch code {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    background-color: var(--card-bg-highlight);
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.typography {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.typography h1 {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+.typography h2 {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.typography h3 {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.typography p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.typography a {
+    color: var(--purple);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.typography a:hover {
+    text-decoration: underline;
+}
+
+.buttonDemo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.cardExample {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.cardExample h3 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text);
+}
+
+.cardExample p {
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+.themeInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.themeInfo p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.themeInfo strong {
+    color: var(--purple);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .colorGrid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 1rem;
+    }
+
+    .header h1 {
+        font-size: 2rem;
+    }
+
+    .header p {
+        font-size: 1rem;
+    }
+
+    .buttonDemo {
+        flex-direction: column;
+    }
+}

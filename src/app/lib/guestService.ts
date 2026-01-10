@@ -5,7 +5,7 @@
 
 import type { QuizSubmission, UserAnswer } from "@/lib/models/types";
 
-const GUEST_PREFIX = "sifthr_guest_";
+const GUEST_PREFIX = "adeducate_guest_";
 const GUEST_PROFILE_KEY = `${GUEST_PREFIX}profile`;
 const GUEST_MODULE_PROGRESS_KEY = `${GUEST_PREFIX}module_progress`;
 const GUEST_QUIZ_SUBMISSIONS_KEY = `${GUEST_PREFIX}quiz_submissions`;
@@ -99,7 +99,7 @@ export function activateGuestMode(): void {
   if (!isLocalStorageAvailable()) return;
   localStorage.setItem(GUEST_MODE_KEY, "true");
   // Set cookie for middleware detection
-  setCookie("sifthr_guest_mode_active", "true");
+  setCookie("adeducate_guest_mode_active", "true");
 }
 
 /**
@@ -109,7 +109,7 @@ export function deactivateGuestMode(): void {
   if (!isLocalStorageAvailable()) return;
   localStorage.removeItem(GUEST_MODE_KEY);
   // Remove cookie
-  removeCookie("sifthr_guest_mode_active");
+  removeCookie("adeducate_guest_mode_active");
 }
 
 /**
@@ -341,7 +341,7 @@ export function clearGuestData(): void {
   localStorage.removeItem(GUEST_QUIZ_SUBMISSIONS_KEY);
   localStorage.removeItem(GUEST_USER_ANSWERS_KEY);
   localStorage.removeItem(GUEST_MODE_KEY);
-  removeCookie("sifthr_guest_mode_active");
+  removeCookie("adeducate_guest_mode_active");
 }
 
 /**

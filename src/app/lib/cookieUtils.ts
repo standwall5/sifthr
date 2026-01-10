@@ -2,9 +2,9 @@
  * Cookie utilities for managing visitor tracking and consent
  */
 
-const COOKIE_CONSENT_NAME = "sifthr_cookie_consent";
-const VISITOR_COOKIE_NAME = "sifthr_visitor";
-const FIRST_VISIT_SHOWN = "sifthr_first_visit_shown";
+const COOKIE_CONSENT_NAME = "adeducate_cookie_consent";
+const VISITOR_COOKIE_NAME = "adeducate_visitor";
+const FIRST_VISIT_SHOWN = "adeducate_first_visit_shown";
 
 export interface CookieConsent {
   necessary: boolean;
