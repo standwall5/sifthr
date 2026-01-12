@@ -14,6 +14,7 @@ type QuizSpecificProps = {
 
 export default function QuizSpecific({ id }: QuizSpecificProps) {
   const router = useRouter();
+  // const [hasAnswered, setHasAnswered] = useState(false);
 
   const {
     quizData,
@@ -35,6 +36,28 @@ export default function QuizSpecific({ id }: QuizSpecificProps) {
   } = useQuiz(id);
 
   const [selectedCheckboxes, setSelectedCheckboxes] = useState<number[]>([]);
+  const [attemptedProceed, setAttemptedProceed] = useState(false);
+
+  // Determine whether the user can proceed to next/submit for the current question
+  const canProceed = (() => {
+    if (!question) return false;
+    const qType = question.question_type;
+    if (qType === "multipleChoice") {
+      return selectedAnswers.get(currentQuestion) !== undefined;
+    }
+    if (qType === "checkbox") {
+      return selectedCheckboxes.length > 0;
+    }
+    if (qType === "input") {
+      return (textInputs.get(currentQuestion) || "").trim().length > 0;
+    }
+    return true;
+  })();
+
+  // Clear attempted flag when the user becomes able to proceed
+  useEffect(() => {
+    if (canProceed && attemptedProceed) setAttemptedProceed(false);
+  }, [canProceed, attemptedProceed]);
 
   // Keep routing concerns in the component
   useEffect(() => {
@@ -58,6 +81,22 @@ export default function QuizSpecific({ id }: QuizSpecificProps) {
     });
   };
 
+  const handleNext = () => {
+    if (canProceed) {
+      next();
+    } else {
+      setAttemptedProceed(true);
+    }
+  };
+
+  const handleSubmit = () => {
+    if (canProceed) {
+      submit();
+    } else {
+      setAttemptedProceed(true);
+    }
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error)
     return (
@@ -72,7 +111,11 @@ export default function QuizSpecific({ id }: QuizSpecificProps) {
       <div className="module-box">
         {!complete && (
           <>
-            <div className="module-details">
+            <div
+              className={`module-details ${
+                attemptedProceed && !canProceed ? "shake" : ""
+              }`}
+            >
               <ProgressBar currentPage={position} totalPages={totalQuestions} />
               <QuestionContent
                 question={question}
@@ -84,14 +127,26 @@ export default function QuizSpecific({ id }: QuizSpecificProps) {
                 selectedAnswers={selectedCheckboxes}
                 onToggleCheckbox={handleToggleCheckbox}
               />
+              {/* Validation message shown when user hasn't provided an answer/input */}
+              {attemptedProceed && !canProceed && (
+                <div className="validation-message">
+                  {(() => {
+                    if (question.question_type === "input")
+                      return "Please enter an answer";
+                    if (question.question_type === "checkbox")
+                      return "Please select at least one answer";
+                    return "Please select an answer";
+                  })()}
+                </div>
+              )}
             </div>
 
             <NavigationButtons
               currentPage={position}
               totalPages={totalQuestions}
               onPrev={prev}
-              onNext={next}
-              onSubmit={submit}
+              onNext={handleNext}
+              onSubmit={handleSubmit}
               isComplete={complete}
             />
           </>
