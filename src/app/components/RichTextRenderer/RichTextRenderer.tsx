@@ -12,7 +12,7 @@ interface TiptapNode {
   content?: TiptapNode[];
   attrs?: Record<string, unknown>;
   text?: string;
-  marks?: Array<{ type: string }>;
+  marks?: Array<{ type: string; attrs?: Record<string, unknown> }>;
 }
 
 export default function RichTextRenderer({ content }: RichTextRendererProps) {
@@ -158,8 +158,8 @@ export default function RichTextRenderer({ content }: RichTextRendererProps) {
 
   return (
     <div className={styles.richTextContent}>
-      {(parsedContent as { content?: TiptapNode[] }).content?.map((node, i: number) =>
-        renderNode(node, i)
+      {(parsedContent as { content?: TiptapNode[] }).content?.map(
+        (node, i: number) => renderNode(node, i)
       )}
     </div>
   );

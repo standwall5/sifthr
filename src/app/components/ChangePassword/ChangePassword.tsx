@@ -84,7 +84,10 @@ export default function ChangePassword() {
       console.error("Error changing password:", error);
       setMessage({
         type: "error",
-        text: error instanceof Error ? error.message : "Failed to change password. Please try again.",
+        text:
+          error instanceof Error
+            ? error.message
+            : "Failed to change password. Please try again.",
       });
     } finally {
       setLoading(false);

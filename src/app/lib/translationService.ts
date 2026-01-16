@@ -59,10 +59,16 @@ export async function getContentTranslations(
 
   if (error || !data) return {};
 
-  return data.reduce((acc: Record<string, string>, item: { field_name: string; translated_text: string }) => {
-    acc[item.field_name] = item.translated_text;
-    return acc;
-  }, {} as Record<string, string>);
+  return data.reduce(
+    (
+      acc: Record<string, string>,
+      item: { field_name: string; translated_text: string }
+    ) => {
+      acc[item.field_name] = item.translated_text;
+      return acc;
+    },
+    {} as Record<string, string>
+  );
 }
 
 /**
@@ -94,13 +100,15 @@ export async function applyTranslations<T extends Record<string, unknown>>(
   return {
     ...translatedContent,
     translations,
-  };
+  } as TranslatedContent<T>;
 }
 
 /**
  * Apply translations to an array of content items
  */
-export async function applyTranslationsToArray<T extends Record<string, unknown>>(
+export async function applyTranslationsToArray<
+  T extends Record<string, unknown>
+>(
   contentType: ContentType,
   items: T[],
   language: Language = "en",
