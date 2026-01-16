@@ -36,12 +36,12 @@ export default function LearningModulesPage() {
   const sortedModules = useMemo(() => {
     return [...modules].sort((a, b) => {
       const difficultyOrder: Record<string, number> = {
-        beginner: 1,
-        intermediate: 2,
-        advanced: 3,
+        easy: 1,
+        medium: 2,
+        hard: 3,
       };
-      const aVal = difficultyOrder[a.difficulty_level || "beginner"] || 1;
-      const bVal = difficultyOrder[b.difficulty_level || "beginner"] || 1;
+      const aVal = difficultyOrder[a.difficulty || "easy"] || 1;
+      const bVal = difficultyOrder[b.difficulty || "easy"] || 1;
       return aVal - bVal;
     });
   }, [modules]);
