@@ -1,6 +1,5 @@
 "use client";
 
-import { redirect, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import DailyFact from "@/app/components/DailyFact";
@@ -12,7 +11,7 @@ import { shouldShowMigrationPrompt } from "@/app/lib/guestMigration";
 import { supabase } from "@/app/lib/supabaseClient";
 import "./styles.css";
 
-const page = () => {
+export default function HomePage() {
   const [showMigration, setShowMigration] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
 
@@ -116,6 +115,4 @@ const page = () => {
       <RecommendedQuizzes />
     </>
   );
-};
-
-export default page;
+}

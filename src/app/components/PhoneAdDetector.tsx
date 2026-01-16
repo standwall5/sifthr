@@ -867,7 +867,7 @@ export default function PhoneAdDetector() {
                                         fontFamily: "monospace",
                                       }}
                                     >
-                                      "{keyword}"
+                                      &quot;{keyword}&quot;
                                     </span>
                                   ))}
                               </div>

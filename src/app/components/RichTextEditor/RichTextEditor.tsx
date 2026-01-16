@@ -208,7 +208,7 @@ export default function RichTextEditor({
             }`}
             title="Blockquote"
           >
-            ""
+            &quot;&quot;
           </button>
         </div>
       </div>
