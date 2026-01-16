@@ -145,15 +145,21 @@ export default function RecommendedModules() {
                   fill
                   style={{ objectFit: "cover" }}
                   onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    const placeholder = e.currentTarget.parentElement?.querySelector('.icon-placeholder');
+                    e.currentTarget.style.display = "none";
+                    const placeholder =
+                      e.currentTarget.parentElement?.querySelector(
+                        ".icon-placeholder"
+                      );
                     if (placeholder) {
-                      (placeholder as HTMLElement).style.display = 'flex';
+                      (placeholder as HTMLElement).style.display = "flex";
                     }
                   }}
                 />
               ) : null}
-              <div className={`${styles.imagePlaceholder} icon-placeholder`} style={{ display: module.image_url ? 'none' : 'flex' }}>
+              <div
+                className={`${styles.imagePlaceholder} icon-placeholder`}
+                style={{ display: module.image_url ? "none" : "flex" }}
+              >
                 <BookOpenIcon className="w-12 h-12" />
               </div>
             </div>

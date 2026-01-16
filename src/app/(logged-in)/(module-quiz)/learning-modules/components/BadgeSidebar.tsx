@@ -139,16 +139,17 @@ export default function BadgeSidebar({ isOpen, onToggle }: BadgeSidebarProps) {
                   {userBadges.length === 0 ? (
                     <LockClosedIcon className={styles.defaultBadgeIcon} />
                   ) : nextBadge.icon_url ? (
-                    <img 
-                      src={nextBadge.icon_url} 
+                    <img
+                      src={nextBadge.icon_url}
                       alt={nextBadge.name}
                       onError={(e) => {
-                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.style.display = "none";
                         const parent = e.currentTarget.parentElement;
                         if (parent) {
-                          const icon = document.createElement('div');
+                          const icon = document.createElement("div");
                           icon.className = styles.defaultBadgeIcon;
-                          icon.innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 100%; height: 100%"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>';
+                          icon.innerHTML =
+                            '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 100%; height: 100%"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>';
                           parent.appendChild(icon);
                         }
                       }}
@@ -183,73 +184,76 @@ export default function BadgeSidebar({ isOpen, onToggle }: BadgeSidebarProps) {
           {/* All Badges Section */}
           {!loading && badges.length > 0 && (
             <div className={styles.badgeListSection}>
-            <div className={styles.listHeader}>
-              <h3 className={styles.sectionTitle}>All Badges</h3>
-              <button
-                onClick={() =>
-                  setSortOrder(sortOrder === "easiest" ? "hardest" : "easiest")
-                }
-                className={styles.sortButton}
-              >
-                {sortOrder === "easiest" ? "Easiest First" : "Hardest First"}
-              </button>
-            </div>
-
-            {loading ? (
-              <div className={styles.loading}>Loading badges...</div>
-            ) : (
-              <div className={styles.badgeList}>
-                {sortedBadges.map((badge) => {
-                  const isEarned = userBadges.some(
-                    (ub) => ub.badge_id === badge.id
-                  );
-                  return (
-                    <div
-                      key={badge.id}
-                      className={`${styles.badgeItem} ${
-                        isEarned ? styles.earned : styles.locked
-                      }`}
-                    >
-                      <div className={styles.badgeIconSmall}>
-                        {isEarned ? (
-                          badge.icon_url ? (
-                            <img 
-                              src={badge.icon_url} 
-                              alt={badge.name}
-                              onError={(e) => {
-                                e.currentTarget.style.display = 'none';
-                                const parent = e.currentTarget.parentElement;
-                                if (parent) {
-                                  const icon = document.createElement('div');
-                                  icon.className = styles.smallIcon;
-                                  icon.innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 100%; height: 100%"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>';
-                                  parent.appendChild(icon);
-                                }
-                              }}
-                            />
-                          ) : (
-                            <TrophyIcon className={styles.smallIcon} />
-                          )
-                        ) : (
-                          <LockClosedIcon className={styles.smallIcon} />
-                        )}
-                      </div>
-                      <div className={styles.badgeDetails}>
-                        <span className={styles.badgeNameSmall}>
-                          {isEarned ? badge.name : "???"}
-                        </span>
-                        {badge.requirement_value && (
-                          <span className={styles.requirement}>
-                            {isEarned ? badge.requirement_value : "Locked"}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className={styles.listHeader}>
+                <h3 className={styles.sectionTitle}>All Badges</h3>
+                <button
+                  onClick={() =>
+                    setSortOrder(
+                      sortOrder === "easiest" ? "hardest" : "easiest"
+                    )
+                  }
+                  className={styles.sortButton}
+                >
+                  {sortOrder === "easiest" ? "Easiest First" : "Hardest First"}
+                </button>
               </div>
-            )}
-          </div>
+
+              {loading ? (
+                <div className={styles.loading}>Loading badges...</div>
+              ) : (
+                <div className={styles.badgeList}>
+                  {sortedBadges.map((badge) => {
+                    const isEarned = userBadges.some(
+                      (ub) => ub.badge_id === badge.id
+                    );
+                    return (
+                      <div
+                        key={badge.id}
+                        className={`${styles.badgeItem} ${
+                          isEarned ? styles.earned : styles.locked
+                        }`}
+                      >
+                        <div className={styles.badgeIconSmall}>
+                          {isEarned ? (
+                            badge.icon_url ? (
+                              <img
+                                src={badge.icon_url}
+                                alt={badge.name}
+                                onError={(e) => {
+                                  e.currentTarget.style.display = "none";
+                                  const parent = e.currentTarget.parentElement;
+                                  if (parent) {
+                                    const icon = document.createElement("div");
+                                    icon.className = styles.smallIcon;
+                                    icon.innerHTML =
+                                      '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 100%; height: 100%"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>';
+                                    parent.appendChild(icon);
+                                  }
+                                }}
+                              />
+                            ) : (
+                              <TrophyIcon className={styles.smallIcon} />
+                            )
+                          ) : (
+                            <LockClosedIcon className={styles.smallIcon} />
+                          )}
+                        </div>
+                        <div className={styles.badgeDetails}>
+                          <span className={styles.badgeNameSmall}>
+                            {isEarned ? badge.name : "???"}
+                          </span>
+                          {badge.requirement_value && (
+                            <span className={styles.requirement}>
+                              {isEarned ? badge.requirement_value : "Locked"}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>

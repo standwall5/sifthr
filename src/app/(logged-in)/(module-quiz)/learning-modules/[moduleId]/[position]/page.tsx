@@ -48,7 +48,7 @@ export default function ModuleSectionPage() {
 
   const progress = Math.min(
     100,
-    Math.max(0, (data.section.position / data.totalPages) * 100),
+    Math.max(0, (data.section.position / data.totalPages) * 100)
   );
 
   const handleNext = () => {

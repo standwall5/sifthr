@@ -16,8 +16,8 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 }) => {
   // Process content to ensure proper markdown formatting
   const processedContent = content
-    .replace(/•/g, '-') // Convert bullet points to markdown bullets
-    .replace(/\n/g, '  \n') // Ensure line breaks are recognized
+    .replace(/•/g, "-") // Convert bullet points to markdown bullets
+    .replace(/\n/g, "  \n") // Ensure line breaks are recognized
     .trim();
 
   return (

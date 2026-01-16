@@ -35,7 +35,7 @@ export default function BadgeScroll() {
   async function fetchBadges() {
     try {
       const isGuest = isGuestMode();
-      
+
       // Get all badges
       const { data: allBadges, error: badgesError } = await supabase
         .from("badges")
@@ -227,17 +227,19 @@ export default function BadgeScroll() {
               >
                 {badge.is_earned ? (
                   badge.icon_url ? (
-                    badge.icon_url.startsWith('http') || badge.icon_url.startsWith('/') ? (
-                      <img 
-                        src={badge.icon_url} 
+                    badge.icon_url.startsWith("http") ||
+                    badge.icon_url.startsWith("/") ? (
+                      <img
+                        src={badge.icon_url}
                         alt={badge.name}
                         onError={(e) => {
-                          e.currentTarget.style.display = 'none';
+                          e.currentTarget.style.display = "none";
                           const parent = e.currentTarget.parentElement;
                           if (parent) {
-                            const icon = document.createElement('span');
+                            const icon = document.createElement("span");
                             icon.className = styles.defaultIcon;
-                            icon.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>';
+                            icon.innerHTML =
+                              '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>';
                             parent.appendChild(icon);
                           }
                         }}
