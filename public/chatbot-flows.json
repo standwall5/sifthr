@@ -1,0 +1,932 @@
+{
+  "flows": {
+    "main": {
+      "id": "main",
+      "message": "Hi! I'm SIFTHR, your scam prevention assistant. How can I help you today?",
+      "options": [
+        {
+          "text": "Is this ad fake?",
+          "nextFlow": "detect_fake_ad"
+        },
+        {
+          "text": "I clicked a suspicious link",
+          "nextFlow": "clicked_link"
+        },
+        {
+          "text": "I gave my personal information",
+          "nextFlow": "gave_info"
+        },
+        {
+          "text": "I sent money",
+          "nextFlow": "sent_money"
+        },
+        {
+          "text": "How do I report a scam?",
+          "nextFlow": "report_scam"
+        },
+        {
+          "text": "What are common scam types?",
+          "nextFlow": "scam_types"
+        }
+      ]
+    },
+    "detect_fake_ad": {
+      "id": "detect_fake_ad",
+      "message": "Let me help you identify if an ad might be fake. What makes you suspicious?",
+      "options": [
+        {
+          "text": "The offer seems too good to be true",
+          "nextFlow": "too_good"
+        },
+        {
+          "text": "It's asking for personal information",
+          "nextFlow": "asking_info"
+        },
+        {
+          "text": "The seller has no reviews",
+          "nextFlow": "no_reviews"
+        },
+        {
+          "text": "The price is unusually low",
+          "nextFlow": "low_price"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "too_good": {
+      "id": "too_good",
+      "message": "🚨 Red Flag! If an offer seems too good to be true, it probably is. Common signs:\n\n• Promises of easy money\n• Unrealistic discounts (90%+ off)\n• Guaranteed wins or returns\n• Pressure to act immediately\n\nRecommendation: Do NOT click or engage. Check out our module on identifying fake offers!",
+      "moduleLink": "/learning-modules",
+      "options": [
+        {
+          "text": "What should I do now?",
+          "nextFlow": "what_to_do_suspicious"
+        },
+        {
+          "text": "Learn more about scam tactics",
+          "nextFlow": "scam_types"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "asking_info": {
+      "id": "asking_info",
+      "message": "⚠️ Warning! Legitimate ads rarely ask for:\n\n• Social Security numbers\n• Bank account details\n• Passwords or PINs\n• Copy of ID or passport\n\nNEVER share this information through social media ads or messages!",
+      "options": [
+        {
+          "text": "I already shared some info",
+          "nextFlow": "gave_info"
+        },
+        {
+          "text": "How do I verify if it's legit?",
+          "nextFlow": "verify_seller"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "clicked_link": {
+      "id": "clicked_link",
+      "message": "Don't panic! Here's what to do:\n\n1. Do NOT enter any personal information\n2. Close the page immediately\n3. Clear your browser cache\n4. Run antivirus scan\n5. Change passwords for important accounts\n\nDid you enter any information on the page?",
+      "options": [
+        {
+          "text": "Yes, I entered some info",
+          "nextFlow": "gave_info"
+        },
+        {
+          "text": "No, I just clicked",
+          "nextFlow": "just_clicked"
+        },
+        {
+          "text": "How do I scan for malware?",
+          "nextFlow": "malware_scan"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "just_clicked": {
+      "id": "just_clicked",
+      "message": "Good! Since you didn't enter any information, your risk is lower. However:\n\n✓ Clear your browser cache and cookies\n✓ Run an antivirus scan to be safe\n✓ Monitor your accounts for unusual activity\n✓ Be extra cautious of similar ads\n\nYou should be okay if you take these precautions!",
+      "options": [
+        {
+          "text": "How do I avoid this in the future?",
+          "nextFlow": "prevention_tips"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "gave_info": {
+      "id": "gave_info",
+      "message": "⚠️ URGENT ACTION NEEDED! What type of information did you share?",
+      "options": [
+        {
+          "text": "Credit card or bank details",
+          "nextFlow": "gave_financial"
+        },
+        {
+          "text": "Social Security or ID number",
+          "nextFlow": "gave_identity"
+        },
+        {
+          "text": "Email and password",
+          "nextFlow": "gave_credentials"
+        },
+        {
+          "text": "Phone number or address",
+          "nextFlow": "gave_contact"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "gave_financial": {
+      "id": "gave_financial",
+      "message": "🚨 IMMEDIATE ACTION REQUIRED:\n\n1. Contact your bank/card issuer NOW\n2. Freeze or cancel the card\n3. Monitor transactions daily\n4. File a fraud report\n5. Consider credit monitoring service\n\nUSA: Call 1-877-FTC-HELP (382-4357)\nPhilippines: Contact BSP at (02) 8708-7087",
+      "options": [
+        {
+          "text": "How do I report this?",
+          "nextFlow": "report_scam"
+        },
+        {
+          "text": "What else should I do?",
+          "nextFlow": "identity_protection"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "gave_identity": {
+      "id": "gave_identity",
+      "message": "🚨 CRITICAL - Identity Theft Risk:\n\n1. Place fraud alert with credit bureaus\n2. File identity theft report with FTC\n3. Monitor credit reports\n4. Consider credit freeze\n5. Report to local authorities\n\nYou may be at risk of identity theft. Take these steps immediately!",
+      "options": [
+        {
+          "text": "How do I file a report?",
+          "nextFlow": "report_scam"
+        },
+        {
+          "text": "What is a credit freeze?",
+          "nextFlow": "credit_freeze_info"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "gave_credentials": {
+      "id": "gave_credentials",
+      "message": "⚠️ Account Compromise Risk:\n\n1. Change password IMMEDIATELY on all accounts using that password\n2. Enable two-factor authentication (2FA)\n3. Check for unauthorized access\n4. Review recent account activity\n5. Notify contacts if email was compromised\n\nDo this NOW before scammers can use your credentials!",
+      "options": [
+        {
+          "text": "How do I enable 2FA?",
+          "nextFlow": "enable_2fa"
+        },
+        {
+          "text": "What if they already accessed my account?",
+          "nextFlow": "account_compromised"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "sent_money": {
+      "id": "sent_money",
+      "message": "How did you send the money?",
+      "options": [
+        {
+          "text": "Credit/Debit card",
+          "nextFlow": "sent_card"
+        },
+        {
+          "text": "Bank transfer",
+          "nextFlow": "sent_bank"
+        },
+        {
+          "text": "Cash app (Venmo, PayPal, etc.)",
+          "nextFlow": "sent_cashapp"
+        },
+        {
+          "text": "Gift cards",
+          "nextFlow": "sent_giftcard"
+        },
+        {
+          "text": "Cryptocurrency",
+          "nextFlow": "sent_crypto"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "sent_card": {
+      "id": "sent_card",
+      "message": "Contact your card issuer IMMEDIATELY:\n\n1. Call the number on back of your card\n2. Report unauthorized transaction\n3. Request chargeback\n4. They may freeze/replace card\n\nTime is critical - most banks have a dispute window of 60-120 days!",
+      "options": [
+        {
+          "text": "How do I file a chargeback?",
+          "nextFlow": "chargeback_info"
+        },
+        {
+          "text": "What else should I do?",
+          "nextFlow": "report_scam"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "sent_bank": {
+      "id": "sent_bank",
+      "message": "Act FAST:\n\n1. Contact your bank immediately\n2. Request transfer reversal (may be possible within 24 hours)\n3. File fraud report\n4. Contact recipient bank if known\n5. Report to authorities\n\nBank transfers are harder to reverse, so speed is essential!",
+      "options": [
+        {
+          "text": "How do I report this?",
+          "nextFlow": "report_scam"
+        },
+        {
+          "text": "Can I get my money back?",
+          "nextFlow": "recovery_chances"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "sent_giftcard": {
+      "id": "sent_giftcard",
+      "message": "⚠️ Gift cards are a scammer's favorite because they're nearly impossible to trace or reverse.\n\n1. Contact the gift card company immediately\n2. Provide card number and receipt\n3. They may freeze remaining balance\n4. File police report\n5. Report to FTC\n\nUnfortunately, recovery is unlikely, but reporting helps stop others from being scammed.",
+      "options": [
+        {
+          "text": "How do I report this?",
+          "nextFlow": "report_scam"
+        },
+        {
+          "text": "Learn how to avoid this",
+          "nextFlow": "prevention_tips"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "report_scam": {
+      "id": "report_scam",
+      "message": "Here's how to report:\n\n🇺🇸 USA:\n• FTC: reportfraud.ftc.gov\n• FBI IC3: ic3.gov\n• Call: 1-877-FTC-HELP\n\n🇵🇭 Philippines:\n• NBI Cybercrime: cybercrime@nbi.gov.ph\n• PNP ACG: (02) 8723-0401\n\n📱 Social Media:\n• Report the ad/profile on the platform\n• Screenshot everything as evidence",
+      "options": [
+        {
+          "text": "What information do I need to report?",
+          "nextFlow": "report_info_needed"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "scam_types": {
+      "id": "scam_types",
+      "message": "Common scam types on social media:\n\n1. 🎁 Too-good-to-be-true offers\n2. 💰 Investment/pyramid schemes  \n3. 🛍️ Fake online shops\n4. 💳 Phishing for credentials\n5. 💕 Romance scams\n6. 🎯 Prize/lottery scams\n7. 👔 Fake job offers\n\nWant to learn more about any of these?",
+      "options": [
+        {
+          "text": "Tell me about investment scams",
+          "nextFlow": "investment_scams"
+        },
+        {
+          "text": "Tell me about fake shops",
+          "nextFlow": "fake_shops"
+        },
+        {
+          "text": "Take me to learning modules",
+          "nextFlow": "modules_redirect"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "prevention_tips": {
+      "id": "prevention_tips",
+      "message": "🛡️ Stay Safe Online:\n\n✓ Verify seller reviews & ratings\n✓ Check for secure payment methods\n✓ Never share personal info in ads\n✓ Use official websites, not links in ads\n✓ Trust your instincts\n✓ Research before buying\n\nWant to learn more? Check out our modules!",
+      "moduleLink": "/learning-modules",
+      "options": [
+        {
+          "text": "Take me to learning modules",
+          "nextFlow": "modules_redirect"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "modules_redirect": {
+      "id": "modules_redirect",
+      "message": "Great! I'll take you to our learning modules where you can get comprehensive education on scam prevention.",
+      "redirect": "/learning-modules",
+      "options": []
+    },
+    "no_reviews": {
+      "id": "no_reviews",
+      "message": "⚠️ No reviews or ratings is a major red flag! Scammers often create new accounts.\n\nWhat to check:\n• Account creation date (very new = suspicious)\n• Number of followers/likes\n• Comments on other posts\n• Reverse image search the profile picture\n\nRecommendation: AVOID sellers with no history!",
+      "options": [
+        {
+          "text": "How do I verify a seller?",
+          "nextFlow": "verify_seller"
+        },
+        {
+          "text": "What else should I look for?",
+          "nextFlow": "prevention_tips"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "low_price": {
+      "id": "low_price",
+      "message": "🚨 Extremely low prices are a classic scam tactic!\n\nRed flags:\n• 80-90% off retail price\n• 'Limited time only' pressure\n• Payment only through wire transfer or gift cards\n• Seller won't use secure payment platforms\n\nTip: If the price is unbelievable, it's probably fake!",
+      "options": [
+        {
+          "text": "How can I check if it's real?",
+          "nextFlow": "verify_seller"
+        },
+        {
+          "text": "What are safe payment methods?",
+          "nextFlow": "prevention_tips"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "what_to_do_suspicious": {
+      "id": "what_to_do_suspicious",
+      "message": "If you suspect a scam:\n\n✓ Do NOT click any links\n✓ Do NOT provide any information\n✓ Screenshot the ad as evidence\n✓ Report it on the platform\n✓ Block the sender\n\nYour instincts are usually right - better safe than sorry!",
+      "options": [
+        {
+          "text": "How do I report it?",
+          "nextFlow": "report_scam"
+        },
+        {
+          "text": "Learn more about scams",
+          "nextFlow": "scam_types"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "verify_seller": {
+      "id": "verify_seller",
+      "message": "How to verify a seller:\n\n1. Check account age and activity\n2. Read reviews carefully (watch for fake reviews)\n3. Google the business name + 'scam' or 'review'\n4. Verify contact information\n5. Check if they have a real website\n6. Use reverse image search on product photos\n7. Only use secure payment platforms with buyer protection",
+      "options": [
+        {
+          "text": "What are red flags in reviews?",
+          "nextFlow": "fake_reviews"
+        },
+        {
+          "text": "Safe payment methods?",
+          "nextFlow": "safe_payments"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "malware_scan": {
+      "id": "malware_scan",
+      "message": "How to scan for malware:\n\n1. Use Windows Defender (built-in)\n   • Settings > Update & Security > Windows Security\n2. Download Malwarebytes (free version available)\n3. Run a full system scan\n4. Check browser extensions for suspicious ones\n5. Clear browser cache and cookies\n\nIf found, follow removal instructions immediately!",
+      "options": [
+        {
+          "text": "What if malware is found?",
+          "nextFlow": "malware_found"
+        },
+        {
+          "text": "How do I prevent this?",
+          "nextFlow": "prevention_tips"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "gave_contact": {
+      "id": "gave_contact",
+      "message": "Contact info (phone/address) is less critical but still risky:\n\n1. Be alert for:\n   • Spam calls/texts\n   • Phishing attempts\n   • Identity theft attempts\n2. Don't answer unknown numbers\n3. Report spam messages\n4. Monitor for suspicious activity\n\nConsider changing your phone number if harassment continues.",
+      "options": [
+        {
+          "text": "How do I block spam?",
+          "nextFlow": "block_spam"
+        },
+        {
+          "text": "What else should I do?",
+          "nextFlow": "prevention_tips"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "identity_protection": {
+      "id": "identity_protection",
+      "message": "Additional identity protection steps:\n\n1. File police report immediately\n2. Place fraud alert with credit bureaus\n3. Get free credit reports and review them\n4. Consider identity theft insurance\n5. Keep detailed records of everything\n6. Check government benefits accounts\n\nThis is serious - don't wait!",
+      "options": [
+        {
+          "text": "How do I contact credit bureaus?",
+          "nextFlow": "credit_bureaus"
+        },
+        {
+          "text": "Report this scam",
+          "nextFlow": "report_scam"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "credit_freeze_info": {
+      "id": "credit_freeze_info",
+      "message": "Credit Freeze (Security Freeze):\n\nWhat it does:\n• Prevents new credit accounts from being opened in your name\n• Free to place and lift\n• Doesn't affect existing accounts or credit score\n\nHow to do it:\nContact all 3 major credit bureaus:\n• Equifax\n• Experian\n• TransUnion\n\nYou'll need to unfreeze temporarily when applying for credit yourself.",
+      "options": [
+        {
+          "text": "How do I contact credit bureaus?",
+          "nextFlow": "credit_bureaus"
+        },
+        {
+          "text": "What else should I do?",
+          "nextFlow": "identity_protection"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "enable_2fa": {
+      "id": "enable_2fa",
+      "message": "How to enable Two-Factor Authentication (2FA):\n\n1. Go to account security settings\n2. Look for '2FA', 'Two-Step Verification', or 'Multi-Factor Authentication'\n3. Choose authentication method:\n   • Authenticator app (most secure - Google Authenticator, Authy)\n   • SMS (less secure but better than nothing)\n4. Save backup codes in a safe place\n\nMajor platforms:\n• Google: myaccount.google.com/security\n• Facebook: Settings > Security\n• Email providers: Check security settings",
+      "options": [
+        {
+          "text": "Which authenticator app should I use?",
+          "nextFlow": "authenticator_apps"
+        },
+        {
+          "text": "My account is already compromised",
+          "nextFlow": "account_compromised"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "account_compromised": {
+      "id": "account_compromised",
+      "message": "If your account is already compromised:\n\n1. Try to change password immediately\n2. If locked out, use account recovery\n3. Contact platform support\n4. Warn your contacts about possible scam messages from your account\n5. Check connected apps and revoke suspicious ones\n6. Review recent activity/posts\n\nFor major platforms:\n• Facebook: facebook.com/hacked\n• Google: support.google.com/accounts\n• Email: Use provider's account recovery",
+      "options": [
+        {
+          "text": "How do I recover my account?",
+          "nextFlow": "account_recovery"
+        },
+        {
+          "text": "Report this incident",
+          "nextFlow": "report_scam"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "sent_cashapp": {
+      "id": "sent_cashapp",
+      "message": "Cash apps (Venmo, PayPal, CashApp, etc.):\n\n1. Contact the app support IMMEDIATELY\n2. Report the transaction as fraud\n3. Request cancellation (only possible if payment is pending)\n4. File a dispute if payment was for goods/services\n5. Contact your bank if linked to card\n\nNote: Person-to-person payments are harder to reverse. Most apps don't offer buyer protection for P2P transfers.",
+      "options": [
+        {
+          "text": "Which apps have buyer protection?",
+          "nextFlow": "buyer_protection"
+        },
+        {
+          "text": "Report this scam",
+          "nextFlow": "report_scam"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "sent_crypto": {
+      "id": "sent_crypto",
+      "message": "⚠️ Cryptocurrency transactions are IRREVERSIBLE and anonymous.\n\nUnfortunately:\n• Cannot be reversed or canceled\n• Very difficult to trace\n• No buyer protection\n• Recovery is nearly impossible\n\nWhat you can do:\n1. Report to local authorities\n2. Report to FBI IC3 (ic3.gov)\n3. Report to crypto exchange if used\n4. Document everything for police report\n\nLearn from this - never send crypto to unverified sellers!",
+      "options": [
+        {
+          "text": "How do I report this?",
+          "nextFlow": "report_scam"
+        },
+        {
+          "text": "Learn about safe online transactions",
+          "nextFlow": "prevention_tips"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "chargeback_info": {
+      "id": "chargeback_info",
+      "message": "How to file a chargeback:\n\n1. Contact your card issuer (number on back of card)\n2. Explain it was a fraudulent transaction\n3. Provide evidence:\n   • Screenshots of the ad\n   • Communication with seller\n   • Any promises made\n4. File within 60-120 days of transaction\n5. They'll investigate (may take 30-90 days)\n\nSuccess rate is higher if you:\n• Report quickly\n• Have good documentation\n• Never received goods/services",
+      "options": [
+        {
+          "text": "What evidence do I need?",
+          "nextFlow": "evidence_needed"
+        },
+        {
+          "text": "Report this scam",
+          "nextFlow": "report_scam"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "recovery_chances": {
+      "id": "recovery_chances",
+      "message": "Your chances of recovering money depend on:\n\nHIGH chance:\n• Credit/debit card (chargeback rights)\n• PayPal Goods & Services\n• Bank transfer caught within 24 hours\n\nMEDIUM chance:\n• Bank transfer after 24 hours\n• Some payment apps with buyer protection\n\nLOW chance:\n• Gift cards\n• Cryptocurrency\n• Wire transfers\n• Person-to-person cash apps\n\nAlways report even if recovery is unlikely - it helps authorities track scammers!",
+      "options": [
+        {
+          "text": "How do I file a chargeback?",
+          "nextFlow": "chargeback_info"
+        },
+        {
+          "text": "Report this scam",
+          "nextFlow": "report_scam"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "report_info_needed": {
+      "id": "report_info_needed",
+      "message": "When reporting a scam, gather:\n\n📸 Evidence:\n• Screenshots of ads/messages\n• Email headers\n• URLs/website addresses\n• Photos of any products received\n\n📋 Details:\n• Date and time of incident\n• Amount of money lost\n• Payment method used\n• Scammer's contact info (phone, email, username)\n• Description of what happened\n\n💰 Financial:\n• Transaction IDs\n• Bank statements\n• Receipts",
+      "options": [
+        {
+          "text": "Where do I report?",
+          "nextFlow": "report_scam"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "investment_scams": {
+      "id": "investment_scams",
+      "message": "Investment/Pyramid Scams:\n\nRed Flags:\n• Guaranteed high returns with 'no risk'\n• 'Get rich quick' promises\n• Pressure to recruit others\n• Complicated compensation structure\n• Requires upfront investment\n• Uses terms like 'passive income' heavily\n\nCommon ones:\n• Cryptocurrency 'investments'\n• Multi-level marketing (MLM)\n• Forex trading 'opportunities'\n• Binary options\n\nRule: If it sounds too good to be true, it is!",
+      "options": [
+        {
+          "text": "How do I spot a pyramid scheme?",
+          "nextFlow": "pyramid_scheme"
+        },
+        {
+          "text": "I already invested money",
+          "nextFlow": "sent_money"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "fake_shops": {
+      "id": "fake_shops",
+      "message": "Fake Online Shops:\n\nWarning Signs:\n• Website is very new (check domain age)\n• No physical address or contact info\n• Only accepts untraceable payment methods\n• Prices too good to be true\n• Poor grammar/spelling\n• Stolen product images (use reverse image search)\n• No return policy or unrealistic policies\n• Suspicious domain name (slight misspellings of real brands)\n\nProtection:\n✓ Use PayPal or credit cards (buyer protection)\n✓ Research the store name + 'scam'\n✓ Check reviews on independent sites",
+      "options": [
+        {
+          "text": "How do I check if a site is safe?",
+          "nextFlow": "verify_seller"
+        },
+        {
+          "text": "I already ordered from a fake shop",
+          "nextFlow": "sent_money"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "fake_reviews": {
+      "id": "fake_reviews",
+      "message": "Spotting fake reviews:\n\n🚩 Red Flags:\n• All 5-star or all similar ratings\n• Generic comments ('Great product!', 'Love it!')\n• Reviews posted on same day\n• Overly enthusiastic language\n• No specific product details\n• Reviewer has only reviewed this seller\n• Poor grammar in supposedly US/UK reviews\n\n✓ Look for:\n• Mix of ratings\n• Specific details about product\n• Photos from buyers\n• Reviews over time period\n• Negative reviews with seller responses",
+      "options": [
+        {
+          "text": "How else can I verify sellers?",
+          "nextFlow": "verify_seller"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "safe_payments": {
+      "id": "safe_payments",
+      "message": "Safe payment methods (in order):\n\n1. ✅ Credit cards (best protection, easy chargebacks)\n2. ✅ PayPal Goods & Services (buyer protection)\n3. ✅ Secure payment platforms (Stripe, Square)\n4. ⚠️ Debit cards (some protection, less than credit)\n\nAVOID:\n❌ Wire transfers\n❌ Gift cards\n❌ Cryptocurrency\n❌ Cash apps for goods (Venmo, CashApp P2P)\n❌ Money orders\n\nRule: If seller insists on unsafe payment methods, it's a scam!",
+      "options": [
+        {
+          "text": "Why are gift cards bad?",
+          "nextFlow": "gift_card_scams"
+        },
+        {
+          "text": "Learn more safety tips",
+          "nextFlow": "prevention_tips"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "malware_found": {
+      "id": "malware_found",
+      "message": "If malware is detected:\n\n1. Follow removal tool instructions\n2. Change ALL passwords after removal\n3. Check for:\n   • New programs you didn't install\n   • Browser homepage changes\n   • New browser extensions\n4. Review bank/credit card statements\n5. Enable 2FA on important accounts\n6. Run scan again to confirm removal\n\nIf you can't remove it, consider professional help or factory reset (backup important files first!).",
+      "options": [
+        {
+          "text": "How do I change passwords safely?",
+          "nextFlow": "password_security"
+        },
+        {
+          "text": "Enable 2FA on my accounts",
+          "nextFlow": "enable_2fa"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "block_spam": {
+      "id": "block_spam",
+      "message": "How to block spam calls/texts:\n\niPhone:\n• Settings > Phone > Silence Unknown Callers\n• Messages > Filter Unknown Senders\n• Block individual numbers in recent calls\n\nAndroid:\n• Phone app > Settings > Blocked numbers\n• Messages app > spam protection settings\n• Use built-in spam filter\n\nThird-party apps:\n• Truecaller\n• Hiya\n• RoboKiller\n\nReport to carrier:\n• Forward spam texts to 7726 (SPAM)",
+      "options": [
+        {
+          "text": "What if they keep calling?",
+          "nextFlow": "persistent_harassment"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "credit_bureaus": {
+      "id": "credit_bureaus",
+      "message": "Contact credit bureaus:\n\n📞 Equifax\n• Website: equifax.com\n• Phone: 1-800-685-1111\n• Freeze: equifax.com/personal/credit-report-services\n\n📞 Experian\n• Website: experian.com\n• Phone: 1-888-397-3742\n• Freeze: experian.com/freeze\n\n📞 TransUnion\n• Website: transunion.com\n• Phone: 1-888-909-8872\n• Freeze: transunion.com/credit-freeze\n\nYou must contact ALL THREE for complete protection!",
+      "options": [
+        {
+          "text": "What is a credit freeze?",
+          "nextFlow": "credit_freeze_info"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "authenticator_apps": {
+      "id": "authenticator_apps",
+      "message": "Best authenticator apps:\n\n1. ✅ Google Authenticator\n   • Free, simple, reliable\n   • iOS & Android\n\n2. ✅ Microsoft Authenticator\n   • Free, cloud backup\n   • iOS & Android\n\n3. ✅ Authy\n   • Free, multi-device sync\n   • iOS, Android, Desktop\n\n4. ✅ 1Password/Bitwarden\n   • Built into password managers\n\nAvoid SMS-based 2FA when possible (can be intercepted). Authenticator apps are more secure!",
+      "options": [
+        {
+          "text": "How do I set up 2FA?",
+          "nextFlow": "enable_2fa"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "account_recovery": {
+      "id": "account_recovery",
+      "message": "Account recovery steps:\n\n1. Use 'Forgot Password' or 'Can't access account'\n2. Verify identity with:\n   • Recovery email\n   • Phone number\n   • Security questions\n   • Trusted contacts\n3. Follow platform's recovery process\n4. Provide proof of identity if needed\n5. Contact support if automated recovery fails\n\nPlatform-specific help:\n• Facebook: facebook.com/hacked\n• Google: google.com/accounts/recovery\n• Instagram: help.instagram.com\n• Twitter: help.twitter.com",
+      "options": [
+        {
+          "text": "What if recovery doesn't work?",
+          "nextFlow": "account_recovery_failed"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "buyer_protection": {
+      "id": "buyer_protection",
+      "message": "Payment apps with buyer protection:\n\n✅ GOOD Protection:\n• PayPal Goods & Services\n• Credit cards\n• Debit cards (limited)\n\n⚠️ LIMITED/NO Protection for P2P:\n• Venmo (no protection for P2P)\n• CashApp (no protection)\n• Zelle (no protection)\n• Apple Pay Cash (no protection)\n• Google Pay P2P (no protection)\n\nIMPORTANT: These apps are designed for sending money to people you TRUST, not for buying from strangers!\n\nAlways use PayPal Goods & Services or credit cards for online purchases!",
+      "options": [
+        {
+          "text": "Safe payment methods?",
+          "nextFlow": "safe_payments"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "evidence_needed": {
+      "id": "evidence_needed",
+      "message": "Evidence for chargebacks/disputes:\n\n📸 Screenshots:\n• The advertisement\n• Product description/promises\n• All messages with seller\n• Order confirmation\n• Shipping/tracking info (if any)\n\n📄 Documentation:\n• Bank/card statements\n• Receipts or invoices\n• Timeline of events\n• Any contracts or agreements\n\n📝 Description:\n• What was promised\n• What you received (or didn't receive)\n• Steps you took to resolve\n• Seller's response (or lack of)\n\nMore evidence = better chance of success!",
+      "options": [
+        {
+          "text": "How do I file a chargeback?",
+          "nextFlow": "chargeback_info"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "pyramid_scheme": {
+      "id": "pyramid_scheme",
+      "message": "Pyramid Scheme Red Flags:\n\n🚩 Focus on recruiting over selling products\n🚩 Pay to join or buy starter kit\n🚩 Income comes from recruits, not sales\n🚩 'Unlimited earning potential'\n🚩 Pressure to recruit friends/family\n🚩 Complex commission structure\n🚩 Emphasis on 'lifestyle' and 'being your own boss'\n🚩 No genuine product or service\n\nLegal MLM vs Pyramid Scheme:\n• Legal: Income from product sales\n• Illegal: Income from recruiting\n\nIf you can't make money without recruiting, it's likely a pyramid scheme!",
+      "options": [
+        {
+          "text": "I'm already involved, what do I do?",
+          "nextFlow": "exit_pyramid"
+        },
+        {
+          "text": "Learn more about investment scams",
+          "nextFlow": "investment_scams"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "gift_card_scams": {
+      "id": "gift_card_scams",
+      "message": "Why gift cards are a scammer's favorite:\n\n❌ Untraceable - can't track who uses them\n❌ Non-refundable - money is gone once code is used\n❌ Instant - scammer gets money immediately\n❌ Anonymous - no identity verification needed\n\n🚨 REMEMBER:\n• Real businesses NEVER ask for gift cards as payment\n• Government agencies NEVER demand gift cards\n• No legitimate service accepts only gift cards\n\nIf someone insists on gift card payment, it's 100% a scam!",
+      "options": [
+        {
+          "text": "I already sent gift cards",
+          "nextFlow": "sent_giftcard"
+        },
+        {
+          "text": "Learn about safe payments",
+          "nextFlow": "safe_payments"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "password_security": {
+      "id": "password_security",
+      "message": "Creating secure passwords:\n\n✅ DO:\n• Use 12+ characters\n• Mix letters, numbers, symbols\n• Use unique password for each account\n• Use a password manager (LastPass, 1Password, Bitwarden)\n• Use passphrases: 'Coffee!Beach@Sunset2024'\n\n❌ DON'T:\n• Use personal info (birthday, name)\n• Reuse passwords\n• Use common words or patterns\n• Share passwords\n• Write them down (except in password manager)\n\nChange passwords every 3-6 months for critical accounts!",
+      "options": [
+        {
+          "text": "What's a password manager?",
+          "nextFlow": "password_manager"
+        },
+        {
+          "text": "Enable 2FA on accounts",
+          "nextFlow": "enable_2fa"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "persistent_harassment": {
+      "id": "persistent_harassment",
+      "message": "If spam/scam calls persist:\n\n1. Document everything:\n   • Date and time of calls\n   • Phone numbers\n   • What they say\n\n2. File complaints:\n   • FTC: donotcall.gov\n   • FCC: consumercomplaints.fcc.gov\n   • Your phone carrier\n\n3. Legal options:\n   • Police report for harassment\n   • Restraining order if threats made\n   • Consider legal action under TCPA\n\n4. Last resort:\n   • Change your phone number\n   • Use call screening service",
+      "options": [
+        {
+          "text": "How do I file a complaint?",
+          "nextFlow": "file_complaint"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "account_recovery_failed": {
+      "id": "account_recovery_failed",
+      "message": "If automated recovery fails:\n\n1. Contact platform support directly:\n   • Use 'Help' or 'Support' on login page\n   • Provide government ID for verification\n   • Explain situation clearly\n\n2. Social media escalation:\n   • Tweet at official support account\n   • Message on other platforms they manage\n\n3. Document everything:\n   • Screenshots\n   • Support ticket numbers\n   • Communication history\n\n4. Consider:\n   • Create new account and warn contacts\n   • Report to FTC if scammer is using your account",
+      "options": [
+        {
+          "text": "Report this to authorities",
+          "nextFlow": "report_scam"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "exit_pyramid": {
+      "id": "exit_pyramid",
+      "message": "Exiting a pyramid scheme:\n\n1. Stop recruiting immediately\n2. Request refund (if within return period)\n3. Warn your downline\n4. Don't feel pressured by upline\n5. Report to:\n   • FTC: reportfraud.ftc.gov\n   • State Attorney General\n   • Better Business Bureau\n\n6. Learn from experience - you're not alone!\n\nMost people lose money in MLMs/pyramids. The system is designed that way. Don't blame yourself!",
+      "options": [
+        {
+          "text": "Can I get my money back?",
+          "nextFlow": "pyramid_refund"
+        },
+        {
+          "text": "Report this scheme",
+          "nextFlow": "report_scam"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "password_manager": {
+      "id": "password_manager",
+      "message": "Password managers explained:\n\nWhat they do:\n• Store all passwords securely\n• Generate strong random passwords\n• Auto-fill login forms\n• Sync across devices\n• Alert you to breaches\n\nPopular options:\n• 1Password ($2.99/month)\n• Bitwarden (Free or $10/year)\n• LastPass (Free or $3/month)\n• Dashlane ($4.99/month)\n\nHow it works:\n• You remember ONE master password\n• It remembers all others\n• Encrypted and secure\n\nMuch safer than reusing passwords or writing them down!",
+      "options": [
+        {
+          "text": "How do I create strong passwords?",
+          "nextFlow": "password_security"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "file_complaint": {
+      "id": "file_complaint",
+      "message": "How to file official complaints:\n\n📝 FTC (Federal Trade Commission):\n• Website: reportfraud.ftc.gov\n• Phone: 1-877-FTC-HELP\n• Covers: scams, fraud, identity theft\n\n📝 FCC (Federal Communications Commission):\n• Website: consumercomplaints.fcc.gov\n• Covers: unwanted calls, texts, robocalls\n\n📝 IC3 (Internet Crime Complaint Center):\n• Website: ic3.gov\n• FBI-operated\n• Covers: internet crimes\n\n📝 State Attorney General:\n• Google: '[Your State] Attorney General consumer complaints'\n\nFile with all relevant agencies!",
+      "options": [
+        {
+          "text": "What info do I need?",
+          "nextFlow": "report_info_needed"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    },
+    "pyramid_refund": {
+      "id": "pyramid_refund",
+      "message": "Getting money back from MLM/pyramid:\n\n✅ You might get refund if:\n• Within return period (usually 30-90 days)\n• Product unopened/unused\n• Have original receipt\n• Company has buyback policy\n\n⚠️ Harder to recover:\n• Training materials purchased\n• Event tickets\n• Samples you bought\n• Inventory you sold\n\nSteps:\n1. Read return policy carefully\n2. Request refund in writing\n3. Send certified mail\n4. If denied, file complaint with FTC\n5. Consider small claims court\n6. Report to Attorney General\n\nMany legitimate MLMs have mandatory buyback policies!",
+      "options": [
+        {
+          "text": "How do I report this?",
+          "nextFlow": "report_scam"
+        },
+        {
+          "text": "Back to main menu",
+          "nextFlow": "main"
+        }
+      ]
+    }
+  }
+}

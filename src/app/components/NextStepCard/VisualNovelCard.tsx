@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { CardComponentProps } from "nextstepjs";
 import Image from "next/image";
+import { SparklesIcon } from "@heroicons/react/24/outline";
 import styles from "./VisualNovelCard.module.css";
 
 const VisualNovelCard: React.FC<CardComponentProps> = ({
@@ -91,7 +92,13 @@ const VisualNovelCard: React.FC<CardComponentProps> = ({
             )}
 
             <button onClick={nextStep} className={styles.nextButton}>
-              {isLastStep ? "Finish! 🎉" : "Next →"}
+              {isLastStep ? (
+                <>
+                  Finish! <SparklesIcon className="w-4 h-4 inline-block ml-1" />
+                </>
+              ) : (
+                "Next →"
+              )}
             </button>
 
             {step.showSkip && skipTour && (

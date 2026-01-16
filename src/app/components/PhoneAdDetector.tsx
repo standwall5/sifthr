@@ -2,6 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import {
+  CameraIcon,
+  ExclamationTriangleIcon,
+  CheckCircleIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
+import {
   ObjectDetector,
   FilesetResolver,
   Detection,
@@ -56,7 +62,7 @@ export default function PhoneAdDetector() {
 
         // Load MediaPipe Object Detector
         const vision = await FilesetResolver.forVisionTasks(
-          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm",
+          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
         );
 
         const detector = await ObjectDetector.createFromOptions(vision, {
@@ -148,7 +154,7 @@ export default function PhoneAdDetector() {
           const phoneDetections = detections.detections.filter(
             (d: Detection) =>
               d.categories[0].categoryName === "cell phone" ||
-              d.categories[0].categoryName === "mobile phone",
+              d.categories[0].categoryName === "mobile phone"
           );
 
           if (phoneDetections.length > 0) {
@@ -182,14 +188,14 @@ export default function PhoneAdDetector() {
                   0,
                   0,
                   screenW,
-                  screenH,
+                  screenH
                 );
 
                 const imageData = screenCtx.getImageData(
                   0,
                   0,
                   screenW,
-                  screenH,
+                  screenH
                 );
 
                 // Detect if it's showing social media
@@ -211,7 +217,7 @@ export default function PhoneAdDetector() {
                       region.x,
                       region.y,
                       region.w,
-                      region.h,
+                      region.h
                     );
 
                     const adAnalysis = await analyzeFakeAd(regionData, true);
@@ -243,11 +249,11 @@ export default function PhoneAdDetector() {
                   possiblePlatform: socialMediaResult.possiblePlatform,
                   ads,
                 };
-              }),
+              })
             );
 
             const validPhones = processedPhones.filter(
-              (p): p is PhoneDetection => p !== null,
+              (p): p is PhoneDetection => p !== null
             );
 
             setPhoneDetections(validPhones);
@@ -285,7 +291,7 @@ export default function PhoneAdDetector() {
   const drawDetections = (
     ctx: CanvasRenderingContext2D,
     canvas: HTMLCanvasElement,
-    phones: PhoneDetection[],
+    phones: PhoneDetection[]
   ) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -343,18 +349,20 @@ export default function PhoneAdDetector() {
             adBbox.x - 2,
             adBbox.y - 2,
             adBbox.width + 4,
-            adBbox.height + 4,
+            adBbox.height + 4
           );
         }
 
         // Ad label with accuracy
-        const adLabel = `⚠️ ${analysis.category.toUpperCase()} AD`;
-        const accuracyLabel = `${(analysis.confidence * 100).toFixed(0)}% confidence`;
+        const adLabel = `WARNING: ${analysis.category.toUpperCase()} AD`;
+        const accuracyLabel = `${(analysis.confidence * 100).toFixed(
+          0
+        )}% confidence`;
 
         ctx.font = "bold 14px system-ui, Arial";
         const adLabelWidth = Math.max(
           ctx.measureText(adLabel).width,
-          ctx.measureText(accuracyLabel).width,
+          ctx.measureText(accuracyLabel).width
         );
 
         // Background for label
@@ -390,185 +398,621 @@ export default function PhoneAdDetector() {
   };
 
   return (
-    <div className="max-w-full mx-auto p-4">
-      <div className="mb-4 p-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-white">
-        <h1 className="text-2xl font-bold mb-2">
-          📱 Live Phone & Fake Ad Detector
-        </h1>
-        <p className="text-sm opacity-90">
-          Point your camera at a phone screen showing social media. The system
-          will detect suspicious ads and show accuracy ratings in real-time.
-        </p>
-      </div>
+    <div className="camera-page-container" style={{ padding: "2rem" }}>
+      <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
+        {/* Header */}
+        <div
+          style={{
+            marginBottom: "2rem",
+            padding: "2rem",
+            background: "var(--card-bg)",
+            borderRadius: "1rem",
+            boxShadow: "5px 5px 0 var(--purple)",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "1rem",
+              marginBottom: "1rem",
+            }}
+          >
+            <CameraIcon
+              style={{
+                width: "2.5rem",
+                height: "2.5rem",
+                color: "var(--lime)",
+              }}
+            />
+            <h1
+              style={{
+                fontSize: "2rem",
+                fontWeight: "bold",
+                color: "var(--text-primary)",
+                margin: 0,
+              }}
+            >
+              Live Phone & Fake Ad Detector
+            </h1>
+          </div>
+          <p
+            style={{
+              color: "var(--text-secondary)",
+              lineHeight: "1.6",
+              margin: 0,
+            }}
+          >
+            Point your camera at a phone screen showing social media. The system
+            will detect suspicious ads and show accuracy ratings in real-time.
+          </p>
+        </div>
 
-      <div
-        ref={containerRef}
-        className="relative w-full max-w-4xl mx-auto rounded-xl overflow-hidden shadow-2xl bg-black"
-        style={{ aspectRatio: "16/9" }}
-      >
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          muted
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <canvas
-          ref={canvasRef}
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none z-10"
-        />
+        {/* Camera View */}
+        <div
+          style={{
+            position: "relative",
+            width: "100%",
+            maxWidth: "1200px",
+            margin: "0 auto 2rem",
+            borderRadius: "1rem",
+            overflow: "hidden",
+            boxShadow: "5px 5px 0 var(--lime)",
+            background: "#000",
+            aspectRatio: "16/9",
+          }}
+        >
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            muted
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />
+          <canvas
+            ref={canvasRef}
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              pointerEvents: "none",
+              zIndex: 10,
+            }}
+          />
 
-        {/* Processing indicator */}
-        {isProcessing && (
-          <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold animate-pulse z-20">
-            🔍 Analyzing...
+          {/* Processing indicator */}
+          {isProcessing && (
+            <div
+              style={{
+                position: "absolute",
+                top: "1rem",
+                right: "1rem",
+                background: "var(--lime)",
+                color: "var(--text-primary)",
+                padding: "0.75rem 1.25rem",
+                borderRadius: "2rem",
+                fontSize: "0.9rem",
+                fontWeight: 600,
+                zIndex: 20,
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                boxShadow: "3px 3px 0 rgba(0,0,0,0.2)",
+              }}
+            >
+              <MagnifyingGlassIcon
+                style={{ width: "1.25rem", height: "1.25rem" }}
+              />
+              Analyzing...
+            </div>
+          )}
+        </div>
+
+        {/* Status panel */}
+        <div
+          style={{
+            marginBottom: "2rem",
+            padding: "2rem",
+            background: "var(--card-bg)",
+            borderRadius: "1rem",
+            boxShadow: "3px 3px 0 var(--purple)",
+          }}
+        >
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+              gap: "1.5rem",
+              textAlign: "center",
+            }}
+          >
+            <div
+              style={{
+                padding: "1.5rem",
+                background:
+                  "linear-gradient(135deg, rgba(146, 233, 124, 0.1), transparent)",
+                borderRadius: "0.75rem",
+                border: "2px solid var(--lime)",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "1.75rem",
+                  fontWeight: "bold",
+                  color: "var(--text-primary)",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                {status}
+              </div>
+              <div
+                style={{
+                  fontSize: "0.8rem",
+                  fontWeight: 600,
+                  color: "var(--text-secondary)",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                Status
+              </div>
+            </div>
+            <div
+              style={{
+                padding: "1.5rem",
+                background:
+                  "linear-gradient(135deg, rgba(146, 233, 124, 0.1), transparent)",
+                borderRadius: "0.75rem",
+                border: "2px solid var(--lime)",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "1.75rem",
+                  fontWeight: "bold",
+                  color: "var(--text-primary)",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                {fps} FPS
+              </div>
+              <div
+                style={{
+                  fontSize: "0.8rem",
+                  fontWeight: 600,
+                  color: "var(--text-secondary)",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                Frame Rate
+              </div>
+            </div>
+            <div
+              style={{
+                padding: "1.5rem",
+                background:
+                  "linear-gradient(135deg, rgba(146, 233, 124, 0.1), transparent)",
+                borderRadius: "0.75rem",
+                border: "2px solid var(--purple)",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "1.75rem",
+                  fontWeight: "bold",
+                  color: "var(--text-primary)",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                {phoneDetections.length}
+              </div>
+              <div
+                style={{
+                  fontSize: "0.8rem",
+                  fontWeight: 600,
+                  color: "var(--text-secondary)",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                Phones Detected
+              </div>
+            </div>
+            <div
+              style={{
+                padding: "1.5rem",
+                background:
+                  "linear-gradient(135deg, rgba(255, 77, 79, 0.1), transparent)",
+                borderRadius: "0.75rem",
+                border: "2px solid #ff4d4f",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "1.75rem",
+                  fontWeight: "bold",
+                  color: "var(--text-primary)",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                {phoneDetections.reduce((sum, p) => sum + p.ads.length, 0)}
+              </div>
+              <div
+                style={{
+                  fontSize: "0.8rem",
+                  fontWeight: 600,
+                  color: "var(--text-secondary)",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                Suspicious Ads
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Detection details */}
+        {phoneDetections.length > 0 && (
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
+          >
+            {phoneDetections.map((phone, idx) => (
+              <div
+                key={idx}
+                style={{
+                  padding: "2rem",
+                  background: "var(--card-bg)",
+                  borderRadius: "1rem",
+                  boxShadow: "3px 3px 0 var(--lime)",
+                  borderLeft: "4px solid var(--lime)",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "start",
+                    marginBottom: "1.5rem",
+                    flexWrap: "wrap",
+                    gap: "1rem",
+                  }}
+                >
+                  <div>
+                    <h3
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: "1.25rem",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                        color: "var(--text-primary)",
+                        marginBottom: "0.5rem",
+                      }}
+                    >
+                      <CameraIcon
+                        style={{
+                          width: "1.5rem",
+                          height: "1.5rem",
+                          color: "var(--lime)",
+                        }}
+                      />
+                      Phone #{idx + 1}
+                    </h3>
+                    <p
+                      style={{
+                        fontSize: "0.9rem",
+                        color: "var(--text-secondary)",
+                        margin: 0,
+                      }}
+                    >
+                      Detection confidence:{" "}
+                      {(phone.confidence * 100).toFixed(1)}%
+                    </p>
+                  </div>
+                  {phone.hasSocialMedia && (
+                    <div
+                      style={{
+                        background: "var(--lime)",
+                        color: "var(--text-primary)",
+                        padding: "0.75rem 1.25rem",
+                        borderRadius: "2rem",
+                        fontSize: "0.9rem",
+                        fontWeight: 600,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                      }}
+                    >
+                      <CheckCircleIcon
+                        style={{ width: "1.25rem", height: "1.25rem" }}
+                      />
+                      {phone.possiblePlatform || "Social Media"}
+                    </div>
+                  )}
+                </div>
+
+                {phone.ads.length > 0 ? (
+                  <div
+                    style={{
+                      marginTop: "1.5rem",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "1rem",
+                    }}
+                  >
+                    <h4
+                      style={{
+                        fontWeight: 600,
+                        color: "#ff4d4f",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                        fontSize: "1.1rem",
+                      }}
+                    >
+                      <ExclamationTriangleIcon
+                        style={{ width: "1.25rem", height: "1.25rem" }}
+                      />
+                      Suspicious Ads Detected:
+                    </h4>
+                    {phone.ads.map((ad, adIdx) => (
+                      <div
+                        key={adIdx}
+                        style={{
+                          paddingLeft: "1.5rem",
+                          borderLeft: "4px solid #ff4d4f",
+                          background: "rgba(255, 77, 79, 0.05)",
+                          padding: "1.5rem",
+                          borderRadius: "0.75rem",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            marginBottom: "1rem",
+                            flexWrap: "wrap",
+                            gap: "0.5rem",
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontWeight: 600,
+                              textTransform: "uppercase",
+                              fontSize: "0.9rem",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "0.5rem",
+                              color: "var(--text-primary)",
+                            }}
+                          >
+                            <ExclamationTriangleIcon
+                              style={{ width: "1rem", height: "1rem" }}
+                            />
+                            {ad.analysis.category}
+                          </span>
+                          <span
+                            style={{
+                              background: "#ff4d4f",
+                              color: "white",
+                              padding: "0.5rem 1rem",
+                              borderRadius: "2rem",
+                              fontSize: "0.8rem",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {(ad.analysis.confidence * 100).toFixed(0)}%
+                            Accuracy
+                          </span>
+                        </div>
+
+                        {/* Detected scam keywords */}
+                        {ad.analysis.scamKeywords &&
+                          ad.analysis.scamKeywords.length > 0 && (
+                            <div
+                              style={{
+                                marginTop: "1rem",
+                                marginBottom: "1rem",
+                                padding: "1rem",
+                                background: "rgba(255, 77, 79, 0.1)",
+                                borderRadius: "0.5rem",
+                                border: "1px solid rgba(255, 77, 79, 0.3)",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  fontSize: "0.85rem",
+                                  fontWeight: "bold",
+                                  color: "#ff4d4f",
+                                  marginBottom: "0.75rem",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "0.5rem",
+                                }}
+                              >
+                                <ExclamationTriangleIcon
+                                  style={{ width: "1rem", height: "1rem" }}
+                                />
+                                Scam Keywords Detected:
+                              </div>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexWrap: "wrap",
+                                  gap: "0.5rem",
+                                }}
+                              >
+                                {ad.analysis.scamKeywords
+                                  .slice(0, 5)
+                                  .map((keyword, kIdx) => (
+                                    <span
+                                      key={kIdx}
+                                      style={{
+                                        background: "rgba(255, 77, 79, 0.2)",
+                                        color: "var(--text-primary)",
+                                        padding: "0.25rem 0.75rem",
+                                        borderRadius: "0.25rem",
+                                        fontSize: "0.8rem",
+                                        fontFamily: "monospace",
+                                      }}
+                                    >
+                                      "{keyword}"
+                                    </span>
+                                  ))}
+                              </div>
+                            </div>
+                          )}
+
+                        {/* Detected text preview */}
+                        {ad.analysis.detectedText &&
+                          ad.analysis.detectedText.length > 0 && (
+                            <div
+                              style={{
+                                marginTop: "1rem",
+                                marginBottom: "1rem",
+                                padding: "1rem",
+                                background: "var(--card-bg)",
+                                borderRadius: "0.5rem",
+                                fontSize: "0.85rem",
+                                border: "1px solid var(--purple)",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  fontWeight: 600,
+                                  marginBottom: "0.75rem",
+                                  color: "var(--text-primary)",
+                                }}
+                              >
+                                📄 Detected Text:
+                              </div>
+                              <div
+                                style={{
+                                  color: "var(--text-secondary)",
+                                  fontStyle: "italic",
+                                  fontFamily: "monospace",
+                                  fontSize: "0.8rem",
+                                  maxHeight: "5rem",
+                                  overflowY: "auto",
+                                }}
+                              >
+                                {ad.analysis.detectedText
+                                  .slice(0, 3)
+                                  .join(" • ")}
+                              </div>
+                            </div>
+                          )}
+
+                        <ul
+                          style={{
+                            fontSize: "0.85rem",
+                            color: "var(--text-secondary)",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "0.5rem",
+                            marginTop: "1rem",
+                            paddingLeft: "1.25rem",
+                          }}
+                        >
+                          {ad.analysis.reasons.map((reason, rIdx) => (
+                            <li key={rIdx}>{reason}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                ) : phone.hasSocialMedia ? (
+                  <p
+                    style={{
+                      fontSize: "0.95rem",
+                      color: "var(--lime)",
+                      marginTop: "1rem",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
+                    }}
+                  >
+                    <CheckCircleIcon
+                      style={{ width: "1.25rem", height: "1.25rem" }}
+                    />
+                    No suspicious ads detected on this screen
+                  </p>
+                ) : (
+                  <p
+                    style={{
+                      fontSize: "0.95rem",
+                      color: "var(--text-secondary)",
+                      marginTop: "1rem",
+                    }}
+                  >
+                    Not showing social media or screen not visible
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Help text */}
+        {phoneDetections.length === 0 && (
+          <div
+            style={{
+              padding: "2rem",
+              background: "var(--card-bg)",
+              border: "2px solid var(--lime)",
+              borderRadius: "1rem",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "start", gap: "1rem" }}>
+              <CameraIcon
+                style={{
+                  width: "2rem",
+                  height: "2rem",
+                  color: "var(--lime)",
+                  flexShrink: 0,
+                  marginTop: "0.25rem",
+                }}
+              />
+              <div>
+                <p
+                  style={{
+                    fontWeight: 600,
+                    color: "var(--text-primary)",
+                    marginBottom: "0.75rem",
+                    fontSize: "1.1rem",
+                  }}
+                >
+                  Getting Started
+                </p>
+                <p
+                  style={{
+                    fontSize: "0.95rem",
+                    color: "var(--text-secondary)",
+                    lineHeight: "1.6",
+                    margin: 0,
+                  }}
+                >
+                  Hold your camera steady and point it at a phone screen
+                  displaying social media (Instagram, Facebook, TikTok, etc.).
+                  Make sure the screen is clearly visible and well-lit for best
+                  detection accuracy.
+                </p>
+              </div>
+            </div>
           </div>
         )}
       </div>
-
-      {/* Status panel */}
-      <div className="mt-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div>
-            <div className="text-2xl font-bold text-blue-600">{status}</div>
-            <div className="text-xs text-gray-600 dark:text-gray-400">
-              Status
-            </div>
-          </div>
-          <div>
-            <div className="text-2xl font-bold text-green-600">{fps} FPS</div>
-            <div className="text-xs text-gray-600 dark:text-gray-400">
-              Frame Rate
-            </div>
-          </div>
-          <div>
-            <div className="text-2xl font-bold text-purple-600">
-              {phoneDetections.length}
-            </div>
-            <div className="text-xs text-gray-600 dark:text-gray-400">
-              Phones Detected
-            </div>
-          </div>
-          <div>
-            <div className="text-2xl font-bold text-red-600">
-              {phoneDetections.reduce((sum, p) => sum + p.ads.length, 0)}
-            </div>
-            <div className="text-xs text-gray-600 dark:text-gray-400">
-              Suspicious Ads
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Detection details */}
-      {phoneDetections.length > 0 && (
-        <div className="mt-4 space-y-3">
-          {phoneDetections.map((phone, idx) => (
-            <div
-              key={idx}
-              className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow border-l-4 border-blue-500"
-            >
-              <div className="flex justify-between items-start mb-2">
-                <div>
-                  <h3 className="font-bold text-lg">Phone #{idx + 1}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Detection confidence: {(phone.confidence * 100).toFixed(1)}%
-                  </p>
-                </div>
-                {phone.hasSocialMedia && (
-                  <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100 px-3 py-1 rounded-full text-sm font-semibold">
-                    📱 {phone.possiblePlatform || "Social Media"}
-                  </div>
-                )}
-              </div>
-
-              {phone.ads.length > 0 ? (
-                <div className="mt-3 space-y-2">
-                  <h4 className="font-semibold text-red-600">
-                    ⚠️ Suspicious Ads Detected:
-                  </h4>
-                  {phone.ads.map((ad, adIdx) => (
-                    <div
-                      key={adIdx}
-                      className="pl-4 border-l-2 border-red-400 bg-red-50 dark:bg-red-900/20 p-3 rounded"
-                    >
-                      <div className="flex justify-between items-center mb-1">
-                        <span className="font-semibold uppercase text-sm">
-                          {ad.analysis.category}
-                        </span>
-                        <span className="bg-red-600 text-white px-2 py-1 rounded text-xs font-bold">
-                          {(ad.analysis.confidence * 100).toFixed(0)}% Accuracy
-                        </span>
-                      </div>
-
-                      {/* Detected scam keywords */}
-                      {ad.analysis.scamKeywords &&
-                        ad.analysis.scamKeywords.length > 0 && (
-                          <div className="mt-2 mb-2 p-2 bg-red-100 dark:bg-red-900/30 rounded border border-red-300 dark:border-red-700">
-                            <div className="text-xs font-bold text-red-800 dark:text-red-200 mb-1">
-                              🚨 Scam Keywords Detected:
-                            </div>
-                            <div className="flex flex-wrap gap-1">
-                              {ad.analysis.scamKeywords
-                                .slice(0, 5)
-                                .map((keyword, kIdx) => (
-                                  <span
-                                    key={kIdx}
-                                    className="bg-red-200 dark:bg-red-800 text-red-900 dark:text-red-100 px-2 py-0.5 rounded text-xs font-mono"
-                                  >
-                                    "{keyword}"
-                                  </span>
-                                ))}
-                            </div>
-                          </div>
-                        )}
-
-                      {/* Detected text preview */}
-                      {ad.analysis.detectedText &&
-                        ad.analysis.detectedText.length > 0 && (
-                          <div className="mt-2 mb-2 p-2 bg-gray-100 dark:bg-gray-700 rounded text-xs">
-                            <div className="font-semibold mb-1 text-gray-700 dark:text-gray-300">
-                              📄 Detected Text:
-                            </div>
-                            <div className="text-gray-600 dark:text-gray-400 italic font-mono text-xs max-h-20 overflow-y-auto">
-                              {ad.analysis.detectedText.slice(0, 3).join(" • ")}
-                            </div>
-                          </div>
-                        )}
-
-                      <ul className="text-xs text-gray-700 dark:text-gray-300 space-y-1 mt-2">
-                        {ad.analysis.reasons.map((reason, rIdx) => (
-                          <li key={rIdx}>• {reason}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              ) : phone.hasSocialMedia ? (
-                <p className="text-sm text-green-600 dark:text-green-400 mt-2">
-                  ✅ No suspicious ads detected on this screen
-                </p>
-              ) : (
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                  Not showing social media or screen not visible
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Help text */}
-      {phoneDetections.length === 0 && (
-        <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-          <p className="text-sm text-blue-800 dark:text-blue-200">
-            💡 <strong>Tip:</strong> Hold your camera steady and point it at a
-            phone screen displaying social media (Instagram, Facebook, TikTok,
-            etc.). Make sure the screen is clearly visible and well-lit for best
-            detection accuracy.
-          </p>
-        </div>
-      )}
     </div>
   );
 }

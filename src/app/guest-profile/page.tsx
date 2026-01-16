@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { LightBulbIcon } from "@heroicons/react/24/outline";
 import MediumCard from "@/app/components/MediumCard";
 import Modal from "@/app/components/Modal";
 import SignupForm from "@/app/(auth)/signup/components/SignupForm";
@@ -114,7 +115,7 @@ export default function GuestProfilePage() {
   const handleClearData = () => {
     if (
       confirm(
-        "Are you sure you want to clear all your guest data? This cannot be undone.",
+        "Are you sure you want to clear all your guest data? This cannot be undone."
       )
     ) {
       clearGuestData();
@@ -190,7 +191,10 @@ export default function GuestProfilePage() {
 
         <MediumCard>
           <div style={{ padding: "1rem" }}>
-            <h2 style={{ marginBottom: "1rem" }}>💡 Guest Mode Notice</h2>
+            <h2 style={{ marginBottom: "1rem" }}>
+              <LightBulbIcon className="w-6 h-6 inline-block mr-2" />
+              Guest Mode Notice
+            </h2>
             <p style={{ marginBottom: "1rem", lineHeight: "1.6" }}>
               You&apos;re currently browsing as a guest. Your progress is saved
               locally on this device only. Create an account or log in to:
@@ -265,7 +269,7 @@ export default function GuestProfilePage() {
                     {new Date(
                       getGuestModuleProgress()[
                         getGuestModuleProgress().length - 1
-                      ].completedAt,
+                      ].completedAt
                     ).toLocaleString()}
                   </p>
                 </div>

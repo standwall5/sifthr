@@ -1,6 +1,13 @@
 "use client";
 
 import React from "react";
+import {
+  FireIcon,
+  TrophyIcon,
+  ShieldCheckIcon,
+  SparklesIcon,
+  StarIcon,
+} from "@heroicons/react/24/outline";
 import styles from "./BadgeModal.module.css";
 import Button from "../Button/Button";
 
@@ -23,22 +30,35 @@ export default function BadgeModal({
 }: BadgeModalProps) {
   if (!isOpen) return null;
 
-  const emoji = type === "streak" ? "🔥" : type === "milestone" ? "🏆" : "🎖️";
+  const BadgeIcon =
+    type === "streak"
+      ? FireIcon
+      : type === "milestone"
+      ? TrophyIcon
+      : ShieldCheckIcon;
 
   return (
     <div className={styles.modalBackdrop} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div className={styles.celebration}>
-          <div className={styles.confetti}>🎉</div>
-          <div className={styles.confetti}>✨</div>
-          <div className={styles.confetti}>🌟</div>
+          <div className={styles.confetti}>
+            <SparklesIcon className="w-6 h-6" />
+          </div>
+          <div className={styles.confetti}>
+            <SparklesIcon className="w-6 h-6" />
+          </div>
+          <div className={styles.confetti}>
+            <StarIcon className="w-6 h-6" />
+          </div>
         </div>
 
         <div className={styles.badgeContainer}>
           {badgeIcon ? (
             <img src={badgeIcon} alt={badgeName} className={styles.badgeIcon} />
           ) : (
-            <div className={styles.badgeEmoji}>{emoji}</div>
+            <div className={styles.badgeEmoji}>
+              <BadgeIcon className="w-16 h-16" />
+            </div>
           )}
         </div>
 

@@ -20,6 +20,7 @@ import {
   NewspaperIcon,
   QuestionMarkCircleIcon,
   ClipboardDocumentListIcon,
+  CameraIcon,
 } from "@heroicons/react/24/outline";
 
 const Navbar: React.FC = () => {
@@ -172,6 +173,20 @@ const Navbar: React.FC = () => {
                   style={{ width: "1.25rem", height: "1.25rem" }}
                 />
                 Quizzes
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="nav-link"
+                href="/camera"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
+                <CameraIcon style={{ width: "1.25rem", height: "1.25rem" }} />
+                Ad Detector
               </Link>
             </li>
             <li>

@@ -1,7 +1,7 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import MarkdownRenderer from "@/app/components/MarkdownRenderer";
+import RichTextRenderer from "@/app/components/RichTextRenderer/RichTextRenderer";
 import "../../../moduleQuiz.css";
 
 type SectionData = {
@@ -107,7 +107,7 @@ export default function ModuleSectionPage() {
           </div>
         </div>
         <h2>{data.section.title}</h2>
-        <MarkdownRenderer content={data.section.content} />
+        <RichTextRenderer content={data.section.content} />
       </div>
       <div className="nextPrev" style={{ marginTop: 24 }}>
         <button

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { FireIcon } from "@heroicons/react/24/outline";
 import styles from "./StreakDisplay.module.css";
 import type { UserStreak } from "@/app/lib/models/types";
 
@@ -18,13 +19,13 @@ export default function StreakDisplay() {
 
     window.addEventListener(
       "streak:updated",
-      handleStreakUpdate as EventListener,
+      handleStreakUpdate as EventListener
     );
 
     return () => {
       window.removeEventListener(
         "streak:updated",
-        handleStreakUpdate as EventListener,
+        handleStreakUpdate as EventListener
       );
     };
   }, []);
@@ -48,7 +49,9 @@ export default function StreakDisplay() {
 
   return (
     <div className={styles.streakContainer}>
-      <div className={styles.streakIcon}>🔥</div>
+      <div className={styles.streakIcon}>
+        <FireIcon className="w-8 h-8" />
+      </div>
       <div className={styles.streakInfo}>
         <div className={styles.currentStreak}>
           <span className={styles.streakNumber}>{streak.current_streak}</span>

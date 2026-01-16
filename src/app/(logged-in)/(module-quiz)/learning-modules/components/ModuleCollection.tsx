@@ -35,6 +35,20 @@ export default function ModuleCollection({
       </div>
     );
 
+  if (filteredModules.length === 0) {
+    return (
+      <div
+        style={{
+          textAlign: "center",
+          padding: "2rem",
+          color: "var(--text-secondary)",
+        }}
+      >
+        No modules found. Try a different search term.
+      </div>
+    );
+  }
+
   return (
     <div className="module-quiz-collection">
       {filteredModules.map((module) => (
@@ -43,10 +57,7 @@ export default function ModuleCollection({
           onClick={() => router.push(`/learning-modules/${module.id}`)}
           title={module.title}
           description={module.description}
-        >
-          {/*<h2>{module.title}</h2>
-          <p>{module.description}</p>*/}
-        </Card>
+        />
       ))}
     </div>
   );

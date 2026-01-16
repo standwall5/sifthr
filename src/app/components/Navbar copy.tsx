@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { FireIcon } from "@heroicons/react/24/outline";
 import { User } from "@/lib/models/types";
 import { signout } from "@/lib/auth-actions";
 import { createClient } from "@/utils/supabase/client";
@@ -157,7 +158,7 @@ const Navbar: React.FC = () => {
                   {streak > 0 && (
                     <div className="px-4 py-3 border-b dark:border-gray-700">
                       <div className="flex items-center gap-2 text-sm">
-                        <span className="text-2xl">🔥</span>
+                        <FireIcon className="w-6 h-6 text-orange-500" />
                         <div>
                           <div className="font-bold text-gray-900 dark:text-white">
                             {streak} Day Streak

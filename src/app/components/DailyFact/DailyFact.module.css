@@ -1,0 +1,93 @@
+.dailyFactCard {
+  background: linear-gradient(135deg, var(--purple) 0%, #7c3aed 100%);
+  border-radius: 1rem;
+  padding: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  box-shadow: 0 8px 24px rgba(153, 85, 235, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.dailyFactCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  transform: translate(50%, -50%);
+}
+
+.mascotContainer {
+  flex-shrink: 0;
+  background: white;
+  border-radius: 50%;
+  padding: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+.mascot {
+  display: block;
+  border-radius: 50%;
+}
+
+.factContent {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.factHeader {
+  margin-bottom: 0.75rem;
+}
+
+.badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+}
+
+.factText {
+  color: white;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  margin: 0;
+  font-weight: 500;
+}
+
+.loadingState {
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .dailyFactCard {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem;
+  }
+
+  .factText {
+    font-size: 1rem;
+  }
+}

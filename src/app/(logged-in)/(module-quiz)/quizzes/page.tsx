@@ -1,37 +1,60 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import "../../style.css";
 import type { Quiz } from "@/lib/models/types";
-import Search from "@/app/(logged-in)/(module-quiz)/components/Search";
-import QuizCollection from "@/app/(logged-in)/(module-quiz)/quizzes/components/QuizCollection";
+import QuizCarousel from "./components/QuizCarousel";
+import BadgeSidebar from "../learning-modules/components/BadgeSidebar";
+import QuizBrowser from "./components/QuizBrowser";
+import styles from "./page.module.css";
 
 const QuizzesPage = () => {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
-  const [search, setSearch] = useState("");
+  const [selectedCarouselIndex, setSelectedCarouselIndex] = useState(0);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
     fetch("/api/getQuizzes")
       .then((res) => res.json())
-      .then((data) => setQuizzes(data))
+      .then((data) => {
+        setQuizzes(data);
+        if (data.length > 0) {
+          setSelectedCarouselIndex(0);
+        }
+      })
       .catch((err) => {
-        // Optionally handle errors here
         console.error("Failed to fetch quizzes:", err);
       });
   }, []);
 
-  const filteredQuizzes = quizzes
-    .filter((q) => q.title.toLowerCase().includes(search.toLowerCase()))
-    .slice(0, 5);
+  // Sort quizzes for carousel (by id)
+  const sortedQuizzes = useMemo(() => {
+    return [...quizzes].sort((a, b) => (a.id || 0) - (b.id || 0));
+  }, [quizzes]);
+
   return (
-    <div className="module-container">
-      <div className="module-quiz-box">
-        <Search
-          search={search}
-          setSearch={setSearch}
-          placeholder="Search quizzes..."
+    <div className={styles.pageContainer}>
+      {/* Sidebar */}
+      <BadgeSidebar
+        isOpen={sidebarOpen}
+        onToggle={() => setSidebarOpen(!sidebarOpen)}
+      />
+
+      {/* Main Content */}
+      <div
+        className={`${styles.mainContent} ${
+          sidebarOpen ? styles.sidebarOpen : ""
+        }`}
+      >
+        {/* Featured Carousel */}
+        <QuizCarousel
+          quizzes={sortedQuizzes}
+          selectedIndex={selectedCarouselIndex}
+          onNavigate={setSelectedCarouselIndex}
         />
-        <QuizCollection filteredQuizzes={filteredQuizzes} />
+
+        {/* Quiz Browser */}
+        <QuizBrowser quizzes={quizzes} />
       </div>
     </div>
   );

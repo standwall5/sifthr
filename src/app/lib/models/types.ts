@@ -15,6 +15,13 @@ export type Module = {
   title: string;
   description?: string;
   image_url?: string;
+  difficulty_level?: string;
+  topic?: string;
+  estimated_time?: number;
+  thumbnail_url?: string;
+  is_recommended?: boolean;
+  created_at?: string;
+  updated_at?: string;
 };
 
 export type ModuleSection = {

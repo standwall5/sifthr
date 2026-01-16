@@ -13,6 +13,20 @@ export default function QuizCollection({
 }: QuizCollectionProps) {
   const router = useRouter();
 
+  if (filteredQuizzes.length === 0) {
+    return (
+      <div
+        style={{
+          textAlign: "center",
+          padding: "2rem",
+          color: "var(--text-secondary)",
+        }}
+      >
+        No quizzes found. Try a different search term.
+      </div>
+    );
+  }
+
   return (
     <div className="module-quiz-collection">
       {filteredQuizzes.map((quiz) => (
@@ -21,7 +35,7 @@ export default function QuizCollection({
           onClick={() => router.push(`/quizzes/${quiz.id}`)}
           title={quiz.title}
           description={quiz.description}
-        ></Card>
+        />
       ))}
     </div>
   );

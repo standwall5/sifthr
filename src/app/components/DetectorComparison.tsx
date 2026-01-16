@@ -1,6 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import {
+  BoltIcon,
+  ArchiveBoxIcon,
+  CheckCircleIcon,
+  ExclamationTriangleIcon,
+} from "@heroicons/react/24/outline";
 import CameraFeed from "./CameraFeed";
 import PhoneAdDetector from "./PhoneAdDetector";
 
@@ -48,37 +54,73 @@ export default function DetectorComparison() {
 
           {/* Feature Comparison */}
           <div className="mt-4 grid md:grid-cols-2 gap-4 text-sm">
-            <div className={`p-3 rounded-lg border-2 ${
-              activeDetector === "new"
-                ? "border-purple-500 bg-purple-50 dark:bg-purple-900/20"
-                : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50"
-            }`}>
-              <h3 className="font-bold text-purple-600 dark:text-purple-400 mb-2">
-                ⚡ Advanced Mode Features:
+            <div
+              className={`p-3 rounded-lg border-2 ${
+                activeDetector === "new"
+                  ? "border-purple-500 bg-purple-50 dark:bg-purple-900/20"
+                  : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50"
+              }`}
+            >
+              <h3 className="font-bold text-purple-600 dark:text-purple-400 mb-2 flex items-center">
+                <BoltIcon className="w-5 h-5 inline-block mr-2" />
+                Advanced Mode Features:
               </h3>
               <ul className="space-y-1 text-gray-700 dark:text-gray-300">
-                <li>✅ Phone detection with MediaPipe</li>
-                <li>✅ Social media app identification</li>
-                <li>✅ Fake ad detection with accuracy scores</li>
-                <li>✅ Real-time screen content analysis</li>
-                <li>✅ 60+ FPS performance</li>
+                <li className="flex items-start">
+                  <CheckCircleIcon className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                  Phone detection with MediaPipe
+                </li>
+                <li className="flex items-start">
+                  <CheckCircleIcon className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                  Social media app identification
+                </li>
+                <li className="flex items-start">
+                  <CheckCircleIcon className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                  Fake ad detection with accuracy scores
+                </li>
+                <li className="flex items-start">
+                  <CheckCircleIcon className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                  Real-time screen content analysis
+                </li>
+                <li className="flex items-start">
+                  <CheckCircleIcon className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                  60+ FPS performance
+                </li>
               </ul>
             </div>
 
-            <div className={`p-3 rounded-lg border-2 ${
-              activeDetector === "old"
-                ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-                : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50"
-            }`}>
-              <h3 className="font-bold text-blue-600 dark:text-blue-400 mb-2">
-                📦 Basic Mode Features:
+            <div
+              className={`p-3 rounded-lg border-2 ${
+                activeDetector === "old"
+                  ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+                  : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50"
+              }`}
+            >
+              <h3 className="font-bold text-blue-600 dark:text-blue-400 mb-2 flex items-center">
+                <ArchiveBoxIcon className="w-5 h-5 inline-block mr-2" />
+                Basic Mode Features:
               </h3>
               <ul className="space-y-1 text-gray-700 dark:text-gray-300">
-                <li>✅ General object detection</li>
-                <li>✅ Multiple object types</li>
-                <li>✅ Confidence scores</li>
-                <li>✅ Simple bounding boxes</li>
-                <li>⚠️ 20-30 FPS performance</li>
+                <li className="flex items-start">
+                  <CheckCircleIcon className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                  General object detection
+                </li>
+                <li className="flex items-start">
+                  <CheckCircleIcon className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                  Multiple object types
+                </li>
+                <li className="flex items-start">
+                  <CheckCircleIcon className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                  Confidence scores
+                </li>
+                <li className="flex items-start">
+                  <CheckCircleIcon className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                  Simple bounding boxes
+                </li>
+                <li className="flex items-start">
+                  <ExclamationTriangleIcon className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                  20-30 FPS performance
+                </li>
               </ul>
             </div>
           </div>

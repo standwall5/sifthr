@@ -14,6 +14,12 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
   content,
   className = "",
 }) => {
+  // Process content to ensure proper markdown formatting
+  const processedContent = content
+    .replace(/•/g, '-') // Convert bullet points to markdown bullets
+    .replace(/\n/g, '  \n') // Ensure line breaks are recognized
+    .trim();
+
   return (
     <div className={`markdown-content ${className}`}>
       <ReactMarkdown
@@ -341,7 +347,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
           ),
         }}
       >
-        {content}
+        {processedContent}
       </ReactMarkdown>
     </div>
   );

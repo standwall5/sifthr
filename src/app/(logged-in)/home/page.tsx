@@ -1,15 +1,49 @@
 "use client";
 
 import { redirect, useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import DailyFact from "@/app/components/DailyFact";
+import BadgeScroll from "@/app/components/BadgeScroll";
+import RecommendedModules from "@/app/components/RecommendedModules";
+import RecommendedQuizzes from "@/app/components/RecommendedQuizzes";
+import GuestMigrationPrompt from "@/app/components/GuestMigrationPrompt";
+import { shouldShowMigrationPrompt } from "@/app/lib/guestMigration";
+import { supabase } from "@/app/lib/supabaseClient";
 import "./styles.css";
 
 const page = () => {
-  // const router = useRouter();
+  const [showMigration, setShowMigration] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const checkMigration = async () => {
+      if (shouldShowMigrationPrompt()) {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (user) {
+          setUserId(user.id);
+          setShowMigration(true);
+        }
+      }
+    };
+    checkMigration();
+  }, []);
 
   return (
     <>
+      {/* Guest Migration Prompt */}
+      {showMigration && userId && (
+        <GuestMigrationPrompt
+          userId={userId}
+          onComplete={() => setShowMigration(false)}
+        />
+      )}
+
+      {/* Daily Scam Fact */}
+      <DailyFact />
+
       {/* <!-- Menu -->
         <!-- Redirect users to new page each time --> */}
       <div className="menu">
@@ -71,6 +105,15 @@ const page = () => {
           </div>
         </Link>
       </div>
+
+      {/* Badge Scroll Section */}
+      <BadgeScroll />
+
+      {/* Recommended Modules Section */}
+      <RecommendedModules />
+
+      {/* Recommended Quizzes Section */}
+      <RecommendedQuizzes />
     </>
   );
 };

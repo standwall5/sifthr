@@ -29,11 +29,7 @@ export default function NotificationProvider({
     const handleStreakUpdate = (event: CustomEvent) => {
       const { streak } = event.detail;
       if (streak && streak.current_streak > 0) {
-        showToast(
-          `🔥 ${streak.current_streak} day streak! Keep it up!`,
-          "streak",
-          "🔥",
-        );
+        showToast(`${streak.current_streak} day streak! Keep it up!`, "streak");
       }
     };
 
@@ -46,7 +42,7 @@ export default function NotificationProvider({
     window.addEventListener("quiz:completed", handleQuizComplete);
     window.addEventListener(
       "streak:updated",
-      handleStreakUpdate as EventListener,
+      handleStreakUpdate as EventListener
     );
     window.addEventListener("toast:show", handleToastShow as EventListener);
 
@@ -55,11 +51,11 @@ export default function NotificationProvider({
       window.removeEventListener("quiz:completed", handleQuizComplete);
       window.removeEventListener(
         "streak:updated",
-        handleStreakUpdate as EventListener,
+        handleStreakUpdate as EventListener
       );
       window.removeEventListener(
         "toast:show",
-        handleToastShow as EventListener,
+        handleToastShow as EventListener
       );
     };
   }, [checkForNewBadges, showToast]);
@@ -83,7 +79,7 @@ export default function NotificationProvider({
             window.dispatchEvent(
               new CustomEvent("streak:updated", {
                 detail: { streak: data.streak },
-              }),
+              })
             );
           }
         }

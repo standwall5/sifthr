@@ -2,6 +2,7 @@
 
 import React from "react";
 import MediumCard from "@/app/components/MediumCard";
+import ChangePassword from "@/app/components/ChangePassword";
 import { useLanguage } from "@/app/context/LanguageContext";
 import { useTheme } from "@/app/context/ThemeContext";
 import styles from "./settings.module.css";
@@ -20,14 +21,18 @@ export default function SettingsPage() {
           <h2>Theme</h2>
           <div className={styles.optionGroup}>
             <button
-              className={`${styles.optionButton} ${theme === "light" ? styles.active : ""}`}
+              className={`${styles.optionButton} ${
+                theme === "light" ? styles.active : ""
+              }`}
               onClick={() => setTheme("light")}
             >
               <span className={styles.icon}>☀️</span>
               Light Mode
             </button>
             <button
-              className={`${styles.optionButton} ${theme === "dark" ? styles.active : ""}`}
+              className={`${styles.optionButton} ${
+                theme === "dark" ? styles.active : ""
+              }`}
               onClick={() => setTheme("dark")}
             >
               <span className={styles.icon}>🌙</span>
@@ -43,14 +48,18 @@ export default function SettingsPage() {
           <h2>{t("settings.language")}</h2>
           <div className={styles.optionGroup}>
             <button
-              className={`${styles.optionButton} ${language === "en" ? styles.active : ""}`}
+              className={`${styles.optionButton} ${
+                language === "en" ? styles.active : ""
+              }`}
               onClick={() => setLanguage("en")}
             >
               <span className={styles.icon}>🇺🇸</span>
               {t("settings.english")}
             </button>
             <button
-              className={`${styles.optionButton} ${language === "tl" ? styles.active : ""}`}
+              className={`${styles.optionButton} ${
+                language === "tl" ? styles.active : ""
+              }`}
               onClick={() => setLanguage("tl")}
             >
               <span className={styles.icon}>🇵🇭</span>
@@ -66,6 +75,9 @@ export default function SettingsPage() {
           <p>Your preferences are saved automatically</p>
         </div>
       </MediumCard>
+
+      {/* Change Password Section */}
+      <ChangePassword />
     </div>
   );
 }

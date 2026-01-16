@@ -1,0 +1,26 @@
+.pageContainer {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+}
+
+.mainContent {
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+  padding: 2rem;
+  width: 100%;
+}
+
+.mainContent.sidebarOpen {
+  margin-left: 280px;
+}
+
+@media (max-width: 768px) {
+  .mainContent.sidebarOpen {
+    margin-left: 0;
+  }
+
+  .mainContent {
+    padding: 1rem;
+  }
+}

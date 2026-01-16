@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useTheme } from "@/app/context/ThemeContext";
+import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 import styles from "./ThemeToggle.module.css";
 
 interface ThemeToggleProps {
@@ -11,7 +12,7 @@ interface ThemeToggleProps {
 
 export default function ThemeToggle({
   className = "",
-  showLabel = false
+  showLabel = false,
 }: ThemeToggleProps) {
   const { theme, toggleTheme } = useTheme();
 
@@ -23,7 +24,11 @@ export default function ThemeToggle({
       title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
     >
       <span className={styles.icon}>
-        {theme === "light" ? "🌙" : "☀️"}
+        {theme === "light" ? (
+          <MoonIcon className="w-5 h-5" />
+        ) : (
+          <SunIcon className="w-5 h-5" />
+        )}
       </span>
       {showLabel && (
         <span className={styles.label}>

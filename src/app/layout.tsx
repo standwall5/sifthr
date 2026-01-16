@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans } from "next/font/google";
+import { HandRaisedIcon, BookOpenIcon } from "@heroicons/react/24/outline";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Breadcrumbs from "./components/Breadcrumbs";
 import Footer from "./components/Footer";
 import BgBlob from "./components/BgBlob";
 import NotificationProvider from "./components/NotificationProvider";
+import Chatbot from "./components/Chatbot";
 import { ThemeProvider } from "./context/ThemeContext";
 import { LanguageProvider } from "./context/LanguageContext";
 import { GuestModeProvider } from "./context/GuestModeContext";
@@ -14,6 +16,13 @@ import FirstTimeVisitor from "./components/FirstTimeVisitor/FirstTimeVisitor";
 import { NextStepProvider, NextStep } from "nextstepjs";
 import type { Tour } from "nextstepjs";
 import VisualNovelCard from "./components/NextStepCard/VisualNovelCard";
+import {
+  homeTour,
+  moduleTour,
+  quizTour,
+  profileTour,
+  chatbotTour,
+} from "./lib/tours";
 
 const ibmPlexSans = IBM_Plex_Sans({
   weight: ["400", "500", "600", "700"],
@@ -27,13 +36,18 @@ export const metadata: Metadata = {
     "E-learning platform to identify fake social media advertisements",
 };
 
-// Define tour steps
+// Define tour steps - combine all tours
 const steps: Tour[] = [
+  homeTour,
+  moduleTour,
+  quizTour,
+  profileTour,
+  chatbotTour,
   {
     tour: "firstVisitTour",
     steps: [
       {
-        icon: <>👋</>,
+        icon: <HandRaisedIcon className="w-6 h-6" />,
         title: "Welcome to AdEducate!",
         content: (
           <>
@@ -48,7 +62,7 @@ const steps: Tour[] = [
         pointerRadius: 10,
       },
       {
-        icon: <>📚</>,
+        icon: <BookOpenIcon className="w-6 h-6" />,
         title: "Learning Modules",
         content: (
           <>
@@ -75,7 +89,10 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${ibmPlexSans.variable} antialiased`}>
+      <body
+        className={`${ibmPlexSans.variable} antialiased`}
+        suppressHydrationWarning
+      >
         <ThemeProvider>
           <LanguageProvider>
             <GuestModeProvider>
@@ -91,6 +108,7 @@ export default async function RootLayout({
                       </main>
                       <Footer />
                       <CookieConsent />
+                      <Chatbot />
                     </FirstTimeVisitor>
                   </NextStep>
                 </NextStepProvider>
