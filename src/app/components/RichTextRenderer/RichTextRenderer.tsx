@@ -7,17 +7,25 @@ interface RichTextRendererProps {
   content: string; // JSON string from Tiptap
 }
 
+interface TiptapNode {
+  type: string;
+  content?: TiptapNode[];
+  attrs?: Record<string, unknown>;
+  text?: string;
+  marks?: Array<{ type: string }>;
+}
+
 export default function RichTextRenderer({ content }: RichTextRendererProps) {
   let parsedContent;
 
   try {
     parsedContent = JSON.parse(content);
-  } catch (e) {
+  } catch {
     // If it's not JSON, treat it as plain text/markdown (backward compatibility)
     return <div className={styles.content}>{content}</div>;
   }
 
-  const renderNode = (node: any, index: number): React.ReactNode => {
+  const renderNode = (node: TiptapNode, index: number): React.ReactNode => {
     const key = `${node.type}-${index}`;
 
     switch (node.type) {

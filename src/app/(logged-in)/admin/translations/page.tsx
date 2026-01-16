@@ -145,7 +145,7 @@ export default function AdminTranslationsPage() {
   };
 
   const getFieldValue = (item: ContentItem, fieldName: string): string => {
-    return (item as any)[fieldName] || "";
+    return (item as Record<string, unknown>)[fieldName] as string || "";
   };
 
   return (

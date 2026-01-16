@@ -80,11 +80,11 @@ export default function ChangePassword() {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error changing password:", error);
       setMessage({
         type: "error",
-        text: error.message || "Failed to change password. Please try again.",
+        text: error instanceof Error ? error.message : "Failed to change password. Please try again.",
       });
     } finally {
       setLoading(false);
