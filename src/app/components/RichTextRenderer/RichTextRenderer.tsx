@@ -32,13 +32,13 @@ export default function RichTextRenderer({ content }: RichTextRendererProps) {
       case "paragraph":
         return (
           <p key={key} className={styles.paragraph}>
-            {node.content?.map((child: any, i: number) => renderNode(child, i))}
+            {node.content?.map((child, i: number) => renderNode(child, i))}
           </p>
         );
 
       case "heading":
-        const level = node.attrs.level;
-        const headingContent = node.content?.map((child: any, i: number) =>
+        const level = node.attrs?.level;
+        const headingContent = node.content?.map((child, i: number) =>
           renderNode(child, i)
         );
 
@@ -90,28 +90,28 @@ export default function RichTextRenderer({ content }: RichTextRendererProps) {
       case "bulletList":
         return (
           <ul key={key} className={styles.bulletList}>
-            {node.content?.map((child: any, i: number) => renderNode(child, i))}
+            {node.content?.map((child, i: number) => renderNode(child, i))}
           </ul>
         );
 
       case "orderedList":
         return (
           <ol key={key} className={styles.orderedList}>
-            {node.content?.map((child: any, i: number) => renderNode(child, i))}
+            {node.content?.map((child, i: number) => renderNode(child, i))}
           </ol>
         );
 
       case "listItem":
         return (
           <li key={key} className={styles.listItem}>
-            {node.content?.map((child: any, i: number) => renderNode(child, i))}
+            {node.content?.map((child, i: number) => renderNode(child, i))}
           </li>
         );
 
       case "blockquote":
         return (
           <blockquote key={key} className={styles.blockquote}>
-            {node.content?.map((child: any, i: number) => renderNode(child, i))}
+            {node.content?.map((child, i: number) => renderNode(child, i))}
           </blockquote>
         );
 
@@ -119,8 +119,8 @@ export default function RichTextRenderer({ content }: RichTextRendererProps) {
         return (
           <img
             key={key}
-            src={node.attrs.src}
-            alt={node.attrs.alt || ""}
+            src={(node.attrs as { src?: string })?.src}
+            alt={(node.attrs as { alt?: string })?.alt || ""}
             className={styles.image}
           />
         );
@@ -129,7 +129,7 @@ export default function RichTextRenderer({ content }: RichTextRendererProps) {
         let text: React.ReactNode = node.text;
 
         if (node.marks) {
-          node.marks.forEach((mark: any) => {
+          node.marks.forEach((mark) => {
             if (mark.type === "bold") {
               text = <strong>{text}</strong>;
             } else if (mark.type === "italic") {
@@ -137,7 +137,7 @@ export default function RichTextRenderer({ content }: RichTextRendererProps) {
             } else if (mark.type === "link") {
               text = (
                 <a
-                  href={mark.attrs.href}
+                  href={(mark.attrs as { href?: string })?.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.link}
@@ -158,7 +158,7 @@ export default function RichTextRenderer({ content }: RichTextRendererProps) {
 
   return (
     <div className={styles.richTextContent}>
-      {parsedContent.content?.map((node: any, i: number) =>
+      {(parsedContent as { content?: TiptapNode[] }).content?.map((node, i: number) =>
         renderNode(node, i)
       )}
     </div>
