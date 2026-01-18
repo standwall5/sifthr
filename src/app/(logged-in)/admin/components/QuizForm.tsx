@@ -4,7 +4,8 @@ import React, { useState, useEffect } from "react";
 import Button from "@/app/components/Button/Button";
 import Loading from "@/app/components/Loading";
 import styles from "./Forms.module.css";
-import MarkdownRenderer from "@/app/components/MarkdownRenderer";
+import RichTextEditor from "@/app/components/RichTextEditor/RichTextEditor";
+import RichTextRenderer from "@/app/components/RichTextRenderer/RichTextRenderer";
 
 type Module = {
   id: number;
@@ -256,7 +257,7 @@ export default function QuizForm() {
               marginBottom: "0.5rem",
             }}
           >
-            <label htmlFor="questionText">Question (Markdown Supported)</label>
+            <label htmlFor="questionText">Question (Rich Text Supported)</label>
             <button
               type="button"
               onClick={() => setShowQuestionPreview(!showQuestionPreview)}
@@ -277,36 +278,16 @@ export default function QuizForm() {
           </div>
 
           {!showQuestionPreview ? (
-            <>
-              <textarea
-                id="questionText"
-                value={currentQuestion.question_text}
-                onChange={(e) =>
-                  setCurrentQuestion({
-                    ...currentQuestion,
-                    question_text: e.target.value,
-                  })
-                }
-                placeholder="Enter your question using Markdown...&#10;&#10;Examples:&#10;**bold** *italic* - bullet point"
-                rows={4}
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "0.9rem",
-                  width: "100%",
-                  padding: "0.75rem",
-                  borderRadius: "0.5rem",
-                  border: "1px solid var(--border-color)",
-                  backgroundColor: "var(--card-bg)",
-                  color: "var(--text)",
-                }}
-              />
-              <small
-                className={styles.hint}
-                style={{ display: "block", marginTop: "0.5rem" }}
-              >
-                💡 Use **bold**, *italic*, - bullets, 1. numbers, [link](url)
-              </small>
-            </>
+            <RichTextEditor
+              content={currentQuestion.question_text}
+              onChange={(content) =>
+                setCurrentQuestion({
+                  ...currentQuestion,
+                  question_text: content,
+                })
+              }
+              placeholder="Enter your question..."
+            />
           ) : (
             <div
               style={{
@@ -318,7 +299,7 @@ export default function QuizForm() {
               }}
             >
               {currentQuestion.question_text ? (
-                <MarkdownRenderer content={currentQuestion.question_text} />
+                <RichTextRenderer content={currentQuestion.question_text} />
               ) : (
                 <p
                   style={{

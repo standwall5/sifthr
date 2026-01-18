@@ -3,6 +3,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { supabase } from "@/app/lib/supabaseClient";
 import { isGuestMode } from "@/app/lib/guestService";
+import SafeImage from "@/app/components/SafeImage";
+import { SparklesIcon } from "@heroicons/react/24/outline";
 import styles from "./BadgeScroll.module.css";
 import { TrophyIcon } from "@heroicons/react/24/outline";
 import {
@@ -229,20 +231,11 @@ export default function BadgeScroll() {
                   badge.icon_url ? (
                     badge.icon_url.startsWith("http") ||
                     badge.icon_url.startsWith("/") ? (
-                      <img
+                      <SafeImage
                         src={badge.icon_url}
                         alt={badge.name}
-                        onError={(e) => {
-                          e.currentTarget.style.display = "none";
-                          const parent = e.currentTarget.parentElement;
-                          if (parent) {
-                            const icon = document.createElement("span");
-                            icon.className = styles.defaultIcon;
-                            icon.innerHTML =
-                              '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>';
-                            parent.appendChild(icon);
-                          }
-                        }}
+                        fallbackIcon={SparklesIcon}
+                        style={{ width: "100%", height: "100%" }}
                       />
                     ) : (
                       <span className={styles.emojiIcon}>{badge.icon_url}</span>

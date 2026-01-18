@@ -7,6 +7,8 @@ import styles from "./Profile.module.css";
 import BadgesDisplay from "./BadgesDisplay";
 import StreakDisplay from "./StreakDisplay";
 import ProfilePictureUpload from "./ProfilePictureUpload";
+import SafeImage from "@/app/components/SafeImage";
+import { UserCircleIcon } from "@heroicons/react/24/outline";
 
 const Profile = () => {
   const { profile, loading } = useProfile();
@@ -32,10 +34,11 @@ const Profile = () => {
       <MediumCard>
         <div className={styles.profileContainer}>
           <div className={styles.avatarContainer}>
-            <img
+            <SafeImage
               src={currentProfilePicture}
               alt={profile.name}
               className={styles.avatar}
+              fallbackIcon={UserCircleIcon}
             />
             <ProfilePictureUpload
               currentImageUrl={currentProfilePicture}

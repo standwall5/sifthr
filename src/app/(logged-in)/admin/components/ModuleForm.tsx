@@ -6,7 +6,8 @@ import Loading from "@/app/components/Loading";
 import styles from "./Forms.module.css";
 import { supabase } from "@/app/lib/supabaseClient";
 import Image from "next/image";
-import MarkdownRenderer from "@/app/components/MarkdownRenderer";
+import RichTextEditor from "@/app/components/RichTextEditor/RichTextEditor";
+import RichTextRenderer from "@/app/components/RichTextRenderer/RichTextRenderer";
 
 type Module = {
   id: number;
@@ -575,7 +576,7 @@ export default function ModuleForm() {
                       }}
                     >
                       <label htmlFor="sectionContent">
-                        Section Content (Markdown Supported)
+                        Section Content (Rich Text Supported)
                       </label>
                       <button
                         type="button"
@@ -583,44 +584,16 @@ export default function ModuleForm() {
                           setShowMarkdownPreview(!showMarkdownPreview)
                         }
                         className={styles.previewToggle}
-                        style={{
-                          padding: "0.5rem 1rem",
-                          backgroundColor: "var(--purple)",
-                          color: "white",
-                          border: "none",
-                          borderRadius: "0.5rem",
-                          cursor: "pointer",
-                          fontSize: "0.875rem",
-                          fontWeight: "600",
-                        }}
                       >
                         {showMarkdownPreview ? "📝 Edit" : "👁️ Preview"}
                       </button>
                     </div>
-
                     {!showMarkdownPreview ? (
-                      <>
-                        <textarea
-                          id="sectionContent"
-                          value={sectionContent}
-                          onChange={(e) => setSectionContent(e.target.value)}
-                          placeholder="Enter the content for this section using Markdown...&#10;&#10;Examples:&#10;# Heading 1&#10;## Heading 2&#10;**bold text**&#10;*italic text*&#10;- Bullet point&#10;1. Numbered list&#10;[Link text](https://example.com)"
-                          rows={12}
-                          required
-                          style={{
-                            fontFamily: "monospace",
-                            fontSize: "0.9rem",
-                          }}
-                        />
-                        <small
-                          className={styles.hint}
-                          style={{ display: "block", marginTop: "0.5rem" }}
-                        >
-                          💡 <strong>Markdown Tips:</strong> Use # for headings,
-                          **bold**, *italic*, - for bullets, 1. for numbers,
-                          [text](url) for links, &gt; for quotes
-                        </small>
-                      </>
+                      <RichTextEditor
+                        content={sectionContent}
+                        onChange={(content) => setSectionContent(content)}
+                        placeholder="Enter the content for this section..."
+                      />
                     ) : (
                       <div
                         style={{
@@ -634,7 +607,7 @@ export default function ModuleForm() {
                         }}
                       >
                         {sectionContent ? (
-                          <MarkdownRenderer content={sectionContent} />
+                          <RichTextRenderer content={sectionContent} />
                         ) : (
                           <p
                             style={{

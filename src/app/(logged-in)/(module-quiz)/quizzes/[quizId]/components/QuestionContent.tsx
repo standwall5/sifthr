@@ -1,5 +1,5 @@
 import type { Answer, Question } from "@/lib/models/types";
-import MarkdownRenderer from "@/app/components/MarkdownRenderer";
+import RichTextRenderer from "@/app/components/RichTextRenderer/RichTextRenderer";
 
 type QuestionContentProps = {
   question: Question;
@@ -25,7 +25,7 @@ export default function QuestionContent({
   return (
     <>
       <div className="title">
-        <MarkdownRenderer content={question.question_text} />
+        <RichTextRenderer content={question.question_text} />
       </div>
       {(() => {
         switch (question.question_type) {

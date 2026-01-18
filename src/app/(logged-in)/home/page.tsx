@@ -9,6 +9,13 @@ import RecommendedQuizzes from "@/app/components/RecommendedQuizzes";
 import GuestMigrationPrompt from "@/app/components/GuestMigrationPrompt";
 import { shouldShowMigrationPrompt } from "@/app/lib/guestMigration";
 import { supabase } from "@/app/lib/supabaseClient";
+import SafeImage from "@/app/components/SafeImage";
+import {
+  BookOpenIcon,
+  AcademicCapIcon,
+  NewspaperIcon,
+  LifebuoyIcon,
+} from "@heroicons/react/24/outline";
 import "./styles.css";
 
 export default function HomePage() {
@@ -48,8 +55,12 @@ export default function HomePage() {
       <div className="menu">
         <Link className="box" id="modules" href="/learning-modules">
           <div className="box-header">
-            {/* Add your image here */}
-            <img src="/assets/images/learning.webp" alt="Learning Materials" />
+            <SafeImage
+              src="/assets/images/learning.webp"
+              alt="Learning Materials"
+              fallbackIcon={BookOpenIcon}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
           </div>
           <div className="box-content">
             <h1>Learning Materials</h1>
@@ -62,8 +73,12 @@ export default function HomePage() {
         </Link>
         <Link className="box" id="quizzes" href="quizzes">
           <div className="box-header">
-            {/* Add your image here */}
-            <img src="/assets/images/quiz.png" alt="Quizzes" />
+            <SafeImage
+              src="/assets/images/quiz.png"
+              alt="Quizzes"
+              fallbackIcon={AcademicCapIcon}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
           </div>
           <div className="box-content">
             <h1>Quizzes</h1>
@@ -77,8 +92,12 @@ export default function HomePage() {
         </Link>
         <Link className="box" id="latestNews" href="latest-news">
           <div className="box-header">
-            {/* Add your image here */}
-            <img src="/assets/images/latest-news.webp" alt="Latest News" />
+            <SafeImage
+              src="/assets/images/latest-news.webp"
+              alt="Latest News"
+              fallbackIcon={NewspaperIcon}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
           </div>
           <div className="box-content">
             <h1>Latest News</h1>
@@ -91,8 +110,12 @@ export default function HomePage() {
         </Link>
         <Link className="box" id="support" href="/support">
           <div className="box-header">
-            {/* Add your image here */}
-            <img src="/assets/images/support.webp" alt="Support" />
+            <SafeImage
+              src="/assets/images/support.webp"
+              alt="Support"
+              fallbackIcon={LifebuoyIcon}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
           </div>
           <div className="box-content">
             <h1>Support</h1>

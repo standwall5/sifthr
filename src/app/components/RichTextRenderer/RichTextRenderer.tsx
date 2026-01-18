@@ -2,6 +2,7 @@
 
 import React from "react";
 import styles from "./RichTextRenderer.module.css";
+import SafeImage from "@/app/components/SafeImage";
 
 interface RichTextRendererProps {
   content: string; // JSON string from Tiptap
@@ -39,7 +40,7 @@ export default function RichTextRenderer({ content }: RichTextRendererProps) {
       case "heading":
         const level = node.attrs?.level;
         const headingContent = node.content?.map((child, i: number) =>
-          renderNode(child, i)
+          renderNode(child, i),
         );
 
         switch (level) {
@@ -117,7 +118,7 @@ export default function RichTextRenderer({ content }: RichTextRendererProps) {
 
       case "image":
         return (
-          <img
+          <SafeImage
             key={key}
             src={(node.attrs as { src?: string })?.src}
             alt={(node.attrs as { alt?: string })?.alt || ""}
@@ -159,7 +160,7 @@ export default function RichTextRenderer({ content }: RichTextRendererProps) {
   return (
     <div className={styles.richTextContent}>
       {(parsedContent as { content?: TiptapNode[] }).content?.map(
-        (node, i: number) => renderNode(node, i)
+        (node, i: number) => renderNode(node, i),
       )}
     </div>
   );

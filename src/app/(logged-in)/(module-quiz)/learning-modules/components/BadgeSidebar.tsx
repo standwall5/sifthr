@@ -6,9 +6,11 @@ import {
   ChevronRightIcon,
   TrophyIcon,
   LockClosedIcon,
+  SparklesIcon,
 } from "@heroicons/react/24/outline";
 import { supabase } from "@/app/lib/supabaseClient";
 import { isGuestMode } from "@/app/lib/guestService";
+import SafeImage from "@/app/components/SafeImage";
 import type { Badge, UserBadge } from "@/lib/models/types";
 import styles from "./BadgeSidebar.module.css";
 
@@ -85,7 +87,7 @@ export default function BadgeSidebar({ isOpen, onToggle }: BadgeSidebarProps) {
   });
 
   const unearnedBadges = sortedBadges.filter(
-    (badge) => !userBadges.some((ub) => ub.badge_id === badge.id)
+    (badge) => !userBadges.some((ub) => ub.badge_id === badge.id),
   );
 
   const nextBadge = unearnedBadges[0];
@@ -139,20 +141,11 @@ export default function BadgeSidebar({ isOpen, onToggle }: BadgeSidebarProps) {
                   {userBadges.length === 0 ? (
                     <LockClosedIcon className={styles.defaultBadgeIcon} />
                   ) : nextBadge.icon_url ? (
-                    <img
+                    <SafeImage
                       src={nextBadge.icon_url}
                       alt={nextBadge.name}
-                      onError={(e) => {
-                        e.currentTarget.style.display = "none";
-                        const parent = e.currentTarget.parentElement;
-                        if (parent) {
-                          const icon = document.createElement("div");
-                          icon.className = styles.defaultBadgeIcon;
-                          icon.innerHTML =
-                            '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 100%; height: 100%"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>';
-                          parent.appendChild(icon);
-                        }
-                      }}
+                      fallbackIcon={SparklesIcon}
+                      style={{ width: "100%", height: "100%" }}
                     />
                   ) : (
                     <TrophyIcon className={styles.defaultBadgeIcon} />
@@ -189,7 +182,7 @@ export default function BadgeSidebar({ isOpen, onToggle }: BadgeSidebarProps) {
                 <button
                   onClick={() =>
                     setSortOrder(
-                      sortOrder === "easiest" ? "hardest" : "easiest"
+                      sortOrder === "easiest" ? "hardest" : "easiest",
                     )
                   }
                   className={styles.sortButton}
@@ -204,7 +197,7 @@ export default function BadgeSidebar({ isOpen, onToggle }: BadgeSidebarProps) {
                 <div className={styles.badgeList}>
                   {sortedBadges.map((badge) => {
                     const isEarned = userBadges.some(
-                      (ub) => ub.badge_id === badge.id
+                      (ub) => ub.badge_id === badge.id,
                     );
                     return (
                       <div
@@ -216,20 +209,12 @@ export default function BadgeSidebar({ isOpen, onToggle }: BadgeSidebarProps) {
                         <div className={styles.badgeIconSmall}>
                           {isEarned ? (
                             badge.icon_url ? (
-                              <img
+                              <SafeImage
                                 src={badge.icon_url}
                                 alt={badge.name}
-                                onError={(e) => {
-                                  e.currentTarget.style.display = "none";
-                                  const parent = e.currentTarget.parentElement;
-                                  if (parent) {
-                                    const icon = document.createElement("div");
-                                    icon.className = styles.smallIcon;
-                                    icon.innerHTML =
-                                      '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 100%; height: 100%"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>';
-                                    parent.appendChild(icon);
-                                  }
-                                }}
+                                fallbackIcon={SparklesIcon}
+                                className={styles.smallIcon}
+                                style={{ width: "100%", height: "100%" }}
                               />
                             ) : (
                               <TrophyIcon className={styles.smallIcon} />

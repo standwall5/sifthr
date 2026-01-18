@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState, useCallback } from "react";
-import Image from "next/image";
+import SafeImage from "@/app/components/SafeImage";
+import { SparklesIcon } from "@heroicons/react/24/outline";
 import MediumCard from "@/app/components/MediumCard";
 import styles from "./BadgesDisplay.module.css";
 import type { UserBadge } from "@/app/lib/models/types";
@@ -50,12 +51,15 @@ export default function BadgesDisplay({ userId }: { userId: string }) {
               <div key={userBadge.id} className={styles.badgeCard}>
                 <div className={styles.badgeIcon}>
                   {userBadge.badge?.icon_url ? (
-                    <Image
+                    <SafeImage
                       src={userBadge.badge.icon_url}
                       alt={userBadge.badge.name}
-                      width={64}
-                      height={64}
-                      style={{ objectFit: "contain" }}
+                      fallbackIcon={SparklesIcon}
+                      style={{
+                        width: "64px",
+                        height: "64px",
+                        objectFit: "contain",
+                      }}
                     />
                   ) : (
                     <span className={styles.badgeEmoji}>

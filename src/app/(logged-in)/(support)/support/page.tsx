@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import Card from "@/app/components/Card/Card";
-import "@/app/(logged-in)/style.css";
+import SafeImage from "@/app/components/SafeImage";
+import { BuildingOfficeIcon } from "@heroicons/react/24/outline";
 import styles from "./support.module.css";
 
 type Organization = {
@@ -166,10 +167,11 @@ const Support = () => {
               className={styles.supportCard}
             >
               <div className={styles.cardContent}>
-                <img
+                <SafeImage
                   src={org.imageUrl}
                   alt={org.name}
                   className={styles.orgLogo}
+                  fallbackIcon={BuildingOfficeIcon}
                 />
               </div>
             </Card>
@@ -188,10 +190,11 @@ const Support = () => {
               </button>
 
               <div className={styles.modalHeader}>
-                <img
+                <SafeImage
                   src={selectedOrg.imageUrl}
                   alt={selectedOrg.name}
                   className={styles.modalLogo}
+                  fallbackIcon={BuildingOfficeIcon}
                 />
                 <h2>{selectedOrg.name}</h2>
               </div>

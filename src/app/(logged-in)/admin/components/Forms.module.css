@@ -375,3 +375,21 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
 }
+
+.previewToggle {
+    padding: 0.5rem 1rem;
+    background-color: var(--purple);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.previewToggle:hover {
+    background-color: rgb(133, 65, 215);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(153, 85, 235, 0.3);
+}
