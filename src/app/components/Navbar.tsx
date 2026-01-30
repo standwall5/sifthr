@@ -10,6 +10,7 @@ import { supabase } from "@/app/lib/supabaseClient";
 import { clearGuestData } from "@/app/lib/guestService";
 import { useGuestMode } from "@/app/context/GuestModeContext";
 import ThemeToggle from "@/app/components/ThemeToggle";
+import { Menu } from "@mantine/core";
 import {
   UserCircleIcon,
   Cog6ToothIcon,
@@ -29,7 +30,6 @@ const Navbar: React.FC = () => {
 
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [streak, setStreak] = useState<number>(0);
 
   useEffect(() => {
@@ -96,7 +96,6 @@ const Navbar: React.FC = () => {
 
   const handleExitGuestMode = () => {
     clearGuestData();
-    setIsDropdownOpen(false);
     refreshGuestStatus();
     router.push("/");
   };
@@ -271,195 +270,174 @@ const Navbar: React.FC = () => {
 
         {/* User Icon - Shows for both logged in users and guests */}
         {!isLoading && (loggedIn || isGuest) && (
-          <li id="user-icon" className="relative">
-            <div style={{ position: "relative" }}>
-              <Image
-                src={user?.profile_picture_url || "/assets/images/userIcon.png"}
-                alt={isGuest ? "Guest User" : "User Profile"}
-                width={70}
-                height={70}
-                className="cursor-pointer user-profile-image"
-                onClick={() => setIsDropdownOpen((o) => !o)}
-                style={{
-                  borderRadius: "50%",
-                  border: `2px solid var(--purple)`,
-                }}
-              />
-              {/* Guest Mode Badge */}
-              {isGuest && (
-                <span
-                  style={{
-                    position: "absolute",
-                    bottom: "0",
-                    right: "0",
-                    fontSize: "1.2rem",
-                    background: "white",
-                    borderRadius: "50%",
-                    width: "24px",
-                    height: "24px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  🎭
-                </span>
-              )}
-            </div>
-
-            {isDropdownOpen && (
-              <div
-                className="absolute right-0 mt-2 w-56 rounded-md shadow-lg z-50"
-                style={{
-                  backgroundColor: "var(--card-bg)",
-                  border: "1px solid var(--border-color)",
-                }}
-              >
-                <div className="py-1">
-                  {/* For authenticated users - show streak */}
-                  {loggedIn && streak > 0 && (
-                    <div
-                      className="px-4 py-3"
-                      style={{ borderBottom: "1px solid var(--border-color)" }}
-                    >
-                      <div className="flex items-center gap-2 text-sm">
-                        <FireIcon
-                          style={{
-                            width: "1.5rem",
-                            height: "1.5rem",
-                            color: "#ff6b35",
-                          }}
-                        />
-                        <div>
-                          <div
-                            className="font-bold"
-                            style={{ color: "var(--text)" }}
-                          >
-                            {streak} Day Streak
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* For guests - show guest notice */}
+          <li id="user-icon">
+            <Menu
+              shadow="xl"
+              width={260}
+              position="bottom-end"
+              offset={8}
+              transitionProps={{ transition: 'fade-down', duration: 200 }}
+              styles={{
+                dropdown: {
+                  backgroundColor: 'var(--card-bg)',
+                  border: '2px solid var(--purple)',
+                  backdropFilter: 'blur(10px)',
+                  borderRadius: '12px',
+                  padding: '4px 0',
+                  overflow: 'hidden',
+                },
+                item: {
+                  borderRadius: '0',
+                  padding: '12px 20px',
+                  margin: '0',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  color: 'var(--text)',
+                  transition: 'all 0.2s ease',
+                  '&[data-hovered]': {
+                    backgroundColor: 'var(--card-bg-highlight)',
+                  },
+                },
+                divider: {
+                  borderColor: 'var(--border-color)',
+                  margin: '8px 0',
+                },
+              }}
+            >
+              <Menu.Target>
+                <div style={{ position: "relative", cursor: "pointer" }}>
+                  <Image
+                    src={user?.profile_picture_url || "/assets/images/userIcon.png"}
+                    alt={isGuest ? "Guest User" : "User Profile"}
+                    width={70}
+                    height={70}
+                    className="user-profile-image"
+                    style={{
+                      borderRadius: "50%",
+                      border: `2px solid var(--purple)`,
+                    }}
+                  />
+                  {/* Guest Mode Badge */}
                   {isGuest && (
-                    <div
-                      className="px-4 py-3"
-                      style={{ borderBottom: "1px solid var(--border-color)" }}
-                    >
-                      <div className="flex items-center gap-2 text-sm">
-                        <span className="text-2xl">🎭</span>
-                        <div>
-                          <div
-                            className="font-bold"
-                            style={{ color: "var(--text)" }}
-                          >
-                            Guest Mode
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  <Link
-                    href={isGuest ? "/guest-profile" : "/profile"}
-                    className="block px-4 py-2 text-sm transition-colors"
-                    style={{
-                      color: "var(--text)",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.5rem",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor =
-                        "var(--card-bg-highlight)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = "transparent";
-                    }}
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    <UserCircleIcon
-                      style={{ width: "1.25rem", height: "1.25rem" }}
-                    />
-                    Profile
-                  </Link>
-                  <Link
-                    href="/settings"
-                    className="block px-4 py-2 text-sm transition-colors"
-                    style={{
-                      color: "var(--text)",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.5rem",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor =
-                        "var(--card-bg-highlight)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = "transparent";
-                    }}
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    <Cog6ToothIcon
-                      style={{ width: "1.25rem", height: "1.25rem" }}
-                    />
-                    Settings
-                  </Link>
-
-                  {/* Different bottom action for guests vs authenticated users */}
-                  {isGuest ? (
-                    <button
-                      onClick={handleExitGuestMode}
-                      className="block w-full text-left px-4 py-2 text-sm transition-colors"
+                    <span
                       style={{
-                        color: "var(--text)",
+                        position: "absolute",
+                        bottom: "0",
+                        right: "0",
+                        fontSize: "1.2rem",
+                        background: "white",
+                        borderRadius: "50%",
+                        width: "24px",
+                        height: "24px",
                         display: "flex",
                         alignItems: "center",
-                        gap: "0.5rem",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor =
-                          "var(--card-bg-highlight)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = "transparent";
+                        justifyContent: "center",
                       }}
                     >
-                      <ArrowRightOnRectangleIcon
-                        style={{ width: "1.25rem", height: "1.25rem" }}
-                      />
-                      Exit Guest Mode
-                    </button>
-                  ) : (
-                    <button
-                      onClick={signout}
-                      className="block w-full text-left px-4 py-2 text-sm transition-colors"
-                      style={{
-                        color: "var(--text)",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor =
-                          "var(--card-bg-highlight)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = "transparent";
-                      }}
-                    >
-                      <ArrowRightOnRectangleIcon
-                        style={{ width: "1.25rem", height: "1.25rem" }}
-                      />
-                      Sign Out
-                    </button>
+                      🎭
+                    </span>
                   )}
                 </div>
-              </div>
-            )}
+              </Menu.Target>
+
+              <Menu.Dropdown>
+                {/* Streak or Guest Badge */}
+                {loggedIn && streak > 0 && (
+                  <>
+                    <div style={{ padding: '16px 20px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <div
+                          style={{
+                            background: 'linear-gradient(135deg, #ff6b35, #ff8c42)',
+                            borderRadius: '12px',
+                            padding: '10px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <FireIcon style={{ width: '1.5rem', height: '1.5rem', color: 'white' }} />
+                        </div>
+                        <div>
+                          <div style={{ fontWeight: 700, fontSize: '18px', color: 'var(--text)' }}>
+                            {streak} Day Streak
+                          </div>
+                          <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                            Keep it up! 🔥
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <Menu.Divider />
+                  </>
+                )}
+
+                {isGuest && (
+                  <>
+                    <div style={{ padding: '16px 20px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <div
+                          style={{
+                            background: 'linear-gradient(135deg, var(--purple), var(--blue))',
+                            borderRadius: '12px',
+                            padding: '10px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <span style={{ fontSize: '1.5rem' }}>🎭</span>
+                        </div>
+                        <div>
+                          <div style={{ fontWeight: 700, fontSize: '18px', color: 'var(--text)' }}>
+                            Guest Mode
+                          </div>
+                          <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                            Exploring AdEducate
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <Menu.Divider />
+                  </>
+                )}
+
+                {/* Menu Items */}
+                <Menu.Item
+                  component={Link}
+                  href={isGuest ? "/guest-profile" : "/profile"}
+                  leftSection={<UserCircleIcon style={{ width: '1.25rem', height: '1.25rem', color: 'var(--purple)' }} />}
+                >
+                  Profile
+                </Menu.Item>
+
+                <Menu.Item
+                  component={Link}
+                  href="/settings"
+                  leftSection={<Cog6ToothIcon style={{ width: '1.25rem', height: '1.25rem', color: 'var(--purple)' }} />}
+                >
+                  Settings
+                </Menu.Item>
+
+                <Menu.Divider />
+
+                {/* Sign Out / Exit Guest Mode */}
+                <Menu.Item
+                  onClick={isGuest ? handleExitGuestMode : signout}
+                  leftSection={<ArrowRightOnRectangleIcon style={{ width: '1.25rem', height: '1.25rem' }} />}
+                  styles={{
+                    item: {
+                      color: 'var(--red)',
+                      '&[data-hovered]': {
+                        backgroundColor: 'rgba(235, 102, 102, 0.1)',
+                      },
+                    },
+                  }}
+                >
+                  {isGuest ? "Exit Guest Mode" : "Sign Out"}
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
           </li>
         )}
       </ul>

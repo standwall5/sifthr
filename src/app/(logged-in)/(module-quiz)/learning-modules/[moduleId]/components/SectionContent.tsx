@@ -1,5 +1,6 @@
 import type { ModuleSection } from "@/lib/models/types";
 import Image from "next/image";
+import RichTextRenderer from "@/app/components/RichTextRenderer/RichTextRenderer";
 
 type SectionContentProps = {
   section: ModuleSection;
@@ -70,15 +71,26 @@ export default function SectionContent({ section }: SectionContentProps) {
             style={{
               maxWidth: "100%",
               height: "auto",
-              borderRadius: "8px",
+              borderRadius: "12px",
               objectFit: "contain",
+              border: "3px solid var(--purple)",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+              transition: "transform 0.2s ease, box-shadow 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "scale(1.02)";
+              e.currentTarget.style.boxShadow = "0 8px 20px rgba(153, 85, 235, 0.3)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.1)";
             }}
           />
         </div>
       )}
 
       {/* Display text content */}
-      {section.content && <p>{section.content}</p>}
+      {section.content && <RichTextRenderer content={section.content} />}
 
       {/* Display video if media_url exists */}
       {videoEmbed && (

@@ -28,7 +28,7 @@ const Footer = () => {
         <div className="school-info">
           <div className="school-logo">
             <img
-              src="/assets/images/SNNHS-Logo.jng"
+              src="/assets/images/SNNHS-Logo.jpg"
               alt="Sto. Niño National High School Logo"
               onError={(e) => {
                 e.currentTarget.src = "/assets/images/SNNHS-Logo.jpg";

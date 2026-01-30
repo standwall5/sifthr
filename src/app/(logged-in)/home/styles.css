@@ -10,7 +10,7 @@
 }
 
 .box {
-  width: 28rem;
+  width: 28rem !important;
   height: 100%;
   min-height: 30rem;
   transition: 0.3s;
@@ -84,14 +84,14 @@
 }
 
 .box-content h1 {
-  font-size: 1.5rem;
+  font-size: 1.5rem !important;
   font-weight: bold;
   color: var(--text);
   margin: 0;
 }
 
 .box-content p {
-  font-size: 1rem;
+  font-size: 1rem !important;
   line-height: 1.6;
   color: var(--text);
   margin: 0;

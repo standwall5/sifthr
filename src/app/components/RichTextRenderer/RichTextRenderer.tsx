@@ -1,11 +1,13 @@
 "use client";
 
 import React from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import styles from "./RichTextRenderer.module.css";
 import SafeImage from "@/app/components/SafeImage";
 
 interface RichTextRendererProps {
-  content: string; // JSON string from Tiptap
+  content: string; // JSON string from Tiptap or Markdown text
 }
 
 interface TiptapNode {
@@ -19,11 +21,91 @@ interface TiptapNode {
 export default function RichTextRenderer({ content }: RichTextRendererProps) {
   let parsedContent;
 
+  console.log('RichTextRenderer received content:', content?.substring(0, 200));
+
   try {
     parsedContent = JSON.parse(content);
+    console.log('Content is JSON (Tiptap format)');
   } catch {
-    // If it's not JSON, treat it as plain text/markdown (backward compatibility)
-    return <div className={styles.content}>{content}</div>;
+    console.log('Content is plain text, processing line by line...');
+    // If it's not JSON, render as plain text with preserved formatting
+    // Split content into lines and process each one
+    const lines = content.split('\n');
+    const elements: React.ReactNode[] = [];
+    let currentList: string[] = [];
+    let listType: 'bullet' | 'numbered' | null = null;
+
+    const flushList = () => {
+      if (currentList.length > 0) {
+        if (listType === 'bullet') {
+          elements.push(
+            <ul key={`list-${elements.length}`} className={styles.bulletList}>
+              {currentList.map((item, i) => (
+                <li key={i} className={styles.listItem} dangerouslySetInnerHTML={{ __html: item }} />
+              ))}
+            </ul>
+          );
+        } else if (listType === 'numbered') {
+          elements.push(
+            <ol key={`list-${elements.length}`} className={styles.orderedList}>
+              {currentList.map((item, i) => (
+                <li key={i} className={styles.listItem} dangerouslySetInnerHTML={{ __html: item }} />
+              ))}
+            </ol>
+          );
+        }
+        currentList = [];
+        listType = null;
+      }
+    };
+
+    const processInlineFormatting = (text: string): string => {
+      // Convert **bold** to <strong>
+      text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      // Convert *italic* to <em>
+      text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+      // Convert links [text](url) to <a>
+      text = text.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="' + styles.link + '">$1</a>');
+      return text;
+    };
+
+    lines.forEach((line, index) => {
+      const trimmedLine = line.trim();
+      
+      // Check for bullet points (•, -, *, ✖️, ✅, etc.)
+      const bulletMatch = trimmedLine.match(/^([•\-\*✖️✅⚠️❌🔵🟣⚫🔴🚩])\s+(.+)$/);
+      const numberedMatch = trimmedLine.match(/^(\d+\.)\s+(.+)$/);
+
+      if (bulletMatch) {
+        if (listType !== 'bullet') {
+          flushList();
+          listType = 'bullet';
+        }
+        currentList.push(processInlineFormatting(bulletMatch[2]));
+      } else if (numberedMatch) {
+        if (listType !== 'numbered') {
+          flushList();
+          listType = 'numbered';
+        }
+        currentList.push(processInlineFormatting(numberedMatch[2]));
+      } else {
+        flushList();
+        
+        if (trimmedLine === '') {
+          // Empty line - skip it, paragraph margins provide spacing
+          return;
+        } else {
+          // Regular paragraph
+          elements.push(
+            <p key={`p-${index}`} className={styles.paragraph} dangerouslySetInnerHTML={{ __html: processInlineFormatting(trimmedLine) }} />
+          );
+        }
+      }
+    });
+
+    flushList(); // Flush any remaining list items
+
+    return <div className={styles.markdownContent}>{elements}</div>;
   }
 
   const renderNode = (node: TiptapNode, index: number): React.ReactNode => {

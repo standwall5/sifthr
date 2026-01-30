@@ -14,6 +14,8 @@ import { GuestModeProvider } from "./context/GuestModeContext";
 import CookieConsent from "./components/CookieConsent/CookieConsent";
 import FirstTimeVisitor from "./components/FirstTimeVisitor/FirstTimeVisitor";
 import { NextStepProvider, NextStep } from "nextstepjs";
+import { MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
 import type { Tour } from "nextstepjs";
 import VisualNovelCard from "./components/NextStepCard/VisualNovelCard";
 import {
@@ -97,21 +99,23 @@ export default async function RootLayout({
           <LanguageProvider>
             <GuestModeProvider>
               <NotificationProvider>
-                <NextStepProvider>
-                  <NextStep steps={steps} cardComponent={VisualNovelCard}>
-                    <FirstTimeVisitor>
-                      <Navbar />
-                      <BgBlob />
-                      <Breadcrumbs />
-                      <main className="app-main">
-                        <div className="container">{children}</div>
-                      </main>
-                      <Footer />
-                      <CookieConsent />
-                      <Chatbot />
-                    </FirstTimeVisitor>
-                  </NextStep>
-                </NextStepProvider>
+                <MantineProvider>
+                  <NextStepProvider>
+                    <NextStep steps={steps} cardComponent={VisualNovelCard}>
+                      <FirstTimeVisitor>
+                        <Navbar />
+                        <BgBlob />
+                        <Breadcrumbs />
+                        <main className="app-main">
+                          <div className="container">{children}</div>
+                        </main>
+                        <Footer />
+                        <CookieConsent />
+                        <Chatbot />
+                      </FirstTimeVisitor>
+                    </NextStep>
+                  </NextStepProvider>
+                </MantineProvider>
               </NotificationProvider>
             </GuestModeProvider>
           </LanguageProvider>
