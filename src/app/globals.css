@@ -12,7 +12,8 @@
   color-scheme: light;
 
   /* Accent colors */
-  --lime: rgb(200, 229, 36);
+  /* --lime: rgb(126, 192, 21); */
+  --lime: rgb(148, 204, 18);
   --blue: rgb(131, 165, 240);
   --purple: rgb(153, 85, 235);
   --yellow: rgb(237, 183, 77);

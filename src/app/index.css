@@ -1,4 +1,4 @@
-:root {
+/* :root {
     --lime: rgb(200, 229, 36);
     --blue: rgb(131, 165, 240);
     --purple: rgb(153, 85, 235);
@@ -11,7 +11,7 @@
     --yellow: rgb(237, 183, 77);
     --red: rgb(235, 102, 102);
     --green: rgb(111, 177, 138);
-}
+} */
 
 .content {
     display: flex;
